@@ -1,0 +1,72 @@
+
+# .NET and Visual Studio
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+
+# Build outputs
+*.dll
+*.exe
+*.app
+*.pdb
+*.cache
+*.log
+*.db
+*.db-shm
+*.db-wal
+
+# OS junk
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Rider
+.idea/
+
+# Logs
+logs/
+*.log
+
+# Test results
+TestResults/
+*.trx
+
+# Auto-generated files
+GeneratedFiles/
+
+# SQLite local DBs
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+
+# MAUI specific
+Platforms/*/bin/
+Platforms/*/obj/
+
+# User secrets
+secrets.json
+
+# NuGet
+*.nupkg
+.nuget/
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# Git conflicts
+*.orig
+
+# Optional: exclude local env or backup files
+*.bak
+*.swp
+*.tmp
+
+# Optional: exclude personal documentation or local dev notes
+local-notes.md
+TODO.md
