@@ -115,6 +115,8 @@ builder.Services.AddMudServices();
 * [ ] 🧮 Render 2x2 MudGrid layout for four quadrants
 * [ ] 🧪 Display hardcoded cards in each section
 
+> 💬 **Note:** The Eisenhower Matrix feature will initially be built without the Scrum Summary integration. See Phase 5.4 for the integration sub-feature.
+
 > 💬 **Checkpoint:** Static UI for matrix is in place and styled.
 
 ---
@@ -170,6 +172,8 @@ builder.Services.AddMudServices();
 * [ ] 🗓 Show `EntryDate` defaulting to today
 * [ ] 📑 Add editable text areas: Yesterday, Today, Blockers
 
+> 💬 **Note:** The Scrum Summary feature will initially be built without the Eisenhower Matrix integration. See Phase 5.4 for the integration sub-feature.
+
 > 💬 **Checkpoint:** Editable summary form is available.
 
 ---
@@ -220,6 +224,17 @@ builder.Services.AddMudServices();
 * [ ] 📦 Tag commit as `v0.1.0` — MVP with both features working
 * [ ] 📸 Create a screenshot or README preview
 * [ ] ✅ Push to GitHub (private or public)
+
+---
+
+### \[5.4] Integrate Eisenhower Matrix with Scrum Summary (Sub-Feature)
+
+* [ ] 🔄 Implement auto-pull of completed/updated Eisenhower tasks into Scrum Summary's "Yesterday's Work" section
+* [ ] 🧪 Ensure manual override/edit is possible in Scrum Summary
+* [ ] 🔗 Link each Scrum Summary entry to an optional Eisenhower task via `TaskId` foreign key
+* [ ] 🧪 Add tests for integration logic and data consistency
+
+> 💬 **Checkpoint:** Scrum Summary and Eisenhower Matrix are fully integrated; completed/updated tasks are surfaced in daily summaries, and manual entries remain supported.
 
 ---
 
