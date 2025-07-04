@@ -137,6 +137,31 @@ public class ScrumNote
 
 ---
 
+## 🔗 Integration with Eisenhower Matrix
+
+The Scrum Summary Dashboard is tightly integrated with the Eisenhower Matrix feature. When a task in the Eisenhower Matrix is completed or updated with significant progress, it is automatically eligible to be included in the next day's "Yesterday's Work" section of the Scrum Summary. Each summary entry can optionally reference a single Eisenhower task (via a `TaskId` foreign key), but manual entries not tied to a task are fully supported. This ensures that all actionable work tracked in the Eisenhower Matrix is surfaced for daily stand-up reporting without manual duplication, while still allowing flexibility for other types of work.
+
+- When a task is marked as completed, it is auto-pulled into the next day's summary and can be linked via `TaskId`.
+- Optionally, tasks with significant updates (not just completion) can also be surfaced for review.
+- The auto-pull logic queries the Eisenhower Matrix's `Tasks` table for relevant activity.
+- Manual override is always available: users can edit or remove any auto-pulled entry before saving, or add entries not linked to a task.
+
+> **Feature Dependency:** This integration requires both the Eisenhower Matrix and Scrum Summary features to be implemented and working independently before enabling this auto-pull sub-feature.
+
+---
+
+## 🏗️ Build Order & Feature Dependencies
+
+To implement this integration, the following build order is recommended:
+
+1. **Eisenhower Matrix Utility**: Implement basic task capture, quadrant assignment, and completion tracking.
+2. **Scrum Summary Dashboard**: Implement daily summary creation, editing, and persistence.
+3. **Eisenhower-to-Scrum Integration (Sub-Feature)**: Enable auto-pulling of completed/updated Eisenhower tasks into the Scrum Summary's "Yesterday's Work" section.
+
+This ensures a clean separation of concerns and allows each feature to be tested independently before integration.
+
+---
+
 ## 🗃️ Database Schema
 
 See [Scrum Summary Database Definition](feature-scrum-summary-database.md) for the full schema and rationale for this feature's data model.

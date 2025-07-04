@@ -126,6 +126,31 @@ public class EisenhowerTask : IAuditableEntity
 
 ---
 
+## 🔗 Integration with Scrum Summary
+
+When a task is completed or updated with significant progress in the Eisenhower Matrix, it is automatically surfaced for inclusion in the next day's Scrum Summary ("Yesterday's Work"). This ensures that all meaningful activity tracked in the Eisenhower Matrix is available for daily stand-up reporting.
+
+- Completed tasks are auto-pulled into the Scrum Summary for the following day.
+- Optionally, tasks with major updates (not just completion) can also be included.
+- This integration is only enabled once both the Eisenhower Matrix and Scrum Summary features are implemented and working independently.
+- Manual review and editing of the auto-pulled summary is always possible in the Scrum Summary Dashboard.
+
+> **Feature Dependency:** This sub-feature depends on the Scrum Summary Dashboard being present and functional.
+
+---
+
+## 🏗️ Build Order & Feature Dependencies
+
+To support this integration, the following build order is recommended:
+
+1. **Eisenhower Matrix Utility**: Implement basic task capture, quadrant assignment, and completion tracking.
+2. **Scrum Summary Dashboard**: Implement daily summary creation, editing, and persistence.
+3. **Eisenhower-to-Scrum Integration (Sub-Feature)**: Enable auto-pulling of completed/updated Eisenhower tasks into the Scrum Summary's "Yesterday's Work" section.
+
+This staged approach ensures each feature is robust and testable before integration.
+
+---
+
 ## 🧩 Future Enhancements
 
 * Tags / Project assignment

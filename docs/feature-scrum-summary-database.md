@@ -21,6 +21,7 @@ Stores daily scrum entries, including yesterday's work, today's plan, and blocke
 | `YesterdayNotes` | TEXT     |                             | Summary of what was done yesterday      |
 | `TodayPlan`      | TEXT     |                             | Tasks or intentions for today           |
 | `Blockers`       | TEXT     |                             | Known blockers (can be linked or typed) |
+| `TaskId`         | INTEGER  | Optional, FK to Tasks.Id    | (Optional) Related Eisenhower task, if any |
 | `CreatedAt`      | DATETIME | Default: CURRENT_TIMESTAMP  | When entry was created                  |
 | `UpdatedAt`      | DATETIME | Default: CURRENT_TIMESTAMP  | When entry was last edited              |
 
@@ -35,8 +36,10 @@ CREATE TABLE IF NOT EXISTS ScrumNotes (
     YesterdayNotes TEXT,
     TodayPlan TEXT,
     Blockers TEXT,
+    TaskId INTEGER, -- Optional, FK to Tasks.Id
     CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    UpdatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+    UpdatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (TaskId) REFERENCES Tasks(Id)
 );
 ```
 
@@ -44,8 +47,9 @@ CREATE TABLE IF NOT EXISTS ScrumNotes (
 
 ## 🔁 Relationships
 
-Currently, the `ScrumNotes` table is self-contained. In the future, it may reference:
-- `Tasks` completed on a given day, for richer scrum summaries ([see Eisenhower Matrix Database](feature-eisenhower-matrix-database.md))
+The `ScrumNotes` table can optionally reference a single task from the Eisenhower Matrix via the `TaskId` column (foreign key to `Tasks.Id`). This allows a scrum summary entry to be linked to a specific task when relevant, but does not require every summary entry to be tied to a task. Manual notes and summaries unrelated to Eisenhower tasks are fully supported.
+
+- For more on the Eisenhower Matrix schema, see [Eisenhower Matrix Database](feature-eisenhower-matrix-database.md)
 
 ---
 
@@ -55,4 +59,11 @@ Currently, the `ScrumNotes` table is self-contained. In the future, it may refer
 
 ```sql
 SELECT * FROM ScrumNotes WHERE EntryDate = DATE('now');
+```
+
+**Get Scrum Notes Linked to a Specific Task:**
+
+```sql
+SELECT * FROM ScrumNotes WHERE TaskId = 42;
+-- Replace 42 with the desired Task ID
 ```
