@@ -28,7 +28,7 @@ The **Management Dashboard Platform** is a modular, extensible toolset built to 
 | ------------------ | ------------------------------------------------------------------------ |
 | **Platform**       | .NET MAUI / Blazor Hybrid for cross-platform support (desktop & mobile)  |
 | **Persistence**    | SQLite (file-based) local database with schema evolvability              |
-| **UI Framework**   | MudBlazor — sleek, responsive UI components                              |
+| **UI Framework**   | Blazorise + Fluent — sleek, responsive UI components                     |
 | **Modular Design** | Architecture allows the easy addition of new utilities or micro-tools    |
 | **Offline-first**  | Works completely offline with local persistence and syncing potential    |
 | **Personal Scope** | Tool is designed for individual use, with potential for cloud sync later |

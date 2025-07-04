@@ -36,26 +36,26 @@ Each task will be:
 
 ## 🎨 Phase 1: UI Framework & Shell Setup
 
-### [1.1] Add MudBlazor
+### [1.1] Add Blazorise + Fluent
 
-* [ ] 🧩 Install NuGet: `MudBlazor`
-* [ ] 💄 Register MudBlazor services in `MauiProgram.cs`
-* [ ] 🌐 Apply `MudThemeProvider`, `MudLayout`, and shell layout in `App.razor`
-* [ ] 🧪 Add a `MudButton` on main screen to confirm it's rendering
-builder.Services.AddMudServices();
-> 💬 **Checkpoint:** Basic MudBlazor layout with test UI element loads.
+* [ ] 🧩 Install NuGet: `Blazorise`, `Blazorise.Fluent`
+* [ ] 💄 Register Blazorise and Fluent providers in `MauiProgram.cs`
+* [ ] 🌐 Apply `ThemeProvider`, `Layout`, and shell layout in `App.razor` using Blazorise components
+* [ ] 🧪 Add a `Button` (Blazorise) on main screen to confirm it's rendering
+builder.Services.AddBlazorise().AddFluentProviders();
+> 💬 **Checkpoint:** Basic Blazorise + Fluent layout with test UI element loads.
 
 ---
 
 ### [1.2] Build Dashboard Shell
 
-* [ ] 🧱 Create `MainLayout.razor` using `MudDrawer`, `MudAppBar`, `MudMainContent`
+* [ ] 🧱 Create `MainLayout.razor` using `Bar` (for nav/app bar), `LayoutSider` (sidebar), and `LayoutContent` (main area) from Blazorise + Fluent
 * [ ] 🧭 Add navigation links for:
 
   * "Eisenhower Matrix"
   * "Scrum Summary"
-* [ ] 🧪 Style nav shell (light/dark mode switch optional)
-* [ ] 🔄 Wire navigation via `@page` directive and `NavLink`s
+* [ ] 🧪 Style nav shell (light/dark mode switch optional, use Blazorise `ThemeProvider`)
+* [ ] 🔄 Wire navigation via `@page` directive and `NavLink`s (Blazorise `BarLink` or `NavLink`)
 
 > 💬 **Checkpoint:** Navigation layout works, pages render in routed content.
 

@@ -40,18 +40,18 @@ The **Eisenhower Matrix Utility** helps you prioritize and act on tasks by class
 
 ---
 
-## 🖼️ UI/UX Components (via MudBlazor)
+## 🎨 UI/UX Components (via Blazorise + Fluent)
 
 | Component                  | Role                                                |
 | -------------------------- | --------------------------------------------------- |
-| `MudGrid` / `MudItem`      | Layout for 2x2 quadrant matrix                      |
-| `MudCard`                  | Individual task display inside each quadrant        |
-| `MudDialog`                | Modal for add/edit task                             |
-| `MudMenu` or `MudIconMenu` | Per-task menu: mark done, move, block, delete, etc. |
-| `MudBadge`                 | Optional indicators (blocked, delegated, done)      |
-| `MudTooltip`               | Show audit metadata on hover/tap                    |
-| `MudSnackbar`              | Feedback for user actions                           |
-| `MudDrawer` / Nav Panel    | Entry point to Eisenhower Matrix utility            |
+| `Layout` + `LayoutSider`   | Layout for 2x2 quadrant matrix and sidebar          |
+| `Card`                     | Individual task display inside each quadrant        |
+| `Modal`                    | Modal for add/edit task                             |
+| `Dropdown` or `Bar`        | Per-task menu: mark done, move, block, delete, etc. |
+| `Badge`                    | Optional indicators (blocked, delegated, done)      |
+| `Tooltip`                  | Show audit metadata on hover/tap                    |
+| `Snackbar`                 | Feedback for user actions                           |
+| `Bar` / Nav Panel          | Entry point to Eisenhower Matrix utility            |
 | `Uncategorized List`       | Dedicated view/component for uncategorized tasks    |
 
 ---

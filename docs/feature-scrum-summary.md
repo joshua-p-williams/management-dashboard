@@ -56,17 +56,17 @@ public class ScrumNote
 
 ---
 
-## 📊 UI/UX Components (via MudBlazor)
+## 📊 UI/UX Components (via Blazorise + Fluent)
 
-| Component               | Role                                                   |
-| ----------------------- | ------------------------------------------------------ |
-| `MudTextField`          | Inline text input for each summary section             |
-| `MudExpansionPanel`     | Expand/collapse previous summaries                     |
-| `MudButton`             | Save, Refresh, Export actions                          |
-| `MudTable` or `MudList` | Render pulled task summaries (editable inline)         |
-| `MudTabs` (optional)    | View: Today / Past Days                                |
-| `MudTooltip`            | Hover for data source explanations (e.g., auto-pulled) |
-| `MudSnackbar`           | Success/error feedback                                 |
+| Component                  | Role                                                |
+| -------------------------- | --------------------------------------------------- |
+| `Layout` + `LayoutSider`   | Page layout and sidebar                             |
+| `Card`                     | Display of daily summary entries                    |
+| `Modal`                    | Edit/add summary entry                              |
+| `Dropdown` or `Bar`        | Menu for actions (edit, delete, etc.)               |
+| `Badge`                    | Status indicators                                   |
+| `Tooltip`                  | Show audit metadata                                 |
+| `Snackbar`                 | Feedback for user actions                           |
 
 ---
 

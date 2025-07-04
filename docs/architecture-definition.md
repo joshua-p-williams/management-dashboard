@@ -2,16 +2,16 @@
 
 ## 🔧 Architectural Overview
 
-This application is a **modular, component-based hybrid app** built using the .NET MAUI framework with Blazor for UI composition. It will adopt a **clean layered architecture** and use **Formula.SimpleRepo** with **Dapper** to manage SQLite persistence. The focus is on an offline-first experience with modular utility panels that plug into a central navigation shell.
+This application is a **modular, component-based hybrid app** built using the .NET MAUI framework with Blazor for UI composition. It adopts a **clean layered architecture** and uses **Formula.SimpleRepo** with **Dapper** to manage SQLite persistence. The focus is on an offline-first experience with modular utility panels that plug into a central navigation shell.
 
 ---
 
-## 📐 Architectural Layers
+## 📖 Architectural Layers
 
 ```
 [ AppShell (MAUI) ]
        ↓
-[ Blazor UI (MudBlazor Components) ]
+[ Blazor UI (Blazorise + Fluent Components) ]
        ↓
 [ UI Logic (Pages / Components) ]
        ↓
@@ -24,11 +24,11 @@ This application is a **modular, component-based hybrid app** built using the .N
 
 ---
 
-## 🧱 Key Technologies & Patterns
+## 🧑‍🔬 Key Technologies & Patterns
 
 | Component            | Tool/Library                                 | Purpose                                                    |
 | -------------------- | -------------------------------------------- | ---------------------------------------------------------- |
-| UI Framework         | **MudBlazor**                                | Material-based UI components with responsive support       |
+| UI Framework         | **Blazorise + Fluent**                       | Modern, responsive UI components (Fluent Design)           |
 | Shell/Platform       | **.NET MAUI Blazor Hybrid**                  | Cross-platform host (Android, Windows, Mac, iOS optional)  |
 | Data Access          | **Dapper + Formula.SimpleRepo**              | Repository-based lightweight data access layer             |
 | Database             | **SQLite**                                   | File-based local data persistence                          |
