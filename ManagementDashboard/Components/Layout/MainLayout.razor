@@ -1,17 +1,24 @@
-﻿@inherits LayoutComponentBase
+﻿@using MudBlazor
+@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<MudLayout>
+    <MudDrawer @bind-Open="_drawerOpen" Variant="DrawerVariant.Temporary" Elevation="1">
+        <MudNavMenu>
+            <MudNavLink Href="/" Icon="@Icons.Material.Filled.Home" Match="NavLinkMatch.All">Home</MudNavLink>
+        </MudNavMenu>
+    </MudDrawer>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
+    <MudMainContent>
+        <MudAppBar Color="Color.Primary">
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" OnClick="ToggleDrawer" />
+        </MudAppBar>
+        <MudContainer Class="pa-4">
             @Body
-        </article>
-    </main>
-</div>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private bool _drawerOpen = true;
+    private void ToggleDrawer() => _drawerOpen = !_drawerOpen;
+}

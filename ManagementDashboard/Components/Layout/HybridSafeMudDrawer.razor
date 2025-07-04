@@ -1,0 +1,13 @@
+@using MudBlazor
+@inherits MudDrawer
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Allow only when running in browser to avoid issues in native (MAUI) runtime
+        if (!OperatingSystem.IsBrowser())
+            return;
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}
