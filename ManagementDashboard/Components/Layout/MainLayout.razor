@@ -2,11 +2,11 @@
 @using Blazorise.FluentUI2
 @using Blazorise
 
-<Layout SiderBreakpoint="Breakpoint.None">
-    <LayoutSider Style="width:260px;">
+<div class="d-flex" style="min-height:100vh;">
+    <div class="d-flex flex-column flex-shrink-0 p-0" style="width:260px; min-width:200px; background: var(--b-theme-background-dark); box-shadow: 2px 0 6px rgba(0,0,0,0.04);">
         <NavMenu />
-    </LayoutSider>
-    <LayoutHeader>
+    </div>
+    <div class="flex-grow-1 d-flex flex-column" style="background: var(--b-theme-background);">
         <Bar Background="Background.Light" ThemeContrast="ThemeContrast.Light">
             <BarBrand>
                 <span class="fw-bold">Management Dashboard</span>
@@ -18,11 +18,9 @@
                 </BarStart>
             </BarMenu>
         </Bar>
-    </LayoutHeader>
-    <LayoutContent>
-        <Container Class="mt-4">
+        <div class="mt-4 flex-grow-1">
             <Button Color="Color.Primary">Blazorise Button Test</Button>
             @Body
-        </Container>
-    </LayoutContent>
-</Layout>
+        </div>
+    </div>
+</div>
