@@ -38,8 +38,8 @@ Each task will be:
 
 ### [1.1] Add Blazorise + Fluent
 
-* [ ] 🧩 Install NuGet: `Blazorise`, `Blazorise.Fluent`
-* [ ] 💄 Register Blazorise and Fluent providers in `MauiProgram.cs`
+* [x] 🧩 Install NuGet: `Blazorise`, `Blazorise.Fluent`
+* [x] 💄 Register Blazorise and Fluent providers in `MauiProgram.cs`
 * [ ] 🌐 Apply `ThemeProvider`, `Layout`, and shell layout in `App.razor` using Blazorise components
 * [ ] 🧪 Add a `Button` (Blazorise) on main screen to confirm it's rendering
 builder.Services.AddBlazorise().AddFluentProviders();

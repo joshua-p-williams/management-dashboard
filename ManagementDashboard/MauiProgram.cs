@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Blazorise;
+using Blazorise.FluentUI2;
+using Microsoft.Extensions.Logging;
 
 namespace ManagementDashboard
 {
@@ -16,9 +18,14 @@ namespace ManagementDashboard
 
             builder.Services.AddMauiBlazorWebView();
 
+            // Register Blazorise Fluent 2
+            builder.Services
+                .AddBlazorise(options => { options.Immediate = true; })
+                .AddFluentUI2Providers();
+
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
-    		builder.Logging.AddDebug();
+            builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();
