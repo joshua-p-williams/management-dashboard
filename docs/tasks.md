@@ -24,11 +24,11 @@ Each task will be:
 
 ---
 
-### [ ] Add Unit Testing Project
+### [x] Add Unit Testing Project
 
-* [ ] 📁 Add a new test project `ManagementDashboard.Tests` (.NET 8, MSTest or xUnit)
-* [ ] 🧬 Add basic test for true == true (smoke test)
-* [ ] 🧪 Confirm test discovery and run works
+* [x] 📁 Add a new test project `ManagementDashboard.Tests` (.NET 8, MSTest or xUnit)
+* [x] 🧬 Add basic test for true == true (smoke test)
+* [x] 🧪 Confirm test discovery and run works
 
 > 💬 **Checkpoint:** Solution contains app + working test project.
 
