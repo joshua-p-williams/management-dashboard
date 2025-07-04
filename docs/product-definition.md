@@ -61,7 +61,7 @@ The **Management Dashboard Platform** is a modular, extensible toolset built to 
 | Blocker Handling          | Supports flagging blockers with descriptions and resolution timestamps     |
 | Delegation Support        | Assign task to someone (name/email freeform text initially)                |
 | Scrum Summary             | Displays “Yesterday”, “Today”, and “Blockers” summary based on task states |
-| UX-first Navigation       | Clean, touch-friendly interface powered by MudBlazor components            |
+| UX-first Navigation       | Clean, touch-friendly interface powered by Blazorise + Fluent components            |
 
 ---
 
@@ -81,7 +81,7 @@ The **Management Dashboard Platform** is a modular, extensible toolset built to 
 
 * Must be usable **entirely offline**
 * SQLite only (no external DBs or APIs initially)
-* Cross-platform UI consistency via MudBlazor
+* Cross-platform UI consistency via Blazorise + Fluent
 * Easy deployment (single click install, side-loadable builds)
 
 ---
@@ -100,6 +100,6 @@ The **Management Dashboard Platform** is a modular, extensible toolset built to 
 | ----------- | ----------------------------- |
 | .NET MAUI   | Hybrid App Platform           |
 | Blazor      | UI rendering and logic        |
-| MudBlazor   | UI component library          |
+| Blazorise + Fluent   | UI component library          |
 | SQLite      | Embedded database             |
 | Dapper / SimpleRepo | Lightweight ORM |

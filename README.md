@@ -29,7 +29,7 @@ Answer the three core Scrum questions with one click and save your daily entries
 
 The app is built using a clean layered architecture:
 - **.NET MAUI + Blazor Hybrid** frontend
-- **MudBlazor** for modern, responsive UI components
+- **Blazorise + Fluent** for modern, responsive UI components
 - **SQLite** for lightweight local storage
 - **Dapper + Formula.SimpleRepo** for fast and structured data access
 
