@@ -2,7 +2,7 @@
 
 ## 🎯 Purpose
 
-The **Eisenhower Matrix Utility** helps you prioritize and act on tasks by classifying them across two key dimensions: **Urgency** and **Importance**. This feature enables you to visualize, manage, and track actionable work items in four distinct quadrants, with full lifecycle support (creation, update, delegation, blocking, and completion).
+The **Eisenhower Matrix Utility** helps you prioritize and act on tasks by classifying them across two key dimensions: **Urgency** and **Importance**. This feature enables you to capture, visualize, manage, and track actionable work items in four distinct quadrants, with full lifecycle support (creation, update, delegation, blocking, and completion). It also supports a generic task inventory workflow, allowing users to quickly capture tasks without immediately assigning a quadrant, and later categorize them as part of their prioritization process.
 
 ---
 
@@ -12,17 +12,19 @@ The **Eisenhower Matrix Utility** helps you prioritize and act on tasks by class
 
 | Feature                | Description                                                              |
 | ---------------------- | ------------------------------------------------------------------------ |
-| Add Task               | Create a task with title, description, quadrant, and optional delegation |
-| Quadrant Assignment    | Tasks appear in one of 4 quadrants: Do, Schedule, Delegate, Delete       |
-| Edit Task              | Modify task title, description, quadrant, delegation, etc.               |
-| Move Between Quadrants | Drag & drop or reclassify tasks manually                                 |
-| Complete Task          | Mark task as completed with timestamp                                    |
-| Block Task             | Mark task as blocked with reason and timestamp                           |
-| Unblock Task           | Resolve a blocker and record resolution timestamp                        |
-| Delete Task            | Hard delete or soft-delete depending on quadrant                         |
-| Audit Trail            | Track created, updated, completed, and blocked timestamps                |
-| Delegation             | Capture "who" a task was delegated to (freeform text for now)            |
-| Responsive UI          | Grid layout adapts to screen size (especially important for MAUI)        |
+| Add Task               | Create a task with title, description; quadrant is optional (can be set later) |
+| View Uncategorized     | See a list of tasks not yet assigned to a quadrant                        |
+| Assign Quadrant        | Assign a quadrant to an uncategorized task                                |
+| Quadrant Assignment    | Tasks appear in one of 4 quadrants: Do, Schedule, Delegate, Delete         |
+| Edit Task              | Modify task title, description, quadrant, delegation, etc.                 |
+| Move Between Quadrants | Drag & drop or reclassify tasks manually                                   |
+| Complete Task          | Mark task as completed with timestamp                                      |
+| Block Task             | Mark task as blocked with reason and timestamp                             |
+| Unblock Task           | Resolve a blocker and record resolution timestamp                          |
+| Delete Task            | Hard delete or soft-delete depending on quadrant                           |
+| Audit Trail            | Track created, updated, completed, and blocked timestamps                  |
+| Delegation             | Capture "who" a task was delegated to (freeform text for now)              |
+| Responsive UI          | Grid layout adapts to screen size (especially important for MAUI)          |
 
 ---
 
@@ -34,6 +36,7 @@ The **Eisenhower Matrix Utility** helps you prioritize and act on tasks by class
 | Schedule       | Not Urgent but Important   | `Schedule` |
 | Delegate       | Urgent but Not Important   | `Delegate` |
 | Delete         | Not Urgent & Not Important | `Delete`   |
+| (none)         | Uncategorized             | (Uncategorized) |
 
 ---
 
@@ -49,6 +52,7 @@ The **Eisenhower Matrix Utility** helps you prioritize and act on tasks by class
 | `MudTooltip`               | Show audit metadata on hover/tap                    |
 | `MudSnackbar`              | Feedback for user actions                           |
 | `MudDrawer` / Nav Panel    | Entry point to Eisenhower Matrix utility            |
+| `Uncategorized List`       | Dedicated view/component for uncategorized tasks    |
 
 ---
 
@@ -60,7 +64,7 @@ public class EisenhowerTask : IAuditableEntity
     public int Id { get; set; }
     public string Title { get; set; } = "";
     public string? Description { get; set; }
-    public string Quadrant { get; set; } = "Do"; // Do, Schedule, Delegate, Delete
+    public string? Quadrant { get; set; } // Do, Schedule, Delegate, Delete, or null for uncategorized
     public bool IsCompleted { get; set; }
     public DateTime? CompletedAt { get; set; }
     public bool IsBlocked { get; set; }
@@ -79,6 +83,8 @@ public class EisenhowerTask : IAuditableEntity
 
 | Scenario                          | Behavior                                                 |
 | --------------------------------- | -------------------------------------------------------- |
+| Task created                      | `Quadrant = null` by default (uncategorized)             |
+| Task assigned to quadrant         | `Quadrant` set to one of the four values                 |
 | Task marked “Done”                | `IsCompleted = true`, `CompletedAt = now()`              |
 | Task flagged “Blocked”            | `IsBlocked = true`, `BlockerReason`, `BlockedAt = now()` |
 | Task unblocked                    | `IsBlocked = false`, `UnblockedAt = now()`               |
@@ -91,7 +97,7 @@ public class EisenhowerTask : IAuditableEntity
 ## 🧪 Validation Rules
 
 * `Title` is required, 3–100 chars
-* `Quadrant` must be one of `'Do'`, `'Schedule'`, `'Delegate'`, `'Delete'`
+* `Quadrant` is optional; if set, must be one of `'Do'`, `'Schedule'`, `'Delegate'`, `'Delete'`
 * If `IsBlocked = true`, `BlockerReason` is required
 * If `IsCompleted = true`, set `CompletedAt` if null
 
@@ -101,7 +107,7 @@ public class EisenhowerTask : IAuditableEntity
 
 * Eisenhower Matrix is a standalone page (`/eisenhower`)
 * State managed via `TaskService` (Scoped DI)
-* UI binds to quadrant-specific `List<EisenhowerTask>` collections
+* UI binds to quadrant-specific `List<EisenhowerTask>` collections, plus a collection for uncategorized tasks
 * Service methods trigger DB sync via SimpleRepo
 
 ---
@@ -111,6 +117,7 @@ public class EisenhowerTask : IAuditableEntity
 | Action               | UI Element        | DB Update |
 | -------------------- | ----------------- | --------- |
 | Create Task          | "Add Task" button | INSERT    |
+| Assign Quadrant      | Dropdown / action | UPDATE    |
 | Move Quadrant        | Dropdown / drag   | UPDATE    |
 | Edit Task            | Edit icon         | UPDATE    |
 | Complete Task        | Checkmark / icon  | UPDATE    |
@@ -126,3 +133,9 @@ public class EisenhowerTask : IAuditableEntity
 * Export tasks to Markdown or CSV
 * Integration with calendar or reminders
 * Task recurrence (e.g. weekly review)
+
+---
+
+## 🗃️ Database Schema
+
+See [Eisenhower Matrix Database Definition](feature-eisenhower-matrix-database.md) for the full schema and rationale for this feature's data model.

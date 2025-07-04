@@ -135,3 +135,9 @@ public class ScrumNote
 | Sprint Rollup Dashboard | Show multiple days’ notes in one view                  |
 | Tag Linkage             | Tasks tagged `#scrum` show up as priority candidates   |
 
+---
+
+## 🗃️ Database Schema
+
+See [Scrum Summary Database Definition](feature-scrum-summary-database.md) for the full schema and rationale for this feature's data model.
+
