@@ -2,19 +2,27 @@
 @using Blazorise.FluentUI2
 @using Blazorise
 
-<div class="page">
-    <div class="sidebar">
+<Layout SiderBreakpoint="Breakpoint.None">
+    <LayoutSider Style="width:260px;">
         <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
+    </LayoutSider>
+    <LayoutHeader>
+        <Bar Background="Background.Light" ThemeContrast="ThemeContrast.Light">
+            <BarBrand>
+                <span class="fw-bold">Management Dashboard</span>
+            </BarBrand>
+            <BarToggler />
+            <BarMenu>
+                <BarStart>
+                    <!-- Optional nav links here -->
+                </BarStart>
+            </BarMenu>
+        </Bar>
+    </LayoutHeader>
+    <LayoutContent>
+        <Container Class="mt-4">
             <Button Color="Color.Primary">Blazorise Button Test</Button>
             @Body
-        </article>
-    </main>
-</div>
+        </Container>
+    </LayoutContent>
+</Layout>

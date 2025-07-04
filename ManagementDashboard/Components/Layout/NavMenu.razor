@@ -1,17 +1,20 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">ManagementDashboard</a>
-    </div>
-</div>
+﻿@using Blazorise
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
-
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-    </nav>
-</div>
+<Bar Background="Background.Primary" ThemeContrast="ThemeContrast.Dark">
+    <BarBrand>
+        <span class="fw-bold">Management Dashboard</span>
+    </BarBrand>
+    <BarMenu>
+        <BarStart>
+            <BarItem>
+                <BarLink To="/">Home</BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="/eisenhowermatrix">Eisenhower Matrix</BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="/scrumsummary">Scrum Summary</BarLink>
+            </BarItem>
+        </BarStart>
+    </BarMenu>
+</Bar>
