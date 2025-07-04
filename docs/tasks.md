@@ -13,18 +13,18 @@ Each task will be:
 
 ## 🛠️ Phase 0: Project Bootstrap
 
-### \[0.1] Create Solution and Initial Project
+### [x] Create Solution and Initial Project
 
-* [ ] 🧱 Create a new `.NET MAUI Blazor App` (name it `ManagementDashboard`)
-* [ ] 🔧 Set target platforms: Windows (✅), Android (optional for now)
-* [ ] 🚮 Delete all default pages (`Counter`, `FetchData`, etc.)
-* [ ] 🧪 Build & run to confirm project compiles and runs on desktop
+* [x] 🧱 Create a new `.NET MAUI Blazor App` (name it `ManagementDashboard`)
+* [x] 🔧 Set target platforms: Windows (✅), Android (optional for now)
+* [x] 🚮 Delete all default pages (`Counter`, `FetchData`, etc.)
+* [x] 🧪 Build & run to confirm project compiles and runs on desktop
 
 > 💬 **Checkpoint:** Project loads, blank page, no errors.
 
 ---
 
-### \[0.2] Add Unit Testing Project
+### [ ] Add Unit Testing Project
 
 * [ ] 📁 Add a new test project `ManagementDashboard.Tests` (.NET 8, MSTest or xUnit)
 * [ ] 🧬 Add basic test for true == true (smoke test)
@@ -36,22 +36,18 @@ Each task will be:
 
 ## 🎨 Phase 1: UI Framework & Shell Setup
 
-### \[1.1] Add MudBlazor
+### [1.1] Add MudBlazor
 
 * [ ] 🧩 Install NuGet: `MudBlazor`
 * [ ] 💄 Register MudBlazor services in `MauiProgram.cs`
 * [ ] 🌐 Apply `MudThemeProvider`, `MudLayout`, and shell layout in `App.razor`
 * [ ] 🧪 Add a `MudButton` on main screen to confirm it's rendering
-
-```csharp
 builder.Services.AddMudServices();
-```
-
 > 💬 **Checkpoint:** Basic MudBlazor layout with test UI element loads.
 
 ---
 
-### \[1.2] Build Dashboard Shell
+### [1.2] Build Dashboard Shell
 
 * [ ] 🧱 Create `MainLayout.razor` using `MudDrawer`, `MudAppBar`, `MudMainContent`
 * [ ] 🧭 Add navigation links for:
@@ -67,7 +63,7 @@ builder.Services.AddMudServices();
 
 ## 💽 Phase 2: SQLite + Repository Setup
 
-### \[2.1] Add SQLite & Formula.SimpleRepo
+### [2.1] Add SQLite & Formula.SimpleRepo
 
 * [ ] 📦 Install NuGet:
 
@@ -82,7 +78,7 @@ builder.Services.AddMudServices();
 
 ---
 
-### \[2.2] Create Task Table & Seed
+### [2.2] Create Task Table & Seed
 
 * [ ] 🧾 Define `EisenhowerTask` model (as per definition)
 * [ ] 🗃️ Create raw SQL to create `Tasks` table if not exists
@@ -93,7 +89,7 @@ builder.Services.AddMudServices();
 
 ---
 
-### \[2.3] Build Repository for Tasks
+### [2.3] Build Repository for Tasks
 
 * [ ] 🔧 Implement `IEisenhowerTaskRepository` with `Formula.SimpleRepo`
 * [ ] 🧪 Add methods for:
@@ -109,7 +105,7 @@ builder.Services.AddMudServices();
 
 ## 📐 Phase 3: Eisenhower Matrix Feature
 
-### \[3.1] Create Matrix Page + Grid
+### [3.1] Create Matrix Page + Grid
 
 * [ ] 🧱 Create `/Pages/EisenhowerMatrix.razor`
 * [ ] 🧮 Render 2x2 MudGrid layout for four quadrants
@@ -121,7 +117,7 @@ builder.Services.AddMudServices();
 
 ---
 
-### \[3.2] Load and Render Tasks
+### [3.2] Load and Render Tasks
 
 * [ ] 🔄 Fetch tasks from repo and bind by quadrant
 * [ ] 🃏 Create `TaskCard.razor` component
@@ -131,7 +127,7 @@ builder.Services.AddMudServices();
 
 ---
 
-### \[3.3] Add Create Task Modal
+### [3.3] Add Create Task Modal
 
 * [ ] ➕ Add FAB or button to create task
 * [ ] 🪟 Show `MudDialog` with input fields (title, description, quadrant, delegate)
@@ -141,7 +137,7 @@ builder.Services.AddMudServices();
 
 ---
 
-### \[3.4] Task Actions (Edit / Move / Block / Done)
+### [3.4] Task Actions (Edit / Move / Block / Done)
 
 * [ ] 🛠 Add dropdown menu or icon buttons on `TaskCard`
 
@@ -155,7 +151,7 @@ builder.Services.AddMudServices();
 
 ---
 
-### \[3.5] Add Audit Tooltips
+### [3.5] Add Audit Tooltips
 
 * [ ] 🧾 Add `MudTooltip` to show created/updated/completed timestamps
 * [ ] 🧪 Hover/click task to reveal audit history
@@ -166,7 +162,7 @@ builder.Services.AddMudServices();
 
 ## 📋 Phase 4: Scrum Summary Feature
 
-### \[4.1] Create Scrum Summary Page
+### [4.1] Create Scrum Summary Page
 
 * [ ] 📄 Create `/Pages/ScrumSummary.razor`
 * [ ] 🗓 Show `EntryDate` defaulting to today
@@ -178,7 +174,7 @@ builder.Services.AddMudServices();
 
 ---
 
-### \[4.2] Auto-fill From Tasks
+### [4.2] Auto-fill From Tasks
 
 * [ ] 🔄 Fetch completed (yesterday), active (today), and blocked tasks
 * [ ] 🧠 Format as bulleted summary in text areas
@@ -188,7 +184,7 @@ builder.Services.AddMudServices();
 
 ---
 
-### \[4.3] Save and Load Daily Entries
+### [4.3] Save and Load Daily Entries
 
 * [ ] 💾 Save `ScrumNote` to DB on submit
 * [ ] 🔄 Check for existing note — update instead of insert
@@ -200,7 +196,7 @@ builder.Services.AddMudServices();
 
 ## 🌱 Phase 5: Cleanup and Reusability
 
-### \[5.1] Centralize Services
+### [5.1] Centralize Services
 
 * [ ] 🧼 Move repo access to `TaskService`, `ScrumService`
 * [ ] 🧪 Add unit tests to services
@@ -210,7 +206,7 @@ builder.Services.AddMudServices();
 
 ---
 
-### \[5.2] Add Basic Theme / Branding
+### [5.2] Add Basic Theme / Branding
 
 * [ ] 🎨 Configure default MudTheme (colors, typography)
 * [ ] 🧪 Add favicon / titlebar / app name
@@ -219,7 +215,7 @@ builder.Services.AddMudServices();
 
 ---
 
-### \[5.3] Tag First Release
+### [5.3] Tag First Release
 
 * [ ] 📦 Tag commit as `v0.1.0` — MVP with both features working
 * [ ] 📸 Create a screenshot or README preview
@@ -227,7 +223,7 @@ builder.Services.AddMudServices();
 
 ---
 
-### \[5.4] Integrate Eisenhower Matrix with Scrum Summary (Sub-Feature)
+### [5.4] Integrate Eisenhower Matrix with Scrum Summary (Sub-Feature)
 
 * [ ] 🔄 Implement auto-pull of completed/updated Eisenhower tasks into Scrum Summary's "Yesterday's Work" section
 * [ ] 🧪 Ensure manual override/edit is possible in Scrum Summary
