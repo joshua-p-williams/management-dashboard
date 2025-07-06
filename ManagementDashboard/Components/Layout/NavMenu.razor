@@ -1,44 +1,54 @@
 ﻿@using Microsoft.AspNetCore.Components.Routing
 
-<nav class="d-flex flex-column flex-shrink-0 p-3 bg-body border-end min-vh-100">
-    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-body text-decoration-none">
-        <span class="fs-4">Management Dashboard</span>
+<nav class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary border-end min-vh-100">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+        <span class="fs-4 text-body">Management Dashboard</span>
     </a>
-    <div class="form-check form-switch mb-2">
+
+    <div class="form-check form-switch mb-3 mt-2">
         <input class="form-check-input" type="checkbox" id="themeSwitch" @onchange="ToggleTheme" checked="@IsDarkMode" />
-        <label class="form-check-label" for="themeSwitch">
-            <i class="bi @(IsDarkMode ? "bi-moon" : "bi-sun")" style="vertical-align: middle;"></i>
+        <label class="form-check-label text-body" for="themeSwitch">
+            <i class="bi @(IsDarkMode ? "bi-moon" : "bi-sun") me-1"></i>
             @(IsDarkMode ? "Dark" : "Light") Mode
         </label>
     </div>
-    <hr>
+
+    <hr />
+
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-            <NavLink class="nav-link text-body" href="/" Match="NavLinkMatch.All">
-                <i class="bi bi-house-door me-2"></i> Home
+            <NavLink class="nav-link d-flex align-items-center gap-2 text-reset" href="/" Match="NavLinkMatch.All">
+                <i class="bi bi-house-door"></i> Home
             </NavLink>
         </li>
         <li class="nav-item">
-            <NavLink class="nav-link text-body" href="/eisenhower">
-                <i class="bi bi-kanban me-2"></i> Eisenhower Matrix
+            <NavLink class="nav-link d-flex align-items-center gap-2 text-reset" href="/eisenhower">
+                <i class="bi bi-kanban"></i> Eisenhower Matrix
             </NavLink>
         </li>
         <li class="nav-item">
-            <NavLink class="nav-link text-body" href="/scrum">
-                <i class="bi bi-people me-2"></i> Scrum Summary
+            <NavLink class="nav-link d-flex align-items-center gap-2 text-reset" href="/scrum">
+                <i class="bi bi-people"></i> Scrum Summary
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link d-flex align-items-center gap-2 text-reset" href="/asdf">
+                <i class="bi bi-question-circle"></i> Not Found
             </NavLink>
         </li>
     </ul>
-    <hr>
+
+    <hr />
+
     <div class="dropdown">
-        <a href="#" class="d-flex align-items-center text-body text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-body" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
             <strong>User</strong>
         </a>
-        <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser">
+        <ul class="dropdown-menu text-small shadow @((IsDarkMode ? "dropdown-menu-dark" : ""))" aria-labelledby="dropdownUser">
             <li><a class="dropdown-item" href="#">Profile</a></li>
             <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><hr class="dropdown-divider"></li>
+            <li><hr class="dropdown-divider" /></li>
             <li><a class="dropdown-item" href="#">Sign out</a></li>
         </ul>
     </div>
