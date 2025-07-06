@@ -1,34 +1,37 @@
-﻿@* Bootstrap 5 Sidebar Navigation *@
-<nav class="d-flex flex-column flex-shrink-0 p-3 bg-light border-end min-vh-100" style="width: 250px;">
-    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+﻿@using Microsoft.AspNetCore.Components.Routing
+
+<nav class="d-flex flex-column flex-shrink-0 p-3 bg-body border-end min-vh-100">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-body text-decoration-none">
         <span class="fs-4">Management Dashboard</span>
     </a>
+    <div class="form-check form-switch mb-2">
+        <input class="form-check-input" type="checkbox" id="themeSwitch" @onchange="ToggleTheme" checked="@IsDarkMode" />
+        <label class="form-check-label" for="themeSwitch">
+            <i class="bi @(IsDarkMode ? "bi-moon" : "bi-sun")" style="vertical-align: middle;"></i>
+            @(IsDarkMode ? "Dark" : "Light") Mode
+        </label>
+    </div>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">
+            <NavLink class="nav-link text-body" href="/" Match="NavLinkMatch.All">
                 <i class="bi bi-house-door me-2"></i> Home
-            </a>
+            </NavLink>
         </li>
         <li class="nav-item">
-            <NavLink class="nav-link" href="/eisenhower" Match="NavLinkMatch.All">
+            <NavLink class="nav-link text-body" href="/eisenhower">
                 <i class="bi bi-kanban me-2"></i> Eisenhower Matrix
             </NavLink>
         </li>
         <li class="nav-item">
-            <NavLink class="nav-link" href="/scrum">
+            <NavLink class="nav-link text-body" href="/scrum">
                 <i class="bi bi-people me-2"></i> Scrum Summary
             </NavLink>
-        </li>
-        <li>
-            <a class="nav-link link-dark" href="#">
-                <i class="bi bi-graph-up me-2"></i> Reports
-            </a>
         </li>
     </ul>
     <hr>
     <div class="dropdown">
-        <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+        <a href="#" class="d-flex align-items-center text-body text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
             <strong>User</strong>
         </a>

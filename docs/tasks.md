@@ -50,11 +50,11 @@ Each task will be:
 ### [1.2] Build Dashboard Shell
 
 * [x] 🧱 Create `MainLayout.razor` using Bootstrap 5 nav/sidebar/grid for layout (see code sample in project notes)
-* [ ] 🧭 Add navigation links for:
+* [x] 🧭 Add navigation links for:
 
   * "Eisenhower Matrix"
   * "Scrum Summary"
-* [ ] 🧪 Style nav shell (light/dark mode switch optional, use Bootstrap utilities)
+* [x] 🧪 Style nav shell (light/dark mode switch optional, use Bootstrap utilities)
 * [ ] 🔄 Wire navigation via `@page` directive and `NavLink`s (Blazor/Bootstrap)
 * [ ] 🧪 Test responsive collapse/toggle on desktop and mobile
 
