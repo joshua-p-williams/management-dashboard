@@ -1,17 +1,22 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-md-3 col-lg-2 p-0 bg-light border-end min-vh-100">
+      <NavMenu />
     </div>
-
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
+    <main class="col px-4">
+      <nav class="navbar navbar-light bg-light d-md-none">
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#sidebarMenu"
+                aria-controls="sidebarMenu" aria-expanded="false"
+                aria-label="Toggle navigation">
+          &#9776; Menu
+        </button>
+      </nav>
+      <div class="pt-3">
+        @Body
+      </div>
     </main>
+  </div>
 </div>

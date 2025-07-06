@@ -38,25 +38,27 @@ Each task will be:
 
 ### [1.1] Add Bootstrap 5 (Local)
 
-* [ ] 🧩 Add Bootstrap 5 CSS/JS to `wwwroot/` (no CDN, all static)
-* [ ] 💄 Reference Bootstrap in `index.html` and ensure it loads offline
-* [ ] 🌐 Apply Bootstrap classes for layout and shell in `App.razor` and layouts
-* [ ] 🧪 Add a `Button` (Bootstrap) on main screen to confirm it's rendering
+* [x] 🧩 Add Bootstrap 5 CSS/JS to `wwwroot/bootstrap/` (no CDN, all static)
+* [x] 💄 Reference Bootstrap in `index.html` and ensure it loads offline
+* [x] 🧪 Add a `Button` (Bootstrap) on main screen to confirm it's rendering
 > 💬 **Checkpoint:** Basic Bootstrap 5 layout with test UI element loads.
+
+* [x] 🌐 Apply Bootstrap classes for layout and shell in `App.razor` and layouts
 
 ---
 
 ### [1.2] Build Dashboard Shell
 
-* [ ] 🧱 Create `MainLayout.razor` using Bootstrap 5 nav/sidebar/grid for layout
+* [x] 🧱 Create `MainLayout.razor` using Bootstrap 5 nav/sidebar/grid for layout (see code sample in project notes)
 * [ ] 🧭 Add navigation links for:
 
   * "Eisenhower Matrix"
   * "Scrum Summary"
 * [ ] 🧪 Style nav shell (light/dark mode switch optional, use Bootstrap utilities)
 * [ ] 🔄 Wire navigation via `@page` directive and `NavLink`s (Blazor/Bootstrap)
+* [ ] 🧪 Test responsive collapse/toggle on desktop and mobile
 
-> 💬 **Checkpoint:** Navigation layout works, pages render in routed content.
+> 💬 **Checkpoint:** Navigation layout works, pages render in routed content, sidebar is responsive.
 
 ---
 
