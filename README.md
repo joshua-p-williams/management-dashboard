@@ -100,22 +100,25 @@ This project uses **Bootstrap 5 (currently v5.3.7)** for all UI styling, include
 1. **Location of Assets:**
    - CSS: `ManagementDashboard/wwwroot/bootstrap/css/bootstrap.min.css`
    - JS:  `ManagementDashboard/wwwroot/bootstrap/js/bootstrap.bundle.min.js`
+   - **Icons:** CSS, SVGs, and fonts are in `ManagementDashboard/wwwroot/bootstrap/icons/` (see below).
 
 2. **Upgrade Process:**
    - Download the latest compiled Bootstrap assets from [getbootstrap.com](https://getbootstrap.com/docs/5.3/getting-started/download/).
+   - Download the latest Bootstrap Icons from [icons.getbootstrap.com](https://icons.getbootstrap.com/).
    - Place the CSS and JS files in the `wwwroot/bootstrap/css/` and `wwwroot/bootstrap/js/` folders, respectively.
-   - Test the app offline to confirm no regressions in layout or interactivity.
+   - Place the Bootstrap Icons CSS, SVGs, and `fonts/` in `wwwroot/bootstrap/icons/`.
+   - Test the app offline to confirm no regressions in layout, icons, or interactivity.
    - Review the [Bootstrap migration guide](https://getbootstrap.com/docs/5.3/migration/) for any breaking changes.
    - Update this README and any relevant documentation with the new version number and date.
 
 3. **Best Practices:**
-   - Never reference Bootstrap from a CDN or external source—always use local files.
+   - Never reference Bootstrap or Bootstrap Icons from a CDN or external source—always use local files.
    - Keep custom CSS in separate files (e.g. `app.css`) to simplify Bootstrap upgrades.
    - After upgrading, check all major UI flows and run a full build/test cycle.
 
 4. **Version Tracking:**
-   - Document Bootstrap version and upgrade date in this section.
-   - Example: `v5.3.7 added July 2025`
+   - Document Bootstrap and Bootstrap Icons version and upgrade date in this section.
+   - Example: `v5.3.7 and Bootstrap Icons v1.11.3 added July 2025`
 
 ---
 
