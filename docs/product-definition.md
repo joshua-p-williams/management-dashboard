@@ -28,7 +28,7 @@ The **Management Dashboard Platform** is a modular, extensible toolset built to 
 | ------------------ | ------------------------------------------------------------------------ |
 | **Platform**       | .NET MAUI / Blazor Hybrid for cross-platform support (desktop & mobile)  |
 | **Persistence**    | SQLite (file-based) local database with schema evolvability              |
-| **UI Framework**   | Blazorise + Fluent — sleek, responsive UI components                     |
+| **UI Framework**   | Bootstrap 5 (local/static) — responsive, semantic UI components          |
 | **Modular Design** | Architecture allows the easy addition of new utilities or micro-tools    |
 | **Offline-first**  | Works completely offline with local persistence and syncing potential    |
 | **Personal Scope** | Tool is designed for individual use, with potential for cloud sync later |
@@ -61,7 +61,7 @@ The **Management Dashboard Platform** is a modular, extensible toolset built to 
 | Blocker Handling          | Supports flagging blockers with descriptions and resolution timestamps     |
 | Delegation Support        | Assign task to someone (name/email freeform text initially)                |
 | Scrum Summary             | Displays “Yesterday”, “Today”, and “Blockers” summary based on task states |
-| UX-first Navigation       | Clean, touch-friendly interface powered by Blazorise + Fluent components            |
+| UX-first Navigation       | Clean, touch-friendly interface powered by Bootstrap 5 components          |
 
 ---
 
@@ -81,7 +81,7 @@ The **Management Dashboard Platform** is a modular, extensible toolset built to 
 
 * Must be usable **entirely offline**
 * SQLite only (no external DBs or APIs initially)
-* Cross-platform UI consistency via Blazorise + Fluent
+* Cross-platform UI consistency via Bootstrap 5
 * Easy deployment (single click install, side-loadable builds)
 
 ---
@@ -100,6 +100,6 @@ The **Management Dashboard Platform** is a modular, extensible toolset built to 
 | ----------- | ----------------------------- |
 | .NET MAUI   | Hybrid App Platform           |
 | Blazor      | UI rendering and logic        |
-| Blazorise + Fluent   | UI component library          |
+| Bootstrap 5 (local) | UI component library (static, offline) |
 | SQLite      | Embedded database             |
 | Dapper / SimpleRepo | Lightweight ORM |

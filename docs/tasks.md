@@ -36,26 +36,25 @@ Each task will be:
 
 ## 🎨 Phase 1: UI Framework & Shell Setup
 
-### [1.1] Add Blazorise + Fluent
+### [1.1] Add Bootstrap 5 (Local)
 
-* [ ] 🧩 Install NuGet: `Blazorise`, `Blazorise.Fluent`
-* [ ] 💄 Register Blazorise and Fluent providers in `MauiProgram.cs`
-* [ ] 🌐 Apply `ThemeProvider`, `Layout`, and shell layout in `App.razor` using Blazorise components
-* [ ] 🧪 Add a `Button` (Blazorise) on main screen to confirm it's rendering
-builder.Services.AddBlazorise().AddFluentProviders();
-> 💬 **Checkpoint:** Basic Blazorise + Fluent layout with test UI element loads.
+* [ ] 🧩 Add Bootstrap 5 CSS/JS to `wwwroot/` (no CDN, all static)
+* [ ] 💄 Reference Bootstrap in `index.html` and ensure it loads offline
+* [ ] 🌐 Apply Bootstrap classes for layout and shell in `App.razor` and layouts
+* [ ] 🧪 Add a `Button` (Bootstrap) on main screen to confirm it's rendering
+> 💬 **Checkpoint:** Basic Bootstrap 5 layout with test UI element loads.
 
 ---
 
 ### [1.2] Build Dashboard Shell
 
-* [ ] 🧱 Create `MainLayout.razor` using `Bar` (for nav/app bar), `LayoutSider` (sidebar), and `LayoutContent` (main area) from Blazorise + Fluent
+* [ ] 🧱 Create `MainLayout.razor` using Bootstrap 5 nav/sidebar/grid for layout
 * [ ] 🧭 Add navigation links for:
 
   * "Eisenhower Matrix"
   * "Scrum Summary"
-* [ ] 🧪 Style nav shell (light/dark mode switch optional, use Blazorise `ThemeProvider`)
-* [ ] 🔄 Wire navigation via `@page` directive and `NavLink`s (Blazorise `BarLink` or `NavLink`)
+* [ ] 🧪 Style nav shell (light/dark mode switch optional, use Bootstrap utilities)
+* [ ] 🔄 Wire navigation via `@page` directive and `NavLink`s (Blazor/Bootstrap)
 
 > 💬 **Checkpoint:** Navigation layout works, pages render in routed content.
 

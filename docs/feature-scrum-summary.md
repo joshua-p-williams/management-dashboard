@@ -56,17 +56,17 @@ public class ScrumNote
 
 ---
 
-## 📊 UI/UX Components (via Blazorise + Fluent)
+## 📊 UI/UX Components (via Bootstrap 5)
 
 | Component                  | Role                                                |
 | -------------------------- | --------------------------------------------------- |
-| `Layout` + `LayoutSider`   | Page layout and sidebar                             |
+| `Grid` + `Sidebar`         | Page layout and sidebar                             |
 | `Card`                     | Display of daily summary entries                    |
 | `Modal`                    | Edit/add summary entry                              |
-| `Dropdown` or `Bar`        | Menu for actions (edit, delete, etc.)               |
+| `Dropdown` or `Navbar`     | Menu for actions (edit, delete, etc.)               |
 | `Badge`                    | Status indicators                                   |
 | `Tooltip`                  | Show audit metadata                                 |
-| `Snackbar`                 | Feedback for user actions                           |
+| `Toast`                    | Feedback for user actions                           |
 
 ---
 

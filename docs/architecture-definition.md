@@ -6,12 +6,12 @@ This application is a **modular, component-based hybrid app** built using the .N
 
 ---
 
-## 📖 Architectural Layers
+## 📚 Architectural Layers
 
 ```
 [ AppShell (MAUI) ]
        ↓
-[ Blazor UI (Blazorise + Fluent Components) ]
+[ Blazor UI (Bootstrap 5 Components, local/static) ]
        ↓
 [ UI Logic (Pages / Components) ]
        ↓
@@ -28,7 +28,7 @@ This application is a **modular, component-based hybrid app** built using the .N
 
 | Component            | Tool/Library                                 | Purpose                                                    |
 | -------------------- | -------------------------------------------- | ---------------------------------------------------------- |
-| UI Framework         | **Blazorise + Fluent**                       | Modern, responsive UI components (Fluent Design)           |
+| UI Framework         | **Bootstrap 5 (local/static)**               | Responsive, semantic UI components (offline, no CDN)        |
 | Shell/Platform       | **.NET MAUI Blazor Hybrid**                  | Cross-platform host (Android, Windows, Mac, iOS optional)  |
 | Data Access          | **Dapper + Formula.SimpleRepo**              | Repository-based lightweight data access layer             |
 | Database             | **SQLite**                                   | File-based local data persistence                          |
