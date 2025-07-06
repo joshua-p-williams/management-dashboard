@@ -3,10 +3,13 @@
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col-12 col-md-3 col-lg-2 p-0 bg-light border-end min-vh-100">
+    <!-- Sidebar for md+ screens -->
+    <div class="d-none d-md-block col-md-3 col-lg-2 p-0 bg-light border-end min-vh-100">
       <NavMenu />
     </div>
+    <!-- Main content area -->
     <main class="col px-4">
+      <!-- Mobile navbar toggler -->
       <nav class="navbar navbar-light bg-light d-md-none">
         <button class="navbar-toggler" type="button"
                 data-bs-toggle="collapse" data-bs-target="#sidebarMenu"
@@ -15,6 +18,10 @@
           &#9776; Menu
         </button>
       </nav>
+      <!-- Collapsible sidebar overlay for mobile -->
+      <div class="collapse d-md-none position-fixed top-0 start-0 vh-100 bg-light border-end" id="sidebarMenu" style="z-index: 1040; width: 75vw; max-width: 320px;">
+        <NavMenu />
+      </div>
       <div class="pt-3">
         <AppErrorBoundary>
           @Body

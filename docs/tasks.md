@@ -55,7 +55,7 @@ Each task will be:
   * "Eisenhower Matrix"
   * "Scrum Summary"
 * [x] 🧪 Style nav shell (light/dark mode switch optional, use Bootstrap utilities)
-* [ ] 🔄 Wire navigation via `@page` directive and `NavLink`s (Blazor/Bootstrap)
+* [x] 🔄 Wire navigation via `@page` directive and `NavLink`s (Blazor/Bootstrap)
 * [ ] 🧪 Test responsive collapse/toggle on desktop and mobile
 
 > 💬 **Checkpoint:** Navigation layout works, pages render in routed content, sidebar is responsive.
