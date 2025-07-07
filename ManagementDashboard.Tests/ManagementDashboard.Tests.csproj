@@ -18,4 +18,8 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ManagementDashboard.Core\ManagementDashboard.Core.csproj" />
+  </ItemGroup>
+
 </Project>
