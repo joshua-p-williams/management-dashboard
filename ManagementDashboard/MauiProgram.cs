@@ -2,6 +2,9 @@
 using ManagementDashboard.Core.Services;
 using ManagementDashboard.Core.Contracts;
 using ManagementDashboard.Services;
+using ManagementDashboard.Data.Migrations;
+using ManagementDashboard.Data.Repositories;
+using Microsoft.Extensions.Configuration;
 
 namespace ManagementDashboard
 {
@@ -28,6 +31,24 @@ namespace ManagementDashboard
             builder.Services.AddSingleton<IAppPreferences, MauiPreferences>();
             builder.Services.AddSingleton<SettingsService>();
             builder.Services.AddSingleton<ISettingsService>(sp => sp.GetRequiredService<SettingsService>());
+
+            // Register EisenhowerTaskRepository as scoped
+            builder.Services.AddScoped<IEisenhowerTaskRepository, EisenhowerTaskRepository>();
+
+            // Register configuration for SQLite connection string
+            var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "app.db");
+            var configBuilder = new ConfigurationBuilder();
+            configBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                { "ConnectionStrings:DefaultConnection", $"Data Source={dbPath}" }
+            });
+            var configuration = configBuilder.Build();
+            builder.Services.AddSingleton<IConfiguration>(configuration);
+
+            // Run migrations (synchronously)
+            var migrationsPath = Path.Combine(AppContext.BaseDirectory, "Migrations");
+            var runner = new MigrationRunner(migrationsPath, () => new Microsoft.Data.Sqlite.SqliteConnection($"Data Source={dbPath}"));
+            runner.RunMigrations();
 
             return builder.Build();
         }
