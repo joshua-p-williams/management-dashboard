@@ -56,7 +56,7 @@ Each task will be:
   * "Scrum Summary"
 * [x] 🧪 Style nav shell (light/dark mode switch optional, use Bootstrap utilities)
 * [x] 🔄 Wire navigation via `@page` directive and `NavLink`s (Blazor/Bootstrap)
-* [ ] 🧪 Test responsive collapse/toggle on desktop and mobile
+* [x] 🧪 Test responsive collapse/toggle on desktop and mobile
 
 > 💬 **Checkpoint:** Navigation layout works, pages render in routed content, sidebar is responsive.
 
