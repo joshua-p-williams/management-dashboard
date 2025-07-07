@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using ManagementDashboard.Services;
+using ManagementDashboard.Core.Services;
 
 namespace ManagementDashboard.Components.Pages
 {
@@ -17,7 +17,7 @@ namespace ManagementDashboard.Components.Pages
                 if (SettingsService.IsDarkMode != value)
                 {
                     SettingsService.IsDarkMode = value;
-                    ApplyThemeAsync();
+                    _ = ApplyThemeAsync();
                 }
             }
         }

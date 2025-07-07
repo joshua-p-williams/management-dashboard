@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using ManagementDashboard.Core.Services;
+using ManagementDashboard.Core.Contracts;
 using ManagementDashboard.Services;
 
 namespace ManagementDashboard
@@ -19,12 +21,13 @@ namespace ManagementDashboard
             builder.Services.AddMauiBlazorWebView();
 
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
-    		builder.Logging.AddDebug();
+            builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Logging.AddDebug();
 #endif
 
-            // Register SettingsService as singleton
+            builder.Services.AddSingleton<IAppPreferences, MauiPreferences>();
             builder.Services.AddSingleton<SettingsService>();
+            builder.Services.AddSingleton<ISettingsService>(sp => sp.GetRequiredService<SettingsService>());
 
             return builder.Build();
         }

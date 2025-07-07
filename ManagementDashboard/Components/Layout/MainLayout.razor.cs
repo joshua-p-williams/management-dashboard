@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using ManagementDashboard.Core.Services;
 
 namespace ManagementDashboard.Components.Layout
 {
     public partial class MainLayout
     {
-        [Inject] public ManagementDashboard.Services.SettingsService SettingsService { get; set; } = default!;
+        [Inject] public SettingsService SettingsService { get; set; } = default!;
         [Inject] public IJSRuntime JS { get; set; } = default!;
 
         protected override async Task OnInitializedAsync()
