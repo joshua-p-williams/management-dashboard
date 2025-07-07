@@ -12,16 +12,21 @@
       <!-- Mobile navbar toggler -->
       <nav class="navbar d-md-none">
         <button class="btn btn-outline-secondary" type="button"
-                data-bs-toggle="collapse" data-bs-target="#sidebarMenu"
-                aria-controls="sidebarMenu" aria-expanded="false"
+                @onclick="ToggleSidebar"
+                aria-controls="sidebarMenu"
+                aria-expanded="@isSidebarOpen"
                 aria-label="Toggle navigation">
           <i class="bi bi-list fs-4"></i>
         </button>
       </nav>
       <!-- Collapsible sidebar overlay for mobile -->
-      <div class="collapse d-md-none position-fixed top-0 start-0 vh-100 bg-light border-end" id="sidebarMenu" style="z-index: 1040; width: 75vw; max-width: 320px;">
-        <NavMenu />
-      </div>
+      @if (isSidebarOpen)
+      {
+        <div class="position-fixed top-0 start-0 vh-100 bg-light border-end d-md-none" style="z-index: 1040; width: 75vw; max-width: 320px;" id="sidebarMenu">
+          <NavMenu />
+        </div>
+        <div class="offcanvas-backdrop fade show d-md-none" style="z-index: 1039;" @onclick="CloseSidebar"></div>
+      }
       <div class="pt-3">
         <AppErrorBoundary>
           @Body
