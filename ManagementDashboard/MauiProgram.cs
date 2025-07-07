@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using ManagementDashboard.Services;
 
 namespace ManagementDashboard
 {
@@ -12,6 +13,7 @@ namespace ManagementDashboard
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
             builder.Services.AddMauiBlazorWebView();
@@ -20,6 +22,9 @@ namespace ManagementDashboard
     		builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
+
+            // Register SettingsService as singleton
+            builder.Services.AddSingleton<SettingsService>();
 
             return builder.Build();
         }
