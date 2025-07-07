@@ -1,17 +1,47 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">ManagementDashboard</a>
-    </div>
-</div>
+﻿@using Microsoft.AspNetCore.Components.Routing
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+<nav class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary border-end min-vh-100">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+        <span class="fs-4 text-body">Management Dashboard</span>
+    </a>
 
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+    <hr />
+
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <NavLink class="nav-link d-flex align-items-center gap-2 text-reset" href="/" Match="NavLinkMatch.All">
+                <i class="bi bi-house-door"></i> Home
             </NavLink>
-        </div>
-    </nav>
-</div>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link d-flex align-items-center gap-2 text-reset" href="/eisenhower">
+                <i class="bi bi-kanban"></i> Eisenhower Matrix
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link d-flex align-items-center gap-2 text-reset" href="/scrum">
+                <i class="bi bi-people"></i> Scrum Summary
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link d-flex align-items-center gap-2 text-reset" href="/asdf">
+                <i class="bi bi-question-circle"></i> Not Found
+            </NavLink>
+        </li>
+    </ul>
+
+    <hr />
+
+    <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-body" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+            <strong>User</strong>
+        </a>
+        <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><NavLink class="dropdown-item" href="/settings">Settings</NavLink></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="#">Sign out</a></li>
+        </ul>
+    </div>
+</nav>

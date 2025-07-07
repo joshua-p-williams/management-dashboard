@@ -36,28 +36,29 @@ Each task will be:
 
 ## 🎨 Phase 1: UI Framework & Shell Setup
 
-### [1.1] Add Blazorise + Fluent
+### [1.1] Add Bootstrap 5 (Local)
 
-* [ ] 🧩 Install NuGet: `Blazorise`, `Blazorise.Fluent`
-* [ ] 💄 Register Blazorise and Fluent providers in `MauiProgram.cs`
-* [ ] 🌐 Apply `ThemeProvider`, `Layout`, and shell layout in `App.razor` using Blazorise components
-* [ ] 🧪 Add a `Button` (Blazorise) on main screen to confirm it's rendering
-builder.Services.AddBlazorise().AddFluentProviders();
-> 💬 **Checkpoint:** Basic Blazorise + Fluent layout with test UI element loads.
+* [x] 🧩 Add Bootstrap 5 CSS/JS to `wwwroot/bootstrap/` (no CDN, all static)
+* [x] 💄 Reference Bootstrap in `index.html` and ensure it loads offline
+* [x] 🧪 Add a `Button` (Bootstrap) on main screen to confirm it's rendering
+> 💬 **Checkpoint:** Basic Bootstrap 5 layout with test UI element loads.
+
+* [x] 🌐 Apply Bootstrap classes for layout and shell in `App.razor` and layouts
 
 ---
 
 ### [1.2] Build Dashboard Shell
 
-* [ ] 🧱 Create `MainLayout.razor` using `Bar` (for nav/app bar), `LayoutSider` (sidebar), and `LayoutContent` (main area) from Blazorise + Fluent
-* [ ] 🧭 Add navigation links for:
+* [x] 🧱 Create `MainLayout.razor` using Bootstrap 5 nav/sidebar/grid for layout (see code sample in project notes)
+* [x] 🧭 Add navigation links for:
 
   * "Eisenhower Matrix"
   * "Scrum Summary"
-* [ ] 🧪 Style nav shell (light/dark mode switch optional, use Blazorise `ThemeProvider`)
-* [ ] 🔄 Wire navigation via `@page` directive and `NavLink`s (Blazorise `BarLink` or `NavLink`)
+* [x] 🧪 Style nav shell (light/dark mode switch optional, use Bootstrap utilities)
+* [x] 🔄 Wire navigation via `@page` directive and `NavLink`s (Blazor/Bootstrap)
+* [x] 🧪 Test responsive collapse/toggle on desktop and mobile
 
-> 💬 **Checkpoint:** Navigation layout works, pages render in routed content.
+> 💬 **Checkpoint:** Navigation layout works, pages render in routed content, sidebar is responsive.
 
 ---
 
@@ -108,7 +109,7 @@ builder.Services.AddBlazorise().AddFluentProviders();
 ### [3.1] Create Matrix Page + Grid
 
 * [ ] 🧱 Create `/Pages/EisenhowerMatrix.razor`
-* [ ] 🧮 Render 2x2 MudGrid layout for four quadrants
+* [ ] 🧮 Render 2x2 Bootstrap grid layout for four quadrants
 * [ ] 🧪 Display hardcoded cards in each section
 
 > 💬 **Note:** The Eisenhower Matrix feature will initially be built without the Scrum Summary integration. See Phase 5.4 for the integration sub-feature.
@@ -130,7 +131,7 @@ builder.Services.AddBlazorise().AddFluentProviders();
 ### [3.3] Add Create Task Modal
 
 * [ ] ➕ Add FAB or button to create task
-* [ ] 🪟 Show `MudDialog` with input fields (title, description, quadrant, delegate)
+* [ ] 🪟 Show Bootstrap modal with input fields (title, description, quadrant, delegate)
 * [ ] ✅ Save to DB via repo
 
 > 💬 **Checkpoint:** Create task flow works.
@@ -153,7 +154,7 @@ builder.Services.AddBlazorise().AddFluentProviders();
 
 ### [3.5] Add Audit Tooltips
 
-* [ ] 🧾 Add `MudTooltip` to show created/updated/completed timestamps
+* [ ] 🧾 Add Bootstrap tooltip to show created/updated/completed timestamps
 * [ ] 🧪 Hover/click task to reveal audit history
 
 > 💬 **Checkpoint:** Tasks show full lifecycle metadata.
@@ -208,7 +209,7 @@ builder.Services.AddBlazorise().AddFluentProviders();
 
 ### [5.2] Add Basic Theme / Branding
 
-* [ ] 🎨 Configure default MudTheme (colors, typography)
+* [ ] 🎨 Configure default Bootstrap theme (colors, typography)
 * [ ] 🧪 Add favicon / titlebar / app name
 
 > 💬 **Checkpoint:** Platform has clean, branded polish.

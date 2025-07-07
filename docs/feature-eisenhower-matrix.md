@@ -40,18 +40,18 @@ The **Eisenhower Matrix Utility** helps you prioritize and act on tasks by class
 
 ---
 
-## 🎨 UI/UX Components (via Blazorise + Fluent)
+## 🎨 UI/UX Components (via Bootstrap 5)
 
 | Component                  | Role                                                |
 | -------------------------- | --------------------------------------------------- |
-| `Layout` + `LayoutSider`   | Layout for 2x2 quadrant matrix and sidebar          |
+| `Grid` + `Sidebar`         | Layout for 2x2 quadrant matrix and sidebar          |
 | `Card`                     | Individual task display inside each quadrant        |
 | `Modal`                    | Modal for add/edit task                             |
-| `Dropdown` or `Bar`        | Per-task menu: mark done, move, block, delete, etc. |
+| `Dropdown` or `Navbar`     | Per-task menu: mark done, move, block, delete, etc. |
 | `Badge`                    | Optional indicators (blocked, delegated, done)      |
 | `Tooltip`                  | Show audit metadata on hover/tap                    |
-| `Snackbar`                 | Feedback for user actions                           |
-| `Bar` / Nav Panel          | Entry point to Eisenhower Matrix utility            |
+| `Toast`                    | Feedback for user actions                           |
+| `Navbar` / Nav Panel       | Entry point to Eisenhower Matrix utility            |
 | `Uncategorized List`       | Dedicated view/component for uncategorized tasks    |
 
 ---

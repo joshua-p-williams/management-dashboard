@@ -1,0 +1,26 @@
+@using Microsoft.Extensions.Logging
+@inherits ErrorBoundaryBase
+@inject ILogger<AppErrorBoundary> Logger
+
+@if (CurrentException is not null)
+{
+    <div class="alert alert-danger my-3">
+        <strong>Something went wrong.</strong>
+        <br />
+        An unexpected error occurred while loading this section.
+        <br />
+        <button class="btn btn-sm btn-outline-primary mt-2" @onclick="Recover">Try Again</button>
+    </div>
+}
+else
+{
+    @ChildContent
+}
+
+@code {
+    protected override Task OnErrorAsync(Exception exception)
+    {
+        Logger.LogError(exception, "Unhandled error in AppErrorBoundary.");
+        return Task.CompletedTask;
+    }
+}

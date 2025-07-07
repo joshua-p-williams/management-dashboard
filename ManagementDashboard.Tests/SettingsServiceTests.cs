@@ -1,0 +1,45 @@
+using System;
+using System.Collections.Generic;
+using Xunit;
+using ManagementDashboard.Core.Services;
+using ManagementDashboard.Core.Contracts;
+
+namespace ManagementDashboard.Tests
+{
+    public class InMemoryPreferences : IAppPreferences
+    {
+        private readonly Dictionary<string, string> _store = new();
+        public string Get(string key, string defaultValue) => _store.TryGetValue(key, out var v) ? v : defaultValue;
+        public void Set(string key, string value) => _store[key] = value;
+    }
+
+    public class SettingsServiceTests
+    {
+        [Fact]
+        public void Theme_DefaultsToLight()
+        {
+            var service = new SettingsService(new InMemoryPreferences());
+            Assert.False(service.IsDarkMode);
+            Assert.Equal("light", service.GetTheme());
+        }
+
+        [Fact]
+        public void CanSetDarkMode()
+        {
+            var service = new SettingsService(new InMemoryPreferences());
+            service.IsDarkMode = true;
+            Assert.True(service.IsDarkMode);
+            Assert.Equal("dark", service.GetTheme());
+        }
+
+        [Fact]
+        public void OnThemeChanged_IsInvoked()
+        {
+            var service = new SettingsService(new InMemoryPreferences());
+            bool invoked = false;
+            service.OnThemeChanged += () => invoked = true;
+            service.IsDarkMode = true;
+            Assert.True(invoked);
+        }
+    }
+}

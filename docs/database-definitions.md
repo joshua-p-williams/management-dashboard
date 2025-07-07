@@ -4,7 +4,7 @@
 
 This document provides a high-level summary of the database features and links to detailed per-feature database definitions. Each feature's database schema is documented separately for clarity and maintainability.
 
-- 🗂️ **UI Framework:** Blazorise + Fluent (see architecture-definition.md)
+- 🗂️ **UI Framework:** Bootstrap 5 (local/static, see architecture-definition.md)
 
 ---
 

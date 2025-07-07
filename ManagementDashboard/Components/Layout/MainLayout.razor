@@ -1,17 +1,37 @@
-﻿@inherits LayoutComponentBase
+﻿@using ManagementDashboard.Components.Layout
+@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar for md+ screens -->
+    <div class="d-none d-md-block col-md-3 col-lg-2 p-0 bg-light border-end min-vh-100">
+      <NavMenu />
     </div>
-
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+    <!-- Main content area -->
+    <main class="col px-4">
+      <!-- Mobile navbar toggler -->
+      <nav class="navbar d-md-none">
+        <button class="btn btn-outline-secondary" type="button"
+                @onclick="ToggleSidebar"
+                aria-controls="sidebarMenu"
+                aria-expanded="@isSidebarOpen"
+                aria-label="Toggle navigation">
+          <i class="bi bi-list fs-4"></i>
+        </button>
+      </nav>
+      <!-- Collapsible sidebar overlay for mobile -->
+      @if (isSidebarOpen)
+      {
+        <div class="position-fixed top-0 start-0 vh-100 bg-light border-end d-md-none" style="z-index: 1040; width: 75vw; max-width: 320px;" id="sidebarMenu">
+          <NavMenu />
         </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
+        <div class="offcanvas-backdrop fade show d-md-none" style="z-index: 1039;" @onclick="CloseSidebar"></div>
+      }
+      <div class="pt-3">
+        <AppErrorBoundary>
+          @Body
+        </AppErrorBoundary>
+      </div>
     </main>
+  </div>
 </div>
