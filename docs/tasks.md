@@ -109,7 +109,7 @@ Each task will be:
 ### [3.1] Create Matrix Page + Grid
 
 * [ ] 🧱 Create `/Pages/EisenhowerMatrix.razor`
-* [ ] 🧮 Render 2x2 MudGrid layout for four quadrants
+* [ ] 🧮 Render 2x2 Bootstrap grid layout for four quadrants
 * [ ] 🧪 Display hardcoded cards in each section
 
 > 💬 **Note:** The Eisenhower Matrix feature will initially be built without the Scrum Summary integration. See Phase 5.4 for the integration sub-feature.
@@ -131,7 +131,7 @@ Each task will be:
 ### [3.3] Add Create Task Modal
 
 * [ ] ➕ Add FAB or button to create task
-* [ ] 🪟 Show `MudDialog` with input fields (title, description, quadrant, delegate)
+* [ ] 🪟 Show Bootstrap modal with input fields (title, description, quadrant, delegate)
 * [ ] ✅ Save to DB via repo
 
 > 💬 **Checkpoint:** Create task flow works.
@@ -154,7 +154,7 @@ Each task will be:
 
 ### [3.5] Add Audit Tooltips
 
-* [ ] 🧾 Add `MudTooltip` to show created/updated/completed timestamps
+* [ ] 🧾 Add Bootstrap tooltip to show created/updated/completed timestamps
 * [ ] 🧪 Hover/click task to reveal audit history
 
 > 💬 **Checkpoint:** Tasks show full lifecycle metadata.
@@ -209,7 +209,7 @@ Each task will be:
 
 ### [5.2] Add Basic Theme / Branding
 
-* [ ] 🎨 Configure default MudTheme (colors, typography)
+* [ ] 🎨 Configure default Bootstrap theme (colors, typography)
 * [ ] 🧪 Add favicon / titlebar / app name
 
 > 💬 **Checkpoint:** Platform has clean, branded polish.

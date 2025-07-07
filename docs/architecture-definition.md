@@ -92,7 +92,7 @@ Each domain entity (e.g. `EisenhowerItem`, `ScrumNote`) implements this.
 
 ## 🧭 Navigation Concept
 
-Use a left-hand sidebar (MudDrawer) or top nav to switch between utilities. Example:
+Use a left-hand sidebar (Bootstrap 5 sidebar/collapse) or top nav to switch between utilities. Example:
 
 * 🧠 Eisenhower Matrix
 * 📋 Scrum Summary
