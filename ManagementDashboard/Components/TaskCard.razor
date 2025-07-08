@@ -1,13 +1,6 @@
 @using ManagementDashboard.Data.Models
 
 @* TaskCard.razor: Reusable component for displaying a single task in the Eisenhower Matrix *@
-@code {
-    [Parameter] public EisenhowerTask Task { get; set; } = default!;
-    [Parameter] public EventCallback OnEdit { get; set; }
-    [Parameter] public EventCallback OnDelete { get; set; }
-    [Parameter] public EventCallback OnComplete { get; set; }
-    [Parameter] public EventCallback OnAuditTrail { get; set; }
-}
 
 <div class="card mb-2 shadow-sm eisenhower-task-card">
     <div class="card-body p-2 d-flex align-items-center justify-content-between">

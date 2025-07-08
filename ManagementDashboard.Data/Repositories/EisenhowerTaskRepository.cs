@@ -6,10 +6,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace ManagementDashboard.Data.Repositories
 {
-    public interface IEisenhowerTaskRepository
+    public interface IEisenhowerTaskRepository : IRepository<EisenhowerTask>
     {
         Task<IEnumerable<EisenhowerTask>> GetTasksByQuadrantAsync(string? quadrant);
-        // Optionally: Task<EisenhowerTask?> GetByIdAsync(int id);
     }
 
     public class EisenhowerTaskRepository : RepositoryBase<EisenhowerTask, EisenhowerTask>, IEisenhowerTaskRepository
