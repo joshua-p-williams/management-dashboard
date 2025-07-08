@@ -23,10 +23,52 @@
                     <label class="form-label">Description</label>
                     <textarea class="form-control" @bind="Description"></textarea>
                 </div>
+                <div class="mb-3">
+                    <label class="form-label">Quadrant</label>
+                    <select class="form-select" @bind="Quadrant">
+                        <option value="">(Uncategorized)</option>
+                        <option value="Do">Do Now</option>
+                        <option value="Schedule">Schedule</option>
+                        <option value="Delegate">Delegate</option>
+                        <option value="Delete">Delete</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Completed At</label>
+                    <input type="date" class="form-control" @bind-value="CompletedAt" @bind-value:event="oninput" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Priority</label>
+                    <select class="form-select" @bind="Priority">
+                        <option value="">(None)</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Delegated To</label>
+                    <input class="form-control" @bind="DelegatedTo" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Status</label>
+                    <select class="form-select" @bind="Status">
+                        <option value="Open">Open</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Blocked">Blocked</option>
+                    </select>
+                </div>
+                @if (Status == "Blocked")
+                {
+                    <div class="mb-3">
+                        <label class="form-label">Blocker Reason</label>
+                        <input class="form-control" @bind="BlockerReason" />
+                    </div>
+                }
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" @onclick="() => OnCancel.InvokeAsync()" disabled="@isSaving">Cancel</button>
-                <button type="button" class="btn btn-primary" @onclick="SaveAsync" disabled="@isSaving || string.IsNullOrWhiteSpace(Title) || Title.Length < 3">Save</button>
+                <button type="button" class="btn btn-primary" @onclick="SaveAsync" disabled="@(isSaving || string.IsNullOrWhiteSpace(Title) || Title.Length < 3)">Save</button>
             </div>
         </div>
     </div>
