@@ -43,7 +43,9 @@
 - [x] Integrate `TaskEditor` with main EisenhowerMatrix page (add/edit)
   - [x] Wire up edit (pencil icon) to open TaskEditor in edit mode
 - [ ] Implement drag-and-drop or move logic for tasks between quadrants
-- [ ] Add visual cues (badges/icons for overdue, blocked, completed, priority)
+- [x] Add visual cues (badges/icons for overdue, blocked, completed, priority)
+  - [ ] Add visual cue for priority (badge/icon)
+  - [ ] Make overdue threshold a configurable setting (default 2 days)
 - [ ] Add filtering/sorting UI (optional)
 - [ ] Write or update unit/component tests
 
@@ -55,13 +57,22 @@
   - Add-task modal works, validation and cancel work, blocked logic works, accessibility (tabbing) is good.
   - Editing is now wired up from the pencil icon (edit modal opens and is pre-filled).
   - TaskAuditTrail modal now shows audit info for the selected task (created, updated, completed, blocked/unblocked).
-  - Next: Visual cues (badges/icons for overdue, blocked, completed, priority), then drag-and-drop.
+  - Visual cues (badges/icons) for Done, Blocked, Active, and Overdue are now shown on TaskCard. Overdue is currently hardcoded to 2 days for Do tasks.
+  - Next: Add visual cue for priority, make overdue threshold a configurable setting, then drag-and-drop.
+
+---
+
+## ⚙️ Settings Notes
+
+- **Dark mode / Light mode:** Currently the only user setting.
+- **Overdue threshold:** To be added. Will control how many days before a Do task is considered overdue (default: 2 days). TaskCard should honor this setting for the Overdue badge.
 
 ---
 
 ## ⏭️ Next Steps
 
-- [ ] Build and run the app to verify TaskAuditTrail improvements
-- [ ] Add visual cues (badges/icons for overdue, blocked, completed, priority)
+- [ ] Build and run the app to verify visual cues
+- [ ] Add visual cue for priority (badge/icon)
+- [ ] Make overdue threshold a configurable setting (default 2 days)
 - [ ] Begin implementing drag-and-drop or move logic for tasks between quadrants
 - [ ] Continue incremental improvements as per checklist above
