@@ -1,0 +1,29 @@
+@* TaskEditor.razor: Modal dialog for creating or editing a task in the Eisenhower Matrix *@
+@* This is a scaffold; form fields and logic will be added in the next steps *@
+
+<div class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true" style="background:rgba(0,0,0,0.3);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Task Editor</h5>
+                <button type="button" class="btn-close" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Form fields for task editing will go here -->
+                <div class="mb-3">
+                    <label class="form-label">Title</label>
+                    <input class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control"></textarea>
+                </div>
+                <!-- More fields to be added -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary">Cancel</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

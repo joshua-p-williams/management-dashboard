@@ -1,6 +1,145 @@
+@using ManagementDashboard.Data.Models
+@using ManagementDashboard.Data.Repositories
+@inject IEisenhowerTaskRepository TaskRepository
+
 @page "/eisenhower"
 
-<div class="container py-5">
+@code {
+    private List<EisenhowerTask> DoTasks = new();
+    private List<EisenhowerTask> ScheduleTasks = new();
+    private List<EisenhowerTask> DelegateTasks = new();
+    private List<EisenhowerTask> DeleteTasks = new();
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        DoTasks = (await TaskRepository.GetTasksByQuadrantAsync("Do")).ToList();
+        ScheduleTasks = (await TaskRepository.GetTasksByQuadrantAsync("Schedule")).ToList();
+        DelegateTasks = (await TaskRepository.GetTasksByQuadrantAsync("Delegate")).ToList();
+        DeleteTasks = (await TaskRepository.GetTasksByQuadrantAsync("Delete")).ToList();
+        isLoading = false;
+    }
+
+    private void EditTask(EisenhowerTask task) { /* TODO: Show TaskEditor modal */ }
+    private void DeleteTask(EisenhowerTask task) { /* TODO: Confirm and delete */ }
+    private void CompleteTask(EisenhowerTask task) { /* TODO: Mark as complete */ }
+    private void ShowAuditTrail(EisenhowerTask task) { /* TODO: Show TaskAuditTrail modal */ }
+}
+
+<div class="container my-4">
     <h1 class="mb-4">Eisenhower Matrix</h1>
-    <div class="alert alert-info">This is a placeholder for the Eisenhower Matrix feature. UI and logic coming soon.</div>
+    @if (isLoading)
+    {
+        <div class="text-center my-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-12 col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <span class="me-2"><i class="bi bi-lightning"></i></span>Do Now
+                        <button class="btn btn-sm btn-light float-end" aria-label="Add Task"><i class="bi bi-plus"></i></button>
+                    </div>
+                    <div class="card-body">
+                        @if (DoTasks.Count == 0)
+                        {
+                            <div class="text-muted">No tasks in this quadrant.</div>
+                        }
+                        else
+                        {
+                            @foreach (var task in DoTasks)
+                            {
+                                <TaskCard Task="task"
+                                          OnEdit="@(() => EditTask(task))"
+                                          OnDelete="@(() => DeleteTask(task))"
+                                          OnComplete="@(() => CompleteTask(task))"
+                                          OnAuditTrail="@(() => ShowAuditTrail(task))" />
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-info text-white">
+                        <span class="me-2"><i class="bi bi-calendar-event"></i></span>Schedule
+                        <button class="btn btn-sm btn-light float-end" aria-label="Add Task"><i class="bi bi-plus"></i></button>
+                    </div>
+                    <div class="card-body">
+                        @if (ScheduleTasks.Count == 0)
+                        {
+                            <div class="text-muted">No tasks in this quadrant.</div>
+                        }
+                        else
+                        {
+                            @foreach (var task in ScheduleTasks)
+                            {
+                                <TaskCard Task="task"
+                                          OnEdit="@(() => EditTask(task))"
+                                          OnDelete="@(() => DeleteTask(task))"
+                                          OnComplete="@(() => CompleteTask(task))"
+                                          OnAuditTrail="@(() => ShowAuditTrail(task))" />
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-warning text-dark">
+                        <span class="me-2"><i class="bi bi-person-check"></i></span>Delegate
+                        <button class="btn btn-sm btn-light float-end" aria-label="Add Task"><i class="bi bi-plus"></i></button>
+                    </div>
+                    <div class="card-body">
+                        @if (DelegateTasks.Count == 0)
+                        {
+                            <div class="text-muted">No tasks in this quadrant.</div>
+                        }
+                        else
+                        {
+                            @foreach (var task in DelegateTasks)
+                            {
+                                <TaskCard Task="task"
+                                          OnEdit="@(() => EditTask(task))"
+                                          OnDelete="@(() => DeleteTask(task))"
+                                          OnComplete="@(() => CompleteTask(task))"
+                                          OnAuditTrail="@(() => ShowAuditTrail(task))" />
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-danger text-white">
+                        <span class="me-2"><i class="bi bi-trash"></i></span>Delete
+                        <button class="btn btn-sm btn-light float-end" aria-label="Add Task"><i class="bi bi-plus"></i></button>
+                    </div>
+                    <div class="card-body">
+                        @if (DeleteTasks.Count == 0)
+                        {
+                            <div class="text-muted">No tasks in this quadrant.</div>
+                        }
+                        else
+                        {
+                            @foreach (var task in DeleteTasks)
+                            {
+                                <TaskCard Task="task"
+                                          OnEdit="@(() => EditTask(task))"
+                                          OnDelete="@(() => DeleteTask(task))"
+                                          OnComplete="@(() => CompleteTask(task))"
+                                          OnAuditTrail="@(() => ShowAuditTrail(task))" />
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>

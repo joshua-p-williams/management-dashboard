@@ -1,0 +1,36 @@
+@using ManagementDashboard.Data.Models
+
+@* TaskCard.razor: Reusable component for displaying a single task in the Eisenhower Matrix *@
+@code {
+    [Parameter] public EisenhowerTask Task { get; set; } = default!;
+    [Parameter] public EventCallback OnEdit { get; set; }
+    [Parameter] public EventCallback OnDelete { get; set; }
+    [Parameter] public EventCallback OnComplete { get; set; }
+    [Parameter] public EventCallback OnAuditTrail { get; set; }
+}
+
+<div class="card mb-2 shadow-sm eisenhower-task-card">
+    <div class="card-body p-2 d-flex align-items-center justify-content-between">
+        <div>
+            <span class="fw-bold">@Task.Title</span>
+            @if (Task.IsCompleted)
+            {
+                <span class="badge bg-success ms-2">Done</span>
+            }
+            else if (Task.IsBlocked)
+            {
+                <span class="badge bg-warning text-dark ms-2">Blocked</span>
+            }
+            else
+            {
+                <span class="badge bg-secondary ms-2">Active</span>
+            }
+        </div>
+        <div class="btn-group btn-group-sm">
+            <button class="btn btn-outline-success" title="Mark Complete" @onclick="OnComplete" disabled="@Task.IsCompleted"><i class="bi bi-check2"></i></button>
+            <button class="btn btn-outline-primary" title="Edit" @onclick="OnEdit"><i class="bi bi-pencil"></i></button>
+            <button class="btn btn-outline-danger" title="Delete" @onclick="OnDelete"><i class="bi bi-trash"></i></button>
+            <button class="btn btn-outline-secondary" title="Audit Trail" @onclick="OnAuditTrail"><i class="bi bi-clock-history"></i></button>
+        </div>
+    </div>
+</div>

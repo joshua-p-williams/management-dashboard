@@ -1,0 +1,26 @@
+@* TaskAuditTrail.razor: Modal or component to show audit history for a task *@
+@* This is a scaffold; will be expanded with parameters and logic *@
+
+<div class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true" style="background:rgba(0,0,0,0.3);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Task Audit Trail</h5>
+                <button type="button" class="btn-close" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Audit trail details will go here -->
+                <ul class="list-group">
+                    <li class="list-group-item">Created: [CreatedAt]</li>
+                    <li class="list-group-item">Last Updated: [UpdatedAt]</li>
+                    <li class="list-group-item">Completed: [CompletedAt]</li>
+                    <li class="list-group-item">Blocked: [BlockedAt] - [BlockerReason]</li>
+                    <!-- More audit info as needed -->
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
