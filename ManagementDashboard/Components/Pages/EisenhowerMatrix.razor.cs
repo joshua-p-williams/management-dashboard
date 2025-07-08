@@ -18,6 +18,10 @@ namespace ManagementDashboard.Components.Pages
         private string? taskEditorQuadrant = null;
         private EisenhowerTask? taskToEdit = null;
 
+        // Modal state for TaskAuditTrail
+        private bool showAuditTrail = false;
+        private EisenhowerTask? auditTrailTask = null;
+
         protected override async Task OnInitializedAsync()
         {
             isLoading = true;
@@ -70,6 +74,16 @@ namespace ManagementDashboard.Components.Pages
 
         private void DeleteTask(EisenhowerTask task) { /* TODO: Confirm and delete */ }
         private void CompleteTask(EisenhowerTask task) { /* TODO: Mark as complete */ }
-        private void ShowAuditTrail(EisenhowerTask task) { /* TODO: Show TaskAuditTrail modal */ }
+        private void ShowAuditTrail(EisenhowerTask task)
+        {
+            auditTrailTask = task;
+            showAuditTrail = true;
+        }
+
+        private void CloseAuditTrail()
+        {
+            showAuditTrail = false;
+            auditTrailTask = null;
+        }
     }
 }

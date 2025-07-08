@@ -1,9 +1,11 @@
+using ManagementDashboard.Data.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace ManagementDashboard.Components
 {
     public partial class TaskAuditTrail : ComponentBase
     {
-        // Stub for future logic/parameters
+        [Parameter] public EisenhowerTask? Task { get; set; }
+        [Parameter] public EventCallback OnClose { get; set; }
     }
 }

@@ -39,7 +39,7 @@
   - [x] Add validation for new fields
   - [ ] Wire up priority (currently placeholder, not in model)
   - [ ] Add accessibility/ARIA improvements (tabbing works, but ARIA roles could be improved)
-- [ ] Implement `TaskAuditTrail` logic and parameters
+- [x] Implement `TaskAuditTrail` logic and parameters
 - [x] Integrate `TaskEditor` with main EisenhowerMatrix page (add/edit)
   - [x] Wire up edit (pencil icon) to open TaskEditor in edit mode
 - [ ] Implement drag-and-drop or move logic for tasks between quadrants
@@ -54,12 +54,14 @@
 - **2025-07-08:**
   - Add-task modal works, validation and cancel work, blocked logic works, accessibility (tabbing) is good.
   - Editing is now wired up from the pencil icon (edit modal opens and is pre-filled).
-  - Next: Implement TaskAuditTrail logic and parameters, then visual cues.
+  - TaskAuditTrail modal now shows audit info for the selected task (created, updated, completed, blocked/unblocked).
+  - Next: Visual cues (badges/icons for overdue, blocked, completed, priority), then drag-and-drop.
 
 ---
 
 ## ⏭️ Next Steps
 
-- [ ] Build and run the app to verify TaskEditor improvements
-- [ ] Begin implementing TaskAuditTrail logic
+- [ ] Build and run the app to verify TaskAuditTrail improvements
+- [ ] Add visual cues (badges/icons for overdue, blocked, completed, priority)
+- [ ] Begin implementing drag-and-drop or move logic for tasks between quadrants
 - [ ] Continue incremental improvements as per checklist above

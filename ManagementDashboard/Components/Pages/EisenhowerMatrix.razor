@@ -127,4 +127,8 @@
                     OnCancel="CloseTaskEditor"
                     OnSaved="OnTaskSaved" />
     }
+    @if (showAuditTrail)
+    {
+        <TaskAuditTrail Task="@auditTrailTask" OnClose="CloseAuditTrail" />
+    }
 </div>
