@@ -122,6 +122,9 @@
     }
     @if (showTaskEditor)
     {
-        <TaskEditor Quadrant="newTaskQuadrant" OnCancel="CloseTaskEditor" OnSaved="OnTaskSaved" />
+        <TaskEditor Quadrant="@taskEditorQuadrant"
+                    TaskToEdit="@taskToEdit"
+                    OnCancel="CloseTaskEditor"
+                    OnSaved="OnTaskSaved" />
     }
 </div>

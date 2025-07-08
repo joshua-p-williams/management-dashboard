@@ -15,7 +15,8 @@ namespace ManagementDashboard.Components.Pages
 
         // Modal state for TaskEditor
         private bool showTaskEditor = false;
-        private string? newTaskQuadrant = null;
+        private string? taskEditorQuadrant = null;
+        private EisenhowerTask? taskToEdit = null;
 
         protected override async Task OnInitializedAsync()
         {
@@ -39,25 +40,34 @@ namespace ManagementDashboard.Components.Pages
 
         private void OpenAddTaskModal(string quadrant)
         {
-            newTaskQuadrant = quadrant;
+            taskEditorQuadrant = quadrant;
+            taskToEdit = null;
             showTaskEditor = true;
         }
 
         private void CloseTaskEditor()
         {
             showTaskEditor = false;
-            newTaskQuadrant = null;
+            taskEditorQuadrant = null;
+            taskToEdit = null;
         }
 
         private async Task OnTaskSaved()
         {
             showTaskEditor = false;
-            newTaskQuadrant = null;
+            taskEditorQuadrant = null;
+            taskToEdit = null;
             await LoadTasks();
             StateHasChanged();
         }
 
-        private void EditTask(EisenhowerTask task) { /* TODO: Show TaskEditor modal for edit */ }
+        private void EditTask(EisenhowerTask task)
+        {
+            taskToEdit = task;
+            taskEditorQuadrant = task.Quadrant;
+            showTaskEditor = true;
+        }
+
         private void DeleteTask(EisenhowerTask task) { /* TODO: Confirm and delete */ }
         private void CompleteTask(EisenhowerTask task) { /* TODO: Mark as complete */ }
         private void ShowAuditTrail(EisenhowerTask task) { /* TODO: Show TaskAuditTrail modal */ }

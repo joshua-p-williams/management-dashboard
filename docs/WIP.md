@@ -40,8 +40,8 @@
   - [ ] Wire up priority (currently placeholder, not in model)
   - [ ] Add accessibility/ARIA improvements (tabbing works, but ARIA roles could be improved)
 - [ ] Implement `TaskAuditTrail` logic and parameters
-- [ ] Integrate `TaskEditor` with main EisenhowerMatrix page (add/edit)
-  - [ ] Wire up edit (pencil icon) to open TaskEditor in edit mode
+- [x] Integrate `TaskEditor` with main EisenhowerMatrix page (add/edit)
+  - [x] Wire up edit (pencil icon) to open TaskEditor in edit mode
 - [ ] Implement drag-and-drop or move logic for tasks between quadrants
 - [ ] Add visual cues (badges/icons for overdue, blocked, completed, priority)
 - [ ] Add filtering/sorting UI (optional)
@@ -53,14 +53,13 @@
 
 - **2025-07-08:**
   - Add-task modal works, validation and cancel work, blocked logic works, accessibility (tabbing) is good.
-  - Editing is not yet wired up from the pencil icon (edit modal does not open).
-  - Next: Integrate TaskEditor for editing (wire up pencil icon), then proceed to TaskAuditTrail and visual cues.
+  - Editing is now wired up from the pencil icon (edit modal opens and is pre-filled).
+  - Next: Implement TaskAuditTrail logic and parameters, then visual cues.
 
 ---
 
 ## ⏭️ Next Steps
 
 - [ ] Build and run the app to verify TaskEditor improvements
-- [ ] Integrate TaskEditor for editing existing tasks
 - [ ] Begin implementing TaskAuditTrail logic
 - [ ] Continue incremental improvements as per checklist above
