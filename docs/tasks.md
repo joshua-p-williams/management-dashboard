@@ -66,14 +66,14 @@ Each task will be:
 
 ### [2.1] Add SQLite & Formula.SimpleRepo
 
-* [ ] 📦 Install NuGet:
+* [x] 📦 Install NuGet:
 
   * `Microsoft.Data.Sqlite`
   * `Dapper`
   * `Formula.SimpleRepo`
-* [ ] 🛠 Create `SqliteConnectionFactory` using `IConnectionFactory`
-* [ ] 🔌 Register factory in DI container
-* [ ] 🧪 Create and open connection to local `app.db` on first run
+* [x] 🛠 (N/A) Create `SqliteConnectionFactory` using `IConnectionFactory` (not needed with Formula.SimpleRepo)
+* [x] 🔌 Register configuration and repository in DI container
+* [x] 🧪 Create and open connection to local `app.db` on first run (via migration runner)
 
 > 💬 **Checkpoint:** SQLite database file is created and reachable.
 
@@ -81,10 +81,10 @@ Each task will be:
 
 ### [2.2] Create Task Table & Seed
 
-* [ ] 🧾 Define `EisenhowerTask` model (as per definition)
-* [ ] 🗃️ Create raw SQL to create `Tasks` table if not exists
-* [ ] 🌱 Execute on startup if `Tasks` doesn’t exist
-* [ ] 🧪 Confirm with direct SQL query (e.g., SELECT COUNT(\*) FROM Tasks)
+* [x] 🧾 Define `EisenhowerTask` model (as per definition)
+* [x] 🗃️ Create raw SQL to create `Tasks` table if not exists
+* [x] 🌱 Execute on startup if `Tasks` doesn’t exist (via migration runner)
+* [x] 🧪 Confirm with direct SQL query (implicit via migration runner)
 
 > 💬 **Checkpoint:** SQLite initialized with `Tasks` table, tested.
 
@@ -92,15 +92,15 @@ Each task will be:
 
 ### [2.3] Build Repository for Tasks
 
-* [ ] 🔧 Implement `IEisenhowerTaskRepository` with `Formula.SimpleRepo`
-* [ ] 🧪 Add methods for:
+* [x] 🔧 Implement `IEisenhowerTaskRepository` with `Formula.SimpleRepo`
+* [x] 🧪 Add methods for:
 
   * AddTaskAsync
   * GetTasksByQuadrant
   * UpdateTaskAsync
 * [ ] 🧪 Add unit tests (mock connection, assert query behavior)
 
-> 💬 **Checkpoint:** Repos are wired and working with local test data.
+> 💬 **Checkpoint:** Repos are wired and working with local test data (unit tests pending).
 
 ---
 

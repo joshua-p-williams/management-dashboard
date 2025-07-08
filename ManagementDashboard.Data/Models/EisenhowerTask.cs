@@ -4,10 +4,11 @@ using Formula.SimpleRepo;
 
 namespace ManagementDashboard.Data.Models
 {
+    [ConnectionDetails("DefaultConnection", typeof(Microsoft.Data.Sqlite.SqliteConnection), Dapper.SimpleCRUD.Dialect.SQLite)]
     [Table("Tasks")]
     public class EisenhowerTask : IAuditableEntity
     {
-        [Key]
+        [Dapper.Key]
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string? Description { get; set; }
