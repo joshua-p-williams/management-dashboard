@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Formula.SimpleRepo;
@@ -14,6 +15,13 @@ namespace ManagementDashboard.Data.Repositories
     public class EisenhowerTaskRepository : RepositoryBase<EisenhowerTask, EisenhowerTaskConstraints>, IEisenhowerTaskRepository
     {
         public EisenhowerTaskRepository(IConfiguration config) : base(config) { }
+
+        public override List<Formula.SimpleRepo.Constraint> ScopedConstraints(List<Formula.SimpleRepo.Constraint> currentConstraints)
+        {
+            var constraints = new Hashtable();
+            constraints.Add("DeletedAt", null); // Only include tasks that are not deleted
+            return this.GetConstraints(constraints);
+        }        
 
         public async Task<IEnumerable<EisenhowerTask>> GetTasksByQuadrantAsync(string? quadrant)
         {

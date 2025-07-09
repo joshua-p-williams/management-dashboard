@@ -56,19 +56,8 @@ This application is a **modular, component-based hybrid app** built using the .N
 
 ### Base Entity Interface
 
-```csharp
-public interface IAuditableEntity
-{
-    DateTime CreatedAt { get; set; }
-    DateTime? CompletedAt { get; set; }
-    bool IsBlocked { get; set; }
-    string? BlockerReason { get; set; }
-    DateTime? BlockedAt { get; set; }
-    DateTime? UnblockedAt { get; set; }
-}
-```
-
-Each domain entity (e.g. `EisenhowerItem`, `ScrumNote`) implements this.
+There will be a base interface for all auditable entities to ensure consistency across the platform:
+It will have audit fields like `CreatedAt`, `CompletedAt`, `BlockedAt`, etc. This allows for a consistent audit trail across all entities.
 
 ---
 

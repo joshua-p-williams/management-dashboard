@@ -73,7 +73,7 @@ Each task will be:
   * `Formula.SimpleRepo`
 * [x] 🛠 (N/A) Create `SqliteConnectionFactory` using `IConnectionFactory` (not needed with Formula.SimpleRepo)
 * [x] 🔌 Register configuration and repository in DI container
-* [x] 🧪 Create and open connection to local `app.db` on first run (via migration runner)
+* [x] 🧪 Create and open connection to local `management-dashboard.db` on first run (via migration runner)
 
 > 💬 **Checkpoint:** SQLite database file is created and reachable.
 
