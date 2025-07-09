@@ -1,5 +1,6 @@
 @using ManagementDashboard.Data.Models
 @using ManagementDashboard.Data.Repositories
+@using ManagementDashboard.Components
 
 @page "/eisenhower"
 
@@ -37,7 +38,8 @@
                                           OnEdit="@(() => EditTask(task))"
                                           OnDelete="@(() => DeleteTask(task))"
                                           OnComplete="@(() => CompleteTask(task))"
-                                          OnAuditTrail="@(() => ShowAuditTrail(task))" />
+                                          OnAuditTrail="@(() => ShowAuditTrail(task))"
+                                          OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
                             }
                         }
                     </div>
@@ -62,7 +64,8 @@
                                           OnEdit="@(() => EditTask(task))"
                                           OnDelete="@(() => DeleteTask(task))"
                                           OnComplete="@(() => CompleteTask(task))"
-                                          OnAuditTrail="@(() => ShowAuditTrail(task))" />
+                                          OnAuditTrail="@(() => ShowAuditTrail(task))"
+                                          OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
                             }
                         }
                     </div>
@@ -87,7 +90,8 @@
                                           OnEdit="@(() => EditTask(task))"
                                           OnDelete="@(() => DeleteTask(task))"
                                           OnComplete="@(() => CompleteTask(task))"
-                                          OnAuditTrail="@(() => ShowAuditTrail(task))" />
+                                          OnAuditTrail="@(() => ShowAuditTrail(task))"
+                                          OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
                             }
                         }
                     </div>
@@ -112,7 +116,8 @@
                                           OnEdit="@(() => EditTask(task))"
                                           OnDelete="@(() => DeleteTask(task))"
                                           OnComplete="@(() => CompleteTask(task))"
-                                          OnAuditTrail="@(() => ShowAuditTrail(task))" />
+                                          OnAuditTrail="@(() => ShowAuditTrail(task))"
+                                          OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
                             }
                         }
                     </div>

@@ -97,5 +97,15 @@ namespace ManagementDashboard.Components.Pages
             showAuditTrail = false;
             auditTrailTask = null;
         }
+
+        private async Task MoveTaskToQuadrant(EisenhowerTask task, string targetQuadrant)
+        {
+            if (task.Quadrant == targetQuadrant)
+                return;
+            task.Quadrant = targetQuadrant;
+            await TaskRepository.UpdateAsync(task);
+            await LoadTasks();
+            StateHasChanged();
+        }
     }
 }

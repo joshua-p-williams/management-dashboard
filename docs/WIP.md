@@ -45,7 +45,11 @@
 - [x] Implement `TaskAuditTrail` logic and parameters
 - [x] Integrate `TaskEditor` with main EisenhowerMatrix page (add/edit)
   - [x] Wire up edit (pencil icon) to open TaskEditor in edit mode
-- [ ] Implement drag-and-drop or move logic for tasks between quadrants
+- [x] Implement move logic for tasks between quadrants (via button/dropdown, not drag-and-drop)
+    - [x] Use a Bootstrap 5 ellipsis dropdown menu on each TaskCard for all actions (Edit, Delete, Complete, Move, Audit, etc.)
+    - [x] "Move To..." is now a flat list of other quadrants in the dropdown (no submenu, for Bootstrap 5 compatibility)
+    - [x] All actions are accessible, keyboard/touch friendly, and work on all platforms
+    - [x] Visual and accessibility improvements for dark mode and click handling
 - [x] Add visual cues (badges/icons for overdue, blocked, completed, priority)
   - [x] Add visual cue for priority (badge/icon)
   - [x] Make overdue threshold a configurable setting (default 2 days)
@@ -62,7 +66,13 @@
   - TaskAuditTrail modal now shows audit info for the selected task (created, updated, completed, blocked/unblocked).
   - Visual cues (badges/icons) for Done, Blocked, Active, Overdue, and Priority (Medium/High only) are now shown on TaskCard. Overdue threshold is now user-configurable.
   - Tasks are sorted within each quadrant by priority (High > Medium > Low), then by CreatedAt.
-  - Next: Drag-and-drop/move logic, accessibility/ARIA, filtering/sorting UI, and tests.
+  - **Direction Change:** Drag-and-drop is not reliable in .NET MAUI Blazor Hybrid. Moving to a click-to-move (button/dropdown) approach for moving tasks between quadrants for cross-platform support.
+  - **2025-07-08 (cont):**
+    - Implemented Bootstrap 5 ellipsis dropdown menu for all TaskCard actions.
+    - "Move To..." is now a flat list of other quadrants in the dropdown for full compatibility and accessibility.
+    - Fixed dark mode visibility and click handling for dropdown actions.
+    - All move, edit, delete, complete, and audit actions are now accessible from the dropdown and work as expected.
+  - Next: Accessibility/ARIA, filtering/sorting UI, and tests.
 
 ---
 
@@ -75,6 +85,8 @@
 
 ## ⏭️ Next Steps
 
-- [ ] Build and run the app to verify visual cues
-- [ ] Begin implementing drag-and-drop or move logic for tasks between quadrants
-- [ ] Continue incremental improvements as per checklist above
+- [ ] Accessibility/ARIA improvements (tab order, ARIA roles/labels for dropdown and actions)
+- [ ] Filtering/sorting UI (optional, but would improve usability for large task lists)
+- [ ] Write or update unit/component tests for TaskCard and EisenhowerMatrix (especially move logic)
+- [ ] Review and update documentation (feature docs, tasks.md) to reflect the new dropdown approach
+- [ ] Polish and bugfix as needed

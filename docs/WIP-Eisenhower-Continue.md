@@ -218,6 +218,14 @@ Below is a comprehensive, step-by-step design spec and guidance you can submit t
 
 ---
 
+## Change in Direction: Move Tasks Between Quadrants
+
+- **Technical Note:** Drag-and-drop is not reliable in .NET MAUI Blazor Hybrid due to platform limitations and interop errors. The team has decided to implement a click-to-move (button or dropdown) approach for moving tasks between quadrants. This will ensure cross-platform reliability and a consistent user experience.
+- **Next Steps:**
+  - Add a Move button or dropdown to each TaskCard to allow users to move tasks between quadrants.
+  - Update UI and repository logic to support this action.
+  - Test thoroughly on all supported platforms.
+
 **Reference:**
 
 * For data model, use the fields from `feature-eisenhower-matrix-database.md`.

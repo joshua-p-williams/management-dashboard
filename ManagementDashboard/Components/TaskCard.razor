@@ -41,11 +41,30 @@
                 <span class="badge ms-2 @priorityClass"><i class="bi @priorityIcon me-1"></i>@Task.Priority.ToString()</span>
             }
         </div>
-        <div class="btn-group btn-group-sm">
-            <button class="btn btn-outline-success" title="Mark Complete" @onclick="OnComplete" disabled="@Task.IsCompleted"><i class="bi bi-check2"></i></button>
-            <button class="btn btn-outline-primary" title="Edit" @onclick="OnEdit"><i class="bi bi-pencil"></i></button>
-            <button class="btn btn-outline-danger" title="Delete" @onclick="OnDelete"><i class="bi bi-trash"></i></button>
-            <button class="btn btn-outline-secondary" title="Audit Trail" @onclick="OnAuditTrail"><i class="bi bi-clock-history"></i></button>
+        <div class="dropdown">
+            <button class="btn btn-link p-0" type="button" id="dropdownMenuButton-@Task.Id" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Task actions">
+                <i class="bi bi-three-dots-vertical fs-5" style="color: var(--bs-body-color);"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton-@Task.Id">
+                <li><a class="dropdown-item" href="#" @onclick="OnEdit" @onclick:preventDefault><i class="bi bi-pencil me-2"></i>Edit</a></li>
+                <li><a class="dropdown-item" href="#" @onclick="OnDelete" @onclick:preventDefault><i class="bi bi-trash me-2"></i>Delete</a></li>
+                <li><a class="dropdown-item" href="#" @onclick="OnComplete" @onclick:preventDefault disabled="@Task.IsCompleted"><i class="bi bi-check2 me-2"></i>Mark Complete</a></li>
+                <li><a class="dropdown-item" href="#" @onclick="OnAuditTrail" @onclick:preventDefault><i class="bi bi-clock-history me-2"></i>Audit Trail</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li class="dropdown-header">Move To...</li>
+                @foreach (var quadrant in Quadrants.Where(q => q != Task.Quadrant))
+                {
+                    <li>
+                        <a class="dropdown-item" href="#" @onclick="() => OnMoveTo(quadrant)" @onclick:preventDefault>
+                            <i class="bi bi-arrow-right-circle me-2"></i>@quadrant
+                        </a>
+                    </li>
+                }
+            </ul>
         </div>
     </div>
 </div>
+
+@code {
+    private static readonly string[] Quadrants = new[] { "Do", "Schedule", "Delegate", "Delete" };
+}
