@@ -1,6 +1,289 @@
+@using ManagementDashboard.Data.Models
+@using ManagementDashboard.Data.Repositories
+@using ManagementDashboard.Components
+
 @page "/eisenhower"
 
-<div class="container py-5">
-    <h1 class="mb-4">Eisenhower Matrix</h1>
-    <div class="alert alert-info">This is a placeholder for the Eisenhower Matrix feature. UI and logic coming soon.</div>
+@* Markup only; logic moved to code-behind *@
+
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Eisenhower Matrix</h1>
+        <div class="d-flex gap-2 ms-auto">
+            <button class="btn btn-primary btn-sm" type="button" @onclick="OpenAddTaskModalInbox" aria-label="Add Task">
+                <i class="bi bi-plus-circle"></i> <span class="d-none d-md-inline">Add Task</span>
+            </button>
+            <button class="btn btn-outline-secondary btn-sm" type="button" @onclick="() => showHelpModal = true" aria-label="How does this work?">
+                <i class="bi bi-question-circle"></i> <span class="d-none d-md-inline">How does this work?</span>
+            </button>
+        </div>
+    </div>
+    @if (isLoading)
+    {
+        <div class="text-center my-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        @if (InboxTasks.Any())
+        {
+            <div class="card mb-4 border-primary">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="bi bi-inbox me-2"></i> Inbox (Uncategorized Tasks)
+                </div>
+                <div class="card-body">
+                    @foreach (var task in InboxTasks)
+                    {
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="fw-bold">@task.Title</span>
+                                @if (!string.IsNullOrWhiteSpace(task.Description))
+                                {
+                                    <span class="text-muted ms-2">@task.Description</span>
+                                }
+                                <span class="badge bg-light text-secondary ms-2">@task.CreatedAt.ToShortDateString()</span>
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-link btn-sm text-body" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li class="dropdown-header">Categorize as...</li>
+                                    <li>
+                                        <a class='dropdown-item' href='#' @onclick='() => OnCategorize(task, "Do")' @onclick:preventDefault>
+                                            <strong>Do Now</strong> – Urgent & Important
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class='dropdown-item' href='#' @onclick='() => OnCategorize(task, "Schedule")' @onclick:preventDefault>
+                                            <strong>Schedule</strong> – Important, Not Urgent
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class='dropdown-item' href='#' @onclick='() => OnCategorize(task, "Delegate")' @onclick:preventDefault>
+                                            <strong>Delegate</strong> – Urgent, Not Important
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class='dropdown-item' href='#' @onclick='() => OnCategorize(task, "Delete")' @onclick:preventDefault>
+                                            <strong>Delete</strong> – Not Urgent, Not Important
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item" href="#" @onclick="() => EditTask(task)" @onclick:preventDefault>Edit</a></li>
+                                    <li><a class="dropdown-item text-danger" href="#" @onclick="() => DeleteTask(task)" @onclick:preventDefault>Delete</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        <!-- Axis Labels -->
+        <div class="d-none d-md-flex row mb-2" style="margin-left:0; margin-right:0;">
+            <div class="col-12 col-md-6 d-flex justify-content-center">
+                <span class="fw-bold text-muted">Urgent</span>
+            </div>
+            <div class="col-12 col-md-6 d-flex justify-content-center">
+                <span class="fw-bold text-muted">Not Urgent</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-1 d-none d-md-flex flex-column align-items-center justify-content-center" style="width: 20px;">
+                <span class="fw-bold text-muted mb-2" style="writing-mode: vertical-rl;">Important</span>
+                <span class="fw-bold text-muted mt-auto" style="writing-mode: vertical-rl;">Not Important</span>
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col-12 col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-success text-white">
+                                <span class="me-2"><i class="bi bi-lightning"></i></span>Do Now
+                                <i class="bi bi-info-circle ms-2" tabindex="0" data-bs-toggle="tooltip" title="Urgent & Important – Do these tasks immediately."></i>
+                                <button class="btn btn-sm btn-light float-end" aria-label="Add Task" @onclick="OpenAddTaskModalDo"><i class="bi bi-plus-circle"></i></button>
+                            </div>
+                            <div class="card-body">
+                                @if (DoTasks.Count == 0)
+                                {
+                                    <div class="text-muted">No tasks in this quadrant.</div>
+                                }
+                                else
+                                {
+                                    @foreach (var task in DoTasks)
+                                    {
+                                        <TaskCard Task="task"
+                                                  OnEdit="@(() => EditTask(task))"
+                                                  OnDelete="@(() => DeleteTask(task))"
+                                                  OnComplete="@(() => CompleteTask(task))"
+                                                  OnAuditTrail="@(() => ShowAuditTrail(task))"
+                                                  OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-info text-white">
+                                <span class="me-2"><i class="bi bi-calendar-event"></i></span>Schedule
+                                <i class="bi bi-info-circle ms-2" tabindex="0" data-bs-toggle="tooltip" title="Important, Not Urgent – Plan time to do these."></i>
+                                <button class="btn btn-sm btn-light float-end" aria-label="Add Task" @onclick="OpenAddTaskModalSchedule"><i class="bi bi-plus-circle"></i></button>
+                            </div>
+                            <div class="card-body">
+                                @if (ScheduleTasks.Count == 0)
+                                {
+                                    <div class="text-muted">No tasks in this quadrant.</div>
+                                }
+                                else
+                                {
+                                    @foreach (var task in ScheduleTasks)
+                                    {
+                                        <TaskCard Task="task"
+                                                  OnEdit="@(() => EditTask(task))"
+                                                  OnDelete="@(() => DeleteTask(task))"
+                                                  OnComplete="@(() => CompleteTask(task))"
+                                                  OnAuditTrail="@(() => ShowAuditTrail(task))"
+                                                  OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-warning text-dark">
+                                <span class="me-2"><i class="bi bi-person-check"></i></span>Delegate
+                                <i class="bi bi-info-circle ms-2" tabindex="0" data-bs-toggle="tooltip" title="Urgent, Not Important – Assign to someone else."></i>
+                                <button class="btn btn-sm btn-light float-end" aria-label="Add Task" @onclick="OpenAddTaskModalDelegate"><i class="bi bi-plus-circle"></i></button>
+                            </div>
+                            <div class="card-body">
+                                @if (DelegateTasks.Count == 0)
+                                {
+                                    <div class="text-muted">No tasks in this quadrant.</div>
+                                }
+                                else
+                                {
+                                    @foreach (var task in DelegateTasks)
+                                    {
+                                        <TaskCard Task="task"
+                                                  OnEdit="@(() => EditTask(task))"
+                                                  OnDelete="@(() => DeleteTask(task))"
+                                                  OnComplete="@(() => CompleteTask(task))"
+                                                  OnAuditTrail="@(() => ShowAuditTrail(task))"
+                                                  OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-danger text-white">
+                                <span class="me-2"><i class="bi bi-trash"></i></span>Delete
+                                <i class="bi bi-info-circle ms-2" tabindex="0" data-bs-toggle="tooltip" title="Not Urgent, Not Important – Consider removing these."></i>
+                                <button class="btn btn-sm btn-light float-end" aria-label="Add Task" @onclick="OpenAddTaskModalDelete"><i class="bi bi-plus-circle"></i></button>
+                            </div>
+                            <div class="card-body">
+                                @if (DeleteTasks.Count == 0)
+                                {
+                                    <div class="text-muted">No tasks in this quadrant.</div>
+                                }
+                                else
+                                {
+                                    @foreach (var task in DeleteTasks)
+                                    {
+                                        <TaskCard Task="task"
+                                                  OnEdit="@(() => EditTask(task))"
+                                                  OnDelete="@(() => DeleteTask(task))"
+                                                  OnComplete="@(() => CompleteTask(task))"
+                                                  OnAuditTrail="@(() => ShowAuditTrail(task))"
+                                                  OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (showTaskEditor)
+    {
+        <TaskEditor Quadrant="@taskEditorQuadrant"
+                    TaskToEdit="@taskToEdit"
+                    OnCancel="CloseTaskEditor"
+                    OnSaved="OnTaskSaved" />
+    }
+    @if (showAuditTrail)
+    {
+        <TaskAuditTrail Task="@auditTrailTask" OnClose="CloseAuditTrail" />
+    }
+    @if (showHelpModal)
+    {
+        <div class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true" style="background:rgba(0,0,0,0.3);">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">How does the Eisenhower Matrix work?</h5>
+                        <button type="button" class="btn-close" aria-label="Close" @onclick="() => showHelpModal = false"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <!-- Simple matrix diagram -->
+                                <table class="table table-bordered text-center align-middle mb-0" style="min-width: 250px;">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th class="fw-bold text-muted">Urgent</th>
+                                            <th class="fw-bold text-muted">Not Urgent</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th class="fw-bold text-muted" style="writing-mode: vertical-rl;">Important</th>
+                                            <td><strong>Do Now</strong></td>
+                                            <td><strong>Schedule</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="fw-bold text-muted" style="writing-mode: vertical-rl;">Not Important</th>
+                                            <td><strong>Delegate</strong></td>
+                                            <td><strong>Delete</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Do Now:</strong> Urgent & Important – Do these tasks immediately.  These are tasks with deadlines or consequences.</li>
+                                    <li><strong>Schedule:</strong> Important, Not Urgent – Plan time to do these. These are tasks with unclear deadlines that contribute to long-term success.</li>
+                                    <li><strong>Delegate:</strong> Urgent, Not Important – Assign to someone else. These are tasks that must get done but don't require your specific skill set.</li>
+                                    <li><strong>Delete:</strong> Not Urgent, Not Important – Consider removing these. These are tasks that have little value and are distractions.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="alert alert-info small mb-0">
+                            The Eisenhower Matrix helps you prioritize tasks by urgency and importance. Use it to focus on what matters most and avoid distractions.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="() => showHelpModal = false">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>
+
+@code {
+    private bool showHelpModal = false;
+    private void OpenAddTaskModalInbox()
+    {
+        taskEditorQuadrant = null;
+        taskToEdit = null;
+        showTaskEditor = true;
+    }
+}

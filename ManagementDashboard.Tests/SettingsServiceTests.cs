@@ -9,8 +9,11 @@ namespace ManagementDashboard.Tests
     public class InMemoryPreferences : IAppPreferences
     {
         private readonly Dictionary<string, string> _store = new();
+        private readonly Dictionary<string, int> _intStore = new();
         public string Get(string key, string defaultValue) => _store.TryGetValue(key, out var v) ? v : defaultValue;
         public void Set(string key, string value) => _store[key] = value;
+        public int GetInt(string key, int defaultValue) => _intStore.TryGetValue(key, out var v) ? v : defaultValue;
+        public void SetInt(string key, int value) => _intStore[key] = value;
     }
 
     public class SettingsServiceTests
@@ -40,6 +43,26 @@ namespace ManagementDashboard.Tests
             service.OnThemeChanged += () => invoked = true;
             service.IsDarkMode = true;
             Assert.True(invoked);
+        }
+
+        [Fact]
+        public void OverdueThreshold_DefaultsTo2()
+        {
+            var prefs = new InMemoryPreferences();
+            var service = new SettingsService(prefs);
+            Assert.Equal(2, service.OverdueThresholdDays);
+        }
+
+        [Fact]
+        public void CanSetOverdueThreshold()
+        {
+            var prefs = new InMemoryPreferences();
+            var service = new SettingsService(prefs);
+            service.OverdueThresholdDays = 5;
+            Assert.Equal(5, service.OverdueThresholdDays);
+            // Also check persistence
+            var service2 = new SettingsService(prefs);
+            Assert.Equal(5, service2.OverdueThresholdDays);
         }
     }
 }

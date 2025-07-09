@@ -1,0 +1,66 @@
+@using ManagementDashboard.Data.Models
+
+@* TaskCard.razor: Reusable component for displaying a single task in the Eisenhower Matrix *@
+
+<div class="card mb-2 shadow-sm eisenhower-task-card">
+    <div class="card-body p-2 d-flex align-items-center justify-content-between">
+        <div>
+            <span class="fw-bold @(Task.IsCompleted ? "text-decoration-line-through text-muted" : "")">@Task.Title</span>
+            @if (Task.IsCompleted)
+            {
+                <span class="badge bg-success ms-2"><i class="bi bi-check-circle me-1"></i>Done</span>
+            }
+            else if (Task.IsBlocked)
+            {
+                <span class="badge bg-warning text-dark ms-2"><i class="bi bi-exclamation-triangle me-1"></i>Blocked</span>
+            }
+            @* Overdue visual cue (now uses configurable threshold) *@
+            @if (Task.Quadrant == "Do" && Task.CompletedAt == null && Task.CreatedAt.AddDays(OverdueThresholdDays) < DateTime.UtcNow)
+            {
+                <span class="badge bg-danger ms-2"><i class="bi bi-exclamation-circle me-1"></i>Overdue</span>
+            }
+            @* Priority badge/icon (enum-based, only for Medium/High) *@
+            @if (Task.Priority == ManagementDashboard.Data.Models.PriorityLevel.High || Task.Priority == ManagementDashboard.Data.Models.PriorityLevel.Medium)
+            {
+                var priorityClass = Task.Priority switch
+                {
+                    ManagementDashboard.Data.Models.PriorityLevel.High => "bg-danger text-white",
+                    ManagementDashboard.Data.Models.PriorityLevel.Medium => "bg-warning text-dark",
+                    _ => "bg-secondary text-white"
+                };
+                var priorityIcon = Task.Priority switch
+                {
+                    ManagementDashboard.Data.Models.PriorityLevel.High => "bi-arrow-up-circle",
+                    ManagementDashboard.Data.Models.PriorityLevel.Medium => "bi-arrow-right-circle",
+                    _ => "bi-question-circle"
+                };
+                <span class="badge ms-2 @priorityClass"><i class="bi @priorityIcon me-1"></i>@Task.Priority.ToString()</span>
+            }
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-link p-0" type="button" id="dropdownMenuButton-@Task.Id" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Task actions">
+                <i class="bi bi-three-dots-vertical fs-5" style="color: var(--bs-body-color);"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton-@Task.Id">
+                <li><a class="dropdown-item" href="#" @onclick="OnEdit" @onclick:preventDefault><i class="bi bi-pencil me-2"></i>Edit</a></li>
+                <li><a class="dropdown-item" href="#" @onclick="OnDelete" @onclick:preventDefault><i class="bi bi-trash me-2"></i>Delete</a></li>
+                <li><a class="dropdown-item" href="#" @onclick="OnComplete" @onclick:preventDefault disabled="@Task.IsCompleted"><i class="bi bi-check2 me-2"></i>Mark Complete</a></li>
+                <li><a class="dropdown-item" href="#" @onclick="OnAuditTrail" @onclick:preventDefault><i class="bi bi-clock-history me-2"></i>Audit Trail</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li class="dropdown-header">Move To...</li>
+                @foreach (var quadrant in Quadrants.Where(q => q != Task.Quadrant))
+                {
+                    <li>
+                        <a class="dropdown-item" href="#" @onclick="() => OnMoveTo(quadrant)" @onclick:preventDefault>
+                            <i class="bi bi-arrow-right-circle me-2"></i>@quadrant
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+@code {
+    private static readonly string[] Quadrants = new[] { "Do", "Schedule", "Delegate", "Delete" };
+}

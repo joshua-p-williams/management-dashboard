@@ -1,0 +1,42 @@
+@* TaskAuditTrail.razor: Modal or component to show audit history for a task *@
+@using ManagementDashboard.Data.Models
+
+<div class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true" style="background:rgba(0,0,0,0.3);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Task Audit Trail</h5>
+                <button type="button" class="btn-close" aria-label="Close" @onclick="() => OnClose.InvokeAsync()"></button>
+            </div>
+            <div class="modal-body">
+                @if (Task == null)
+                {
+                    <div class="text-muted">No task selected.</div>
+                }
+                else
+                {
+                    <ul class="list-group">
+                        <li class="list-group-item">Created: @Task.CreatedAt.ToString("g")</li>
+                        <li class="list-group-item">Last Updated: @Task.UpdatedAt.ToString("g")</li>
+                        @if (Task.CompletedAt != null)
+                        {
+                            <li class="list-group-item">Completed: @Task.CompletedAt.Value.ToString("g")</li>
+                        }
+                        @if (Task.IsBlocked && Task.BlockedAt != null)
+                        {
+                            <li class="list-group-item">Blocked: @Task.BlockedAt.Value.ToString("g") - @Task.BlockerReason</li>
+                        }
+                        @if (Task.UnblockedAt != null)
+                        {
+                            <li class="list-group-item">Unblocked: @Task.UnblockedAt.Value.ToString("g")</li>
+                        }
+                        <!-- More audit info as needed -->
+                    </ul>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="() => OnClose.InvokeAsync()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,95 @@
+@using ManagementDashboard.Data.Models
+@using ManagementDashboard.Data.Repositories
+
+@* Markup only; logic moved to code-behind *@
+
+<div class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true" style="background:rgba(0,0,0,0.3);">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@ModalTitle</h5>
+                <button type="button" class="btn-close" aria-label="Close" @onclick="() => OnCancel.InvokeAsync()" disabled="@isSaving"></button>
+            </div>
+            <div class="modal-body">
+                @if (!string.IsNullOrEmpty(error))
+                {
+                    <div class="alert alert-danger">@error</div>
+                }
+                <div class="mb-2">
+                    <label class="form-label">Title</label>
+                    <input class="form-control" @bind="Title" maxlength="100" minlength="3" required autofocus />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" @bind="Description"></textarea>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label">Quadrant</label>
+                        <select class="form-select" @bind="Quadrant">
+                            <option value="">(Uncategorized)</option>
+                            <option value="Do">Do Now</option>
+                            <option value="Schedule">Schedule</option>
+                            <option value="Delegate">Delegate</option>
+                            <option value="Delete">Delete</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label">Priority</label>
+                        <select class="form-select" @bind="Priority">
+                            <option value="@PriorityLevel.Low">Low</option>
+                            <option value="@PriorityLevel.Medium">Medium</option>
+                            <option value="@PriorityLevel.High">High</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <a href="#" @onclick="ToggleAdvanced" @onclick:preventDefault class="small text-decoration-none">
+                        @((ShowAdvanced ? "Hide" : "Show") + " More Options")
+                        <i class="bi @(ShowAdvanced ? "bi-chevron-up" : "bi-chevron-down")"></i>
+                    </a>
+                </div>
+                @if (ShowAdvanced)
+                {
+                    <div class="row mt-2">
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Completed At</label>
+                            <input type="date" class="form-control" @bind-value="CompletedAt" />
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Delegated To</label>
+                            <input class="form-control" @bind="DelegatedTo" />
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" @bind="Status">
+                                <option value="Open">Open</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Blocked">Blocked</option>
+                            </select>
+                        </div>
+                        @if (Status == "Blocked")
+                        {
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Blocker Reason</label>
+                                <input class="form-control" @bind="BlockerReason" />
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="() => OnCancel.InvokeAsync()" disabled="@isSaving">Cancel</button>
+                <button type="button" class="btn btn-primary" @onclick="SaveAsync" disabled="@(isSaving || string.IsNullOrWhiteSpace(Title) || Title.Length < 3)">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool ShowAdvanced { get; set; } = false;
+    private void ToggleAdvanced()
+    {
+        ShowAdvanced = !ShowAdvanced;
+    }
+}

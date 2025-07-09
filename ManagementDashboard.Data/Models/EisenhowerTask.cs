@@ -20,6 +20,7 @@ namespace ManagementDashboard.Data.Models
         public DateTime? BlockedAt { get; set; }
         public DateTime? UnblockedAt { get; set; }
         public string? DelegatedTo { get; set; }
+        public PriorityLevel Priority { get; set; } // 0=Low, 1=Medium, 2=High
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
@@ -33,4 +34,6 @@ namespace ManagementDashboard.Data.Models
         DateTime? BlockedAt { get; set; }
         DateTime? UnblockedAt { get; set; }
     }
+
+    public enum PriorityLevel { Low = 0, Medium = 1, High = 2 }
 }
