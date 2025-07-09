@@ -18,13 +18,28 @@
             {
                 <span class="badge bg-secondary ms-2"><i class="bi bi-hourglass-split me-1"></i>Active</span>
             }
-            @* Overdue visual cue *@
-            @if (Task.Quadrant == "Do" && Task.CompletedAt == null && Task.CreatedAt.AddDays(2) < DateTime.UtcNow)
+            @* Overdue visual cue (now uses configurable threshold) *@
+            @if (Task.Quadrant == "Do" && Task.CompletedAt == null && Task.CreatedAt.AddDays(OverdueThresholdDays) < DateTime.UtcNow)
             {
                 <span class="badge bg-danger ms-2"><i class="bi bi-exclamation-circle me-1"></i>Overdue</span>
             }
-            @* Priority placeholder (future) *@
-            @* if (Task.Priority != null) { ... } *@
+            @* Priority badge/icon (enum-based, only for Medium/High) *@
+            @if (Task.Priority == ManagementDashboard.Data.Models.PriorityLevel.High || Task.Priority == ManagementDashboard.Data.Models.PriorityLevel.Medium)
+            {
+                var priorityClass = Task.Priority switch
+                {
+                    ManagementDashboard.Data.Models.PriorityLevel.High => "bg-danger text-white",
+                    ManagementDashboard.Data.Models.PriorityLevel.Medium => "bg-warning text-dark",
+                    _ => "bg-secondary text-white"
+                };
+                var priorityIcon = Task.Priority switch
+                {
+                    ManagementDashboard.Data.Models.PriorityLevel.High => "bi-arrow-up-circle",
+                    ManagementDashboard.Data.Models.PriorityLevel.Medium => "bi-arrow-right-circle",
+                    _ => "bi-question-circle"
+                };
+                <span class="badge ms-2 @priorityClass"><i class="bi @priorityIcon me-1"></i>@Task.Priority.ToString()</span>
+            }
         </div>
         <div class="btn-group btn-group-sm">
             <button class="btn btn-outline-success" title="Mark Complete" @onclick="OnComplete" disabled="@Task.IsCompleted"><i class="bi bi-check2"></i></button>

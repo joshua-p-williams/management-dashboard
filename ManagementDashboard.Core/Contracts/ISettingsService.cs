@@ -7,5 +7,6 @@ namespace ManagementDashboard.Core.Contracts
         event Action? OnThemeChanged;
         bool IsDarkMode { get; set; }
         string GetTheme();
+        int OverdueThresholdDays { get; set; }
     }
 }

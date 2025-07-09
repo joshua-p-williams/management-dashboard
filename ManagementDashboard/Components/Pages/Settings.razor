@@ -13,3 +13,14 @@
         </div>
     </div>
 </div>
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title mb-3">Task Settings</h5>
+        <div class="mb-3 row align-items-center">
+            <label class="col-sm-6 col-form-label">Overdue Threshold (days)</label>
+            <div class="col-sm-6">
+                <input type="number" class="form-control" min="1" max="30" @bind="OverdueThresholdDays" />
+            </div>
+        </div>
+    </div>
+</div>

@@ -22,6 +22,19 @@ namespace ManagementDashboard.Components.Pages
             }
         }
 
+        protected int OverdueThresholdDays
+        {
+            get => SettingsService.OverdueThresholdDays;
+            set
+            {
+                if (SettingsService.OverdueThresholdDays != value)
+                {
+                    SettingsService.OverdueThresholdDays = value;
+                    StateHasChanged();
+                }
+            }
+        }
+
         protected override async Task OnInitializedAsync()
         {
             await ApplyThemeAsync();

@@ -37,15 +37,18 @@
   - [x] Add logic for both add and edit modes
   - [x] Map new fields to model
   - [x] Add validation for new fields
-  - [ ] Wire up priority (currently placeholder, not in model)
+  - [x] Wire up priority (now in model as enum, non-nullable, default Low)
+  - [x] Add visual cue for priority (badge/icon, only for Medium/High)
+  - [x] Make overdue threshold a configurable setting (default 2 days, user-editable)
+  - [x] Sort tasks within quadrant by priority (High > Medium > Low), then by CreatedAt
   - [ ] Add accessibility/ARIA improvements (tabbing works, but ARIA roles could be improved)
 - [x] Implement `TaskAuditTrail` logic and parameters
 - [x] Integrate `TaskEditor` with main EisenhowerMatrix page (add/edit)
   - [x] Wire up edit (pencil icon) to open TaskEditor in edit mode
 - [ ] Implement drag-and-drop or move logic for tasks between quadrants
 - [x] Add visual cues (badges/icons for overdue, blocked, completed, priority)
-  - [ ] Add visual cue for priority (badge/icon)
-  - [ ] Make overdue threshold a configurable setting (default 2 days)
+  - [x] Add visual cue for priority (badge/icon)
+  - [x] Make overdue threshold a configurable setting (default 2 days)
 - [ ] Add filtering/sorting UI (optional)
 - [ ] Write or update unit/component tests
 
@@ -57,8 +60,9 @@
   - Add-task modal works, validation and cancel work, blocked logic works, accessibility (tabbing) is good.
   - Editing is now wired up from the pencil icon (edit modal opens and is pre-filled).
   - TaskAuditTrail modal now shows audit info for the selected task (created, updated, completed, blocked/unblocked).
-  - Visual cues (badges/icons) for Done, Blocked, Active, and Overdue are now shown on TaskCard. Overdue is currently hardcoded to 2 days for Do tasks.
-  - Next: Add visual cue for priority, make overdue threshold a configurable setting, then drag-and-drop.
+  - Visual cues (badges/icons) for Done, Blocked, Active, Overdue, and Priority (Medium/High only) are now shown on TaskCard. Overdue threshold is now user-configurable.
+  - Tasks are sorted within each quadrant by priority (High > Medium > Low), then by CreatedAt.
+  - Next: Drag-and-drop/move logic, accessibility/ARIA, filtering/sorting UI, and tests.
 
 ---
 
@@ -72,7 +76,5 @@
 ## ⏭️ Next Steps
 
 - [ ] Build and run the app to verify visual cues
-- [ ] Add visual cue for priority (badge/icon)
-- [ ] Make overdue threshold a configurable setting (default 2 days)
 - [ ] Begin implementing drag-and-drop or move logic for tasks between quadrants
 - [ ] Continue incremental improvements as per checklist above

@@ -40,10 +40,9 @@
                 <div class="mb-3">
                     <label class="form-label">Priority</label>
                     <select class="form-select" @bind="Priority">
-                        <option value="">(None)</option>
-                        <option value="High">High</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Low">Low</option>
+                        <option value="@PriorityLevel.Low">Low</option>
+                        <option value="@PriorityLevel.Medium">Medium</option>
+                        <option value="@PriorityLevel.High">High</option>
                     </select>
                 </div>
                 <div class="mb-3">

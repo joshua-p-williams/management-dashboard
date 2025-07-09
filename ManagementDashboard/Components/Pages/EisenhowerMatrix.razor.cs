@@ -31,10 +31,22 @@ namespace ManagementDashboard.Components.Pages
 
         private async Task LoadTasks()
         {
-            DoTasks = (await TaskRepository.GetTasksByQuadrantAsync("Do")).ToList();
-            ScheduleTasks = (await TaskRepository.GetTasksByQuadrantAsync("Schedule")).ToList();
-            DelegateTasks = (await TaskRepository.GetTasksByQuadrantAsync("Delegate")).ToList();
-            DeleteTasks = (await TaskRepository.GetTasksByQuadrantAsync("Delete")).ToList();
+            DoTasks = (await TaskRepository.GetTasksByQuadrantAsync("Do"))
+                .OrderByDescending(t => t.Priority)
+                .ThenBy(t => t.CreatedAt)
+                .ToList();
+            ScheduleTasks = (await TaskRepository.GetTasksByQuadrantAsync("Schedule"))
+                .OrderByDescending(t => t.Priority)
+                .ThenBy(t => t.CreatedAt)
+                .ToList();
+            DelegateTasks = (await TaskRepository.GetTasksByQuadrantAsync("Delegate"))
+                .OrderByDescending(t => t.Priority)
+                .ThenBy(t => t.CreatedAt)
+                .ToList();
+            DeleteTasks = (await TaskRepository.GetTasksByQuadrantAsync("Delete"))
+                .OrderByDescending(t => t.Priority)
+                .ThenBy(t => t.CreatedAt)
+                .ToList();
         }
 
         private void OpenAddTaskModalDo() => OpenAddTaskModal("Do");

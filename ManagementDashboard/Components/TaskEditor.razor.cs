@@ -16,7 +16,7 @@ namespace ManagementDashboard.Components
         private string Title { get; set; } = string.Empty;
         private string? Description { get; set; }
         private DateTime? CompletedAt { get; set; }
-        private string? Priority { get; set; }
+        private PriorityLevel Priority { get; set; } = PriorityLevel.Low;
         private string? DelegatedTo { get; set; }
         private string Status { get; set; } = "Open";
         private string? BlockerReason { get; set; }
@@ -31,7 +31,7 @@ namespace ManagementDashboard.Components
                 Description = TaskToEdit.Description;
                 Quadrant = TaskToEdit.Quadrant;
                 CompletedAt = TaskToEdit.CompletedAt;
-                Priority = null; // Not in model, placeholder for future
+                Priority = TaskToEdit.Priority;
                 DelegatedTo = TaskToEdit.DelegatedTo;
                 Status = TaskToEdit.IsCompleted ? "Completed" : (TaskToEdit.IsBlocked ? "Blocked" : "Open");
                 BlockerReason = TaskToEdit.BlockerReason;
@@ -66,6 +66,7 @@ namespace ManagementDashboard.Components
                     task.BlockedAt = now;
                 if (!task.IsBlocked)
                     task.BlockedAt = null;
+                task.Priority = Priority;
                 await TaskRepository.UpdateAsync(task);
             }
             else
@@ -80,7 +81,8 @@ namespace ManagementDashboard.Components
                     BlockerReason = BlockerReason,
                     DelegatedTo = DelegatedTo,
                     CreatedAt = now,
-                    UpdatedAt = now
+                    UpdatedAt = now,
+                    Priority = Priority
                 };
                 if (CompletedAt.HasValue)
                     task.CompletedAt = CompletedAt;
