@@ -11,6 +11,7 @@ namespace ManagementDashboard.Components.Pages
         private List<EisenhowerTask> ScheduleTasks = new();
         private List<EisenhowerTask> DelegateTasks = new();
         private List<EisenhowerTask> DeleteTasks = new();
+        private List<EisenhowerTask> InboxTasks = new();
         private bool isLoading = true;
 
         // Modal state for TaskEditor
@@ -22,6 +23,8 @@ namespace ManagementDashboard.Components.Pages
         private bool showAuditTrail = false;
         private EisenhowerTask? auditTrailTask = null;
 
+        private static readonly string[] Quadrants = new[] { "Do", "Schedule", "Delegate", "Delete" };
+
         protected override async Task OnInitializedAsync()
         {
             isLoading = true;
@@ -31,6 +34,10 @@ namespace ManagementDashboard.Components.Pages
 
         private async Task LoadTasks()
         {
+            InboxTasks = (await TaskRepository.GetTasksByQuadrantAsync(null))
+                .Where(t => string.IsNullOrEmpty(t.Quadrant) || t.Quadrant == "Uncategorized")
+                .OrderByDescending(t => t.CreatedAt)
+                .ToList();
             DoTasks = (await TaskRepository.GetTasksByQuadrantAsync("Do"))
                 .OrderByDescending(t => t.Priority)
                 .ThenBy(t => t.CreatedAt)
@@ -106,6 +113,25 @@ namespace ManagementDashboard.Components.Pages
             await TaskRepository.UpdateAsync(task);
             await LoadTasks();
             StateHasChanged();
+        }
+
+        private async Task OnCategorize(EisenhowerTask task, string quadrant)
+        {
+            task.Quadrant = quadrant;
+            await TaskRepository.UpdateAsync(task);
+            await LoadTasks();
+            StateHasChanged();
+        }
+        private string GetQuadrantDisplayName(string quadrant)
+        {
+            return quadrant switch
+            {
+                "Do" => "Do Now",
+                "Schedule" => "Schedule",
+                "Delegate" => "Delegate",
+                "Delete" => "Delete",
+                _ => quadrant
+            };
         }
     }
 }

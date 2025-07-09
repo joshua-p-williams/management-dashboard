@@ -11,14 +11,18 @@ namespace ManagementDashboard.Data.Repositories
         Task<IEnumerable<EisenhowerTask>> GetTasksByQuadrantAsync(string? quadrant);
     }
 
-    public class EisenhowerTaskRepository : RepositoryBase<EisenhowerTask, EisenhowerTask>, IEisenhowerTaskRepository
+    public class EisenhowerTaskRepository : RepositoryBase<EisenhowerTask, EisenhowerTaskConstraints>, IEisenhowerTaskRepository
     {
         public EisenhowerTaskRepository(IConfiguration config) : base(config) { }
 
         public async Task<IEnumerable<EisenhowerTask>> GetTasksByQuadrantAsync(string? quadrant)
         {
             if (string.IsNullOrEmpty(quadrant))
-                return await GetAsync(new System.Collections.Hashtable { { "Quadrant", null } });
+            {
+                // Use a custom constraint to fetch tasks where Quadrant is null or empty
+                var constraints = new System.Collections.Hashtable { { "Uncategorized", true } };
+                return await GetAsync(constraints);
+            }
             return await GetAsync(new System.Collections.Hashtable { { "Quadrant", quadrant } });
         }
     }

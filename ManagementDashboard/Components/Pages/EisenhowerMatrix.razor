@@ -18,12 +18,54 @@
     }
     else
     {
+        @if (InboxTasks.Any())
+        {
+            <div class="card mb-4 border-primary">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="bi bi-inbox me-2"></i> Inbox (Uncategorized Tasks)
+                </div>
+                <div class="card-body">
+                    @foreach (var task in InboxTasks)
+                    {
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="fw-bold">@task.Title</span>
+                                @if (!string.IsNullOrWhiteSpace(task.Description))
+                                {
+                                    <span class="text-muted ms-2">@task.Description</span>
+                                }
+                                <span class="badge bg-light text-secondary ms-2">@task.CreatedAt.ToShortDateString()</span>
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-link btn-sm text-body" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li class="dropdown-header">Categorize as...</li>
+                                    @foreach (var quad in Quadrants)
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" href="#" @onclick="() => OnCategorize(task, quad)" @onclick:preventDefault>
+                                                @GetQuadrantDisplayName(quad)
+                                            </a>
+                                        </li>
+                                    }
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item" href="#" @onclick="() => EditTask(task)" @onclick:preventDefault>Edit</a></li>
+                                    <li><a class="dropdown-item text-danger" href="#" @onclick="() => DeleteTask(task)" @onclick:preventDefault>Delete</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
         <div class="row">
             <div class="col-12 col-md-6 mb-4">
                 <div class="card h-100">
                     <div class="card-header bg-primary text-white">
                         <span class="me-2"><i class="bi bi-lightning"></i></span>Do Now
-                        <button class="btn btn-sm btn-light float-end" aria-label="Add Task" @onclick="OpenAddTaskModalDo"><i class="bi bi-plus"></i></button>
+                        <button class="btn btn-sm btn-light float-end" aria-label="Add Task" @onclick="OpenAddTaskModalDo"><i class="bi bi-plus-circle"></i></button>
                     </div>
                     <div class="card-body">
                         @if (DoTasks.Count == 0)
@@ -49,7 +91,7 @@
                 <div class="card h-100">
                     <div class="card-header bg-info text-white">
                         <span class="me-2"><i class="bi bi-calendar-event"></i></span>Schedule
-                        <button class="btn btn-sm btn-light float-end" aria-label="Add Task" @onclick="OpenAddTaskModalSchedule"><i class="bi bi-plus"></i></button>
+                        <button class="btn btn-sm btn-light float-end" aria-label="Add Task" @onclick="OpenAddTaskModalSchedule"><i class="bi bi-plus-circle"></i></button>
                     </div>
                     <div class="card-body">
                         @if (ScheduleTasks.Count == 0)
@@ -75,7 +117,7 @@
                 <div class="card h-100">
                     <div class="card-header bg-warning text-dark">
                         <span class="me-2"><i class="bi bi-person-check"></i></span>Delegate
-                        <button class="btn btn-sm btn-light float-end" aria-label="Add Task" @onclick="OpenAddTaskModalDelegate"><i class="bi bi-plus"></i></button>
+                        <button class="btn btn-sm btn-light float-end" aria-label="Add Task" @onclick="OpenAddTaskModalDelegate"><i class="bi bi-plus-circle"></i></button>
                     </div>
                     <div class="card-body">
                         @if (DelegateTasks.Count == 0)
@@ -101,7 +143,7 @@
                 <div class="card h-100">
                     <div class="card-header bg-danger text-white">
                         <span class="me-2"><i class="bi bi-trash"></i></span>Delete
-                        <button class="btn btn-sm btn-light float-end" aria-label="Add Task" @onclick="OpenAddTaskModalDelete"><i class="bi bi-plus"></i></button>
+                        <button class="btn btn-sm btn-light float-end" aria-label="Add Task" @onclick="OpenAddTaskModalDelete"><i class="bi bi-plus-circle"></i></button>
                     </div>
                     <div class="card-body">
                         @if (DeleteTasks.Count == 0)

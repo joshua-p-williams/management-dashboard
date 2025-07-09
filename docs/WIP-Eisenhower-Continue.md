@@ -233,3 +233,70 @@ Below is a comprehensive, step-by-step design spec and guidance you can submit t
 
 
 Now, we can pick back up where we left off in the WIP.md.
+
+---
+
+## 🚀 Next Feature: Inbox (Uncategorized Tasks) Panel
+
+### Purpose
+- Allow users to quickly see and categorize tasks that haven’t been assigned a quadrant (Do Now, Schedule, Delegate, Delete).
+- Show this section only if there are any uncategorized tasks; otherwise, keep the Eisenhower Matrix interface uncluttered.
+
+### Implementation Plan
+1. **Add an Inbox Panel to the Eisenhower Matrix Page**
+   - Place a Bootstrap 5 card above the four-quadrant grid.
+   - Title: “Inbox” or “Uncategorized Tasks” (use a neutral/primary accent for visibility).
+   - Render only if there is at least one uncategorized task.
+2. **Inbox Task List**
+   - For each inbox task, show: title (bold), optional description, created date.
+   - Actions: “Categorize” (move to a quadrant), “Edit”, “Delete”—all under an ellipsis dropdown menu (same as TaskCard).
+3. **Categorize Action**
+   - “Categorize” opens a dropdown or popover with the four quadrants as options.
+   - Selecting a quadrant updates the task and removes it from the Inbox.
+4. **Behavior**
+   - Panel is hidden if no uncategorized tasks exist.
+   - After categorization, task moves to the correct quadrant instantly.
+5. **Accessibility & Responsiveness**
+   - Panel and dropdowns are keyboard/touch accessible and responsive.
+
+### Example Razor Markup
+```razor
+@if (InboxTasks.Any())
+{
+    <div class="card mb-4 border-primary">
+        <div class="card-header bg-primary text-white d-flex align-items-center">
+            <i class="bi bi-inbox me-2"></i> Inbox (Uncategorized Tasks)
+        </div>
+        <div class="card-body">
+            @foreach (var task in InboxTasks)
+            {
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span>@task.Title</span>
+                    <div class="dropdown">
+                        <button class="btn btn-link btn-sm text-body" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots-vertical"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li class="dropdown-header">Categorize as...</li>
+                            @foreach (var quad in Quadrants)
+                            {
+                                <li>
+                                    <a class="dropdown-item" @onclick="() => OnCategorize(task, quad)" @onclick:preventDefault>
+                                        @GetQuadrantDisplayName(quad)
+                                    </a>
+                                </li>
+                            }
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" @onclick="()=>OnEdit(task)" @onclick:preventDefault>Edit</a></li>
+                            <li><a class="dropdown-item text-danger" @onclick="()=>OnDelete(task)" @onclick:preventDefault>Delete</a></li>
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+```
+
+### Summary
+> Show an “Inbox” card above the matrix only when there are uncategorized tasks. Each task offers a “categorize” action using the ellipsis dropdown menu pattern. Once categorized, tasks disappear from the Inbox and appear in the correct quadrant, keeping the UI focused and uncluttered.
