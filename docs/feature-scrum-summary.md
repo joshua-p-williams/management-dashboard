@@ -1,58 +1,47 @@
-# 📋 Feature Definition: Scrum Call Summary Dashboard
+# 📋 Feature Definition: Scrum Call Summary Dashboard (Revised)
 
 ## 🎯 Purpose
 
-The **Scrum Call Summary Dashboard** provides a simple interface to prepare for daily stand-up meetings. It answers three core Scrum questions based on user activity:
+The **Scrum Call Summary Dashboard** provides a dynamic, accurate interface for daily stand-up meetings. It answers three core Scrum questions by pulling from both structured tasks and unstructured work capture notes:
 
 1. What did I work on yesterday?
 2. What am I working on today?
 3. What blockers do I currently have?
 
-This utility helps generate structured summaries from persisted task activity in the Eisenhower Matrix and allows manual edits before saving or presenting the summary.
-
 ---
 
-## 🧩 Functional Scope
+## 🧩 Functional Scope (Revised)
 
 ### 🗓️ Core Functionalities
 
-| Feature                    | Description                                                           |
-| -------------------------- | --------------------------------------------------------------------- |
-| Auto-Pull Yesterday’s Work | Lists tasks marked complete between yesterday 12:00am–11:59pm         |
-| Auto-Pull Today’s Plan     | Lists all incomplete, unblocked tasks in “Do” or “Schedule” quadrants |
-| Auto-Pull Current Blockers | Lists all currently blocked tasks                                     |
-| Manual Entry / Overrides   | User can add custom notes or replace any of the pulled content        |
-| Save Daily Summary         | Saves summary to `ScrumNotes` table with date-based uniqueness        |
-| View Past Entries          | Allows navigating or browsing past scrum entries                      |
-| Edit Existing Entry        | Supports editing previously saved daily summaries                     |
-| Markdown Export (Future)   | Export scrum summary to Markdown format for Slack/Email/etc.          |
+| Feature                        | Description                                                                 |
+| ------------------------------ | --------------------------------------------------------------------------- |
+| Work Capture                   | Users can log any work, research, or event as a note, optionally link to task |
+| Auto-Pull Task Updates         | Lists tasks updated or completed on a given date                             |
+| Auto-Pull Work Capture Notes   | Lists all work capture notes for a given date                                |
+| Manual Entry / Overrides       | User can add/edit/delete work capture notes                                  |
+| Save Daily Summary (Virtual)   | Scrum summary is a dynamic report, not a stored summary text                 |
+| View Past Entries              | Allows browsing summaries for previous days                                  |
+| Edit Work Capture Notes        | Supports editing/deleting any note                                           |
+| Markdown Export (Future)       | Export summary to Markdown format for Slack/Email/etc.                       |
 
 ---
 
-## 🧠 Data Source Strategy
+## 🧠 Data Source Strategy (Revised)
 
-* **Yesterday** → `Tasks` where `CompletedAt` is yesterday’s date
-* **Today** → `Tasks` where `IsCompleted = false AND IsBlocked = false AND Quadrant IN ('Do', 'Schedule')`
-* **Blockers** → `Tasks` where `IsBlocked = true`
-
-Fallback: If no matching data, allow manual entry.
+* **Yesterday** →
+  - All `WorkCaptureNotes` with `CreatedAt` on yesterday's date
+  - All tasks with `UpdatedAt` or `CompletedAt` on yesterday's date
+* **Today** →
+  - All tasks not deleted, ordered by Quadrant (Do, Schedule, Delegate, Delete), then by Priority (high to low), then by CreatedAt (oldest first)
+* **Blockers** →
+  - All tasks where `IsBlocked = true`
 
 ---
 
 ## 🧾 Data Model
 
-```csharp
-public class ScrumNote
-{
-    public int Id { get; set; }
-    public DateOnly EntryDate { get; set; }  // e.g., 2025-07-03
-    public string? YesterdayNotes { get; set; }
-    public string? TodayPlan { get; set; }
-    public string? Blockers { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-}
-```
+See `feature-scrum-summary-database.md` for the full schema of `WorkCaptureNotes` and `Tasks`.
 
 ---
 
@@ -62,7 +51,7 @@ public class ScrumNote
 | -------------------------- | --------------------------------------------------- |
 | `Grid` + `Sidebar`         | Page layout and sidebar                             |
 | `Card`                     | Display of daily summary entries                    |
-| `Modal`                    | Edit/add summary entry                              |
+| `Modal`                    | Add/edit work capture note                          |
 | `Dropdown` or `Navbar`     | Menu for actions (edit, delete, etc.)               |
 | `Badge`                    | Status indicators                                   |
 | `Tooltip`                  | Show audit metadata                                 |
@@ -73,11 +62,10 @@ public class ScrumNote
 ## 🔄 Navigation & State
 
 * Located at `/scrum-summary`
-* Loads summary for current day automatically (if exists, allow editing; else, generate)
+* Loads summary for current day automatically (virtual, not stored)
+* Allows adding/editing/deleting work capture notes
 * Calls `ScrumSummaryService` to:
-
-  * Pull and summarize data from `Tasks`
-  * Save/load from `ScrumNotes`
+  * Pull and summarize data from `WorkCaptureNotes` and `Tasks`
 
 ---
 
@@ -85,44 +73,29 @@ public class ScrumNote
 
 | Behavior                    | Description                                                   |
 | --------------------------- | ------------------------------------------------------------- |
-| New Day Entry               | Auto-generates summary fields from latest `Tasks` table state |
-| Save Entry                  | Saves or updates row in `ScrumNotes` for current date         |
-| Edit Previous Entry         | Allows editing summaries of previous days                     |
-| Prevent Duplicate Entry     | Only one entry per `EntryDate` — update if already exists     |
-| Override Auto-Pulled Values | Manual edits are allowed; auto-pulled values are suggestions  |
+| New Day Entry               | Shows all work capture notes and task updates for the day      |
+| Edit Work Capture           | Users can add/edit/delete notes for any day                    |
+| Prevent Duplicate Notes     | (Optional) Warn if duplicate notes for same task/date          |
+| Override Auto-Pulled Values | Manual edits are always allowed                                |
 
 ---
 
 ## 🧪 Validation Rules
 
-* `EntryDate` must be unique per day
-* At least one of the fields (`YesterdayNotes`, `TodayPlan`, `Blockers`) must be filled before save
-* `EntryDate` defaults to today on load
+* At least one work capture note or task update must exist to show a summary
+* `CreatedAt` defaults to now on new note
 
 ---
 
 ## 📦 Example Entry
 
-**EntryDate:** 2025-07-03
-**YesterdayNotes:**
+**WorkCaptureNotes:**
+- "Met with product team to clarify requirements" (no task)
+- "Refactored TaskService for dependency injection" (linked to Task #12)
 
-```
-- Completed login UI for Dashboard (Do quadrant)
-- Refactored TaskService for dependency injection
-```
-
-**TodayPlan:**
-
-```
-- Add blocker resolution timestamps to EisenhowerTask
-- Begin work on Markdown export utility
-```
-
-**Blockers:**
-
-```
-- Waiting on design assets for navigation sidebar
-```
+**Tasks Updated/Completed:**
+- Task #15: "Completed login UI for Dashboard" (Do quadrant, completed yesterday)
+- Task #22: "Fixed bug in audit trail" (updated yesterday)
 
 ---
 
@@ -139,30 +112,56 @@ public class ScrumNote
 
 ## 🔗 Integration with Eisenhower Matrix
 
-The Scrum Summary Dashboard is tightly integrated with the Eisenhower Matrix feature. When a task in the Eisenhower Matrix is completed or updated with significant progress, it is automatically eligible to be included in the next day's "Yesterday's Work" section of the Scrum Summary. Each summary entry can optionally reference a single Eisenhower task (via a `TaskId` foreign key), but manual entries not tied to a task are fully supported. This ensures that all actionable work tracked in the Eisenhower Matrix is surfaced for daily stand-up reporting without manual duplication, while still allowing flexibility for other types of work.
-
-- When a task is marked as completed, it is auto-pulled into the next day's summary and can be linked via `TaskId`.
-- Optionally, tasks with significant updates (not just completion) can also be surfaced for review.
-- The auto-pull logic queries the Eisenhower Matrix's `Tasks` table for relevant activity.
-- Manual override is always available: users can edit or remove any auto-pulled entry before saving, or add entries not linked to a task.
-
-> **Feature Dependency:** This integration requires both the Eisenhower Matrix and Scrum Summary features to be implemented and working independently before enabling this auto-pull sub-feature.
+- Work capture notes can be linked to tasks, but are not required to be.
+- Task updates and completions are always included in the summary for the relevant day.
+- Manual notes and summaries unrelated to Eisenhower tasks are fully supported.
 
 ---
 
 ## 🏗️ Build Order & Feature Dependencies
 
-To implement this integration, the following build order is recommended:
-
-1. **Eisenhower Matrix Utility**: Implement basic task capture, quadrant assignment, and completion tracking.
-2. **Scrum Summary Dashboard**: Implement daily summary creation, editing, and persistence.
-3. **Eisenhower-to-Scrum Integration (Sub-Feature)**: Enable auto-pulling of completed/updated Eisenhower tasks into the Scrum Summary's "Yesterday's Work" section.
-
-This ensures a clean separation of concerns and allows each feature to be tested independently before integration.
+1. **Work Capture Notes**: Implement generic work capture and editing.
+2. **Scrum Summary Dashboard**: Implement dynamic summary/reporting logic.
+3. **Eisenhower-to-Scrum Integration**: Enable linking and auto-pulling of task updates.
 
 ---
 
 ## 🗃️ Database Schema
 
 See [Scrum Summary Database Definition](feature-scrum-summary-database.md) for the full schema and rationale for this feature's data model.
+
+---
+
+## 🖌️ UI/UX Design Considerations (To Be Determined)
+
+The following aspects are open for UI/UX and product design input. These decisions will shape the usability and overall experience of the Scrum Summary Dashboard:
+
+- **Work Capture Entry Point:**
+  - Where and how should users enter "work capture" notes? (e.g., always-visible input at the top, floating action button, modal dialog, inline add in a list, etc.)
+  - Should adding a note be a quick action or require a full form?
+
+- **Presentation of the Three Scrum Questions:**
+  - Should the "What did I work on yesterday?", "What am I working on today?", and "What blockers do I currently have?" sections be presented as:
+    - A single long form (vertical stack)?
+    - Side-by-side columns (responsive grid)?
+    - Tabbed interface (one question per tab)?
+    - Accordion or collapsible panels?
+  - How can we best support both desktop and mobile layouts?
+
+- **Editing and Reviewing Past Entries:**
+  - How should users navigate to previous days' summaries?
+  - Should editing be inline, via modal, or on a separate page?
+
+- **Highlighting Auto-Pulled vs. Manual Content:**
+  - How should the UI distinguish between auto-pulled task updates and manually entered work capture notes?
+  - Should there be visual cues, icons, or color coding?
+
+- **Feedback and Validation:**
+  - How should the UI provide feedback for successful saves, errors, or validation issues?
+  - Should we use Bootstrap toasts, inline alerts, or both?
+
+- **Extensibility:**
+  - How can the design accommodate future features (e.g., Markdown export, voice input, sprint rollup)?
+
+> **UI/UX designers and product owners are encouraged to propose wireframes, user flows, and interaction patterns for these open questions.**
 
