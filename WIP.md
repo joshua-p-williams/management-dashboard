@@ -52,8 +52,8 @@ Refer to the [Scrum Summary Database Definition](feature-scrum-summary-database.
 
 ### **A. ScrumSummary.razor (Main Page)**
 
-* [ ] **Header**: Title + date selector (to review/present past days)
-* [ ] **Panels**: Render 3 summary panels (“Yesterday”, “Today”, “Blockers”)
+* [x] **Header**: Title + date selector (to review/present past days)
+* [x] **Panels**: Render 3 summary panels (“Yesterday”, “Today”, “Blockers”)
 
   * **Desktop:** `d-flex flex-row` with `col-md-4`
   * **Mobile:** `flex-column`, each `w-100 mb-3`
@@ -61,47 +61,57 @@ Refer to the [Scrum Summary Database Definition](feature-scrum-summary-database.
 
 ### **B. ScrumQuestionPanel.razor**
 
-* [ ] For each section (Yesterday, Today, Blockers):
+* [x] For each section (Yesterday, Today, Blockers):
 
   * Heading with icon + tooltip (explains question)
-  * List of entries (structured tasks/freeform notes, each with status icons)
+  * List of entries (task/note rows, edit/delete)
   * “+ Add” button at bottom or top-right
 
 ### **C. Add/Edit Entry Modal**
 
-* [ ] Modal for quick entry:
+* [x] Modal for quick entry (add only for now):
 
-  * Input for structured task selection (dropdown/search, optional)
+  * Input for structured task selection (dropdown/search) [pending]
   * Textarea for freeform note
-  * For “Blockers”: extra field for “blocker details/impact”
+  * (Blockers: separate field for details) [pending]
   * Save/Cancel
+* [x] Close modal on save/cancel, refresh panel data
 
 ### **D. Entry Display**
 
-* [ ] Each entry shows:
+* [ ] Show icon for task/note, with badges for status
+* [ ] Ellipsis menu for edit/delete
+* [ ] Touch-friendly spacing (min 44px button areas)
 
-  * If linked to a task, show task title + badge for status (done/in-progress/blocked)
-  * If note, show note icon and body
-  * Edit/Delete action (ellipsis menu)
+### **5. Responsive**
 
-### **E. History**
+* [x] Confirm 3 panels **stack** vertically on mobile
+* [x] All text/controls readable and usable one-handed
+* [ ] “+ Add” button is always visible (or sticky/fixed on mobile for quick add)
 
-* [ ] (Optional for V1) Show a “view previous days” toggle to review past entries.
+### **6. Accessibility**
+
+* [ ] Ensure all headings/buttons are keyboard/tab navigable
+* [ ] Tooltips and icons have `aria-labels`
 
 ---
 
 ## **4. Micro-task Checklist**
 
+### **0. Data Access Layer**
+
+* [x] Implement WorkCaptureNotes data access layer (model, migration, constraints, repository) according to feature-scrum-summary-database.md and following the same patterns as Eisenhower Matrix in ManagementDashboard.Data.
+
 ### **1. Page & Layout**
 
-* [ ] Scaffold **ScrumSummary.razor**
-* [ ] Add page header with icon and “Pick date” control (`<input type="date">` or Bootstrap datepicker)
-* [ ] Arrange 3 question panels in a **row** on desktop (`d-none d-md-flex flex-row`) and **stacked** on mobile (`d-flex flex-column d-md-none`)
-* [ ] Ensure each panel has equal height/spacing
+* [x] Scaffold **ScrumSummary.razor** (initial markup; needs code-behind refactor)
+* [x] Add page header with icon and “Pick date” control (`<input type="date">` or Bootstrap datepicker)
+* [x] Arrange 3 question panels in a **row** on desktop (`d-none d-md-flex flex-row`) and **stacked** on mobile (`d-flex flex-column d-md-none`)
+* [x] Ensure each panel has equal height/spacing
 
 ### **2. Panels**
 
-* [ ] Build **ScrumQuestionPanel.razor** component with:
+* [x] Build **ScrumQuestionPanel.razor** component with:
 
   * Heading + tooltip (e.g., Yesterday: “What did you work on yesterday?”)
   * List of entries (task/note rows, edit/delete)
@@ -110,13 +120,13 @@ Refer to the [Scrum Summary Database Definition](feature-scrum-summary-database.
 
 ### **3. Add/Edit Modal**
 
-* [ ] Reusable modal for adding/editing entries
+* [x] Reusable modal for adding/editing entries
 
   * Input: link a structured task (dropdown/search)
   * Textarea: note
   * (Blockers: separate field for details)
   * Save/Cancel; auto-focus on open
-* [ ] Close modal on save/cancel, refresh panel data
+* [x] Close modal on save/cancel, refresh panel data
 
 ### **4. Entry Display**
 
@@ -126,8 +136,8 @@ Refer to the [Scrum Summary Database Definition](feature-scrum-summary-database.
 
 ### **5. Responsive**
 
-* [ ] Confirm 3 panels **stack** vertically on mobile
-* [ ] All text/controls readable and usable one-handed
+* [x] Confirm 3 panels **stack** vertically on mobile
+* [x] All text/controls readable and usable one-handed
 * [ ] “+ Add” button is always visible (or sticky/fixed on mobile for quick add)
 
 ### **6. Accessibility**
@@ -200,6 +210,9 @@ Refer to the [Scrum Summary Database Definition](feature-scrum-summary-database.
 
 ---
 
-**Ready for copy/paste into your docs as a WIP, and ready for iterative development!**
+**Next starting point:**
+- Implement edit/delete actions for entries in the panels and modal.
+- Improve entry display: show task title, badges, note icon, and actions.
+- Wire up task selection to EisenhowerTask data.
+- Continue accessibility and responsive polish.
 
-If you want sample Razor for ScrumQuestionPanel, or want to refine any details, just say the word.

@@ -1,0 +1,31 @@
+@* ScrumQuestionPanel.razor: Panel for a single scrum question (Yesterday, Today, Blockers) *@
+
+<div class="card h-100">
+    <div class="card-header d-flex align-items-center justify-content-between @((Highlight == "warning") ? "bg-warning text-dark" : "")">
+        <span>
+            <i class="bi @Icon me-2"></i>
+            <span class="fw-bold">@Title</span>
+            <i class="bi bi-info-circle ms-2" tabindex="0" data-bs-toggle="tooltip" title="@Tooltip"></i>
+        </span>
+        <button class="btn btn-sm btn-primary" @onclick="OnAdd" aria-label="Add entry"><i class="bi bi-plus-circle"></i> Add</button>
+    </div>
+    <div class="card-body">
+        @if (Entries != null && Entries.Any())
+        {
+            <ul class="list-unstyled mb-0">
+                @foreach (var entry in Entries)
+                {
+                    <li class="mb-2"> <!-- TODO: Replace with actual entry display -->
+                        <span class="text-muted">[Entry]</span>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <div class="text-muted">No entries yet.</div>
+        }
+    </div>
+</div>
+
+<!-- All logic and parameters are now in the code-behind file. -->
