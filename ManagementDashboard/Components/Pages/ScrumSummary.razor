@@ -1,51 +1,108 @@
+@using ManagementDashboard.Data.Models
+@using ManagementDashboard.Data.Repositories
+@using ManagementDashboard.Components
+
 @page "/scrum-summary"
 
 <div class="container py-4">
     <!-- Page Header -->
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2><i class="bi bi-clipboard-check me-2"></i> Scrum Ceremony Summary</h2>
-      <input type="date" class="form-control w-auto" @bind="SelectedDate" />
+        <h2><i class="bi bi-clipboard-check me-2"></i> Scrum Ceremony Summary</h2>
+    </div>
+    <div class="row mb-3 align-items-end">
+        <div class="col-md-4 mb-2">
+            <label for="summary-date" class="form-label">Date</label>
+            <input id="summary-date" type="date" class="form-control" @bind="SelectedDate" />
+        </div>
+        <div class="col-md-5 mb-2">
+            <label class="form-label">Work Capture</label>
+            <input type="text" class="form-control" placeholder="Add a work note..." @onclick="OpenWorkCaptureModal" readonly />
+        </div>
+        <div class="col-md-3 mb-2 text-end">
+            <button class="btn btn-outline-info" @onclick="OpenHowItWorksModal">
+                <i class="bi bi-question-circle"></i> How does this work?
+            </button>
+        </div>
+    </div>
+    <ul class="nav nav-tabs mb-3" id="scrumTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link @(ActiveTab == ScrumTab.Yesterday ? "active" : "")" @onclick="() => SelectTab(ScrumTab.Yesterday)" type="button" role="tab">
+                Yesterday <i class="bi bi-info-circle ms-1" title="What did you work on yesterday?"></i>
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link @(ActiveTab == ScrumTab.Today ? "active" : "")" @onclick="() => SelectTab(ScrumTab.Today)" type="button" role="tab">
+                Today <i class="bi bi-info-circle ms-1" title="What will you work on today?"></i>
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link @(ActiveTab == ScrumTab.Blockers ? "active" : "")" @onclick="() => SelectTab(ScrumTab.Blockers)" type="button" role="tab">
+                Blockers <i class="bi bi-info-circle ms-1" title="What is blocking you?"></i>
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content p-3 border bg-light rounded-bottom">
+        @if (ActiveTab == ScrumTab.Yesterday)
+        {
+            <div>
+                <h5>What did you work on yesterday?</h5>
+                <p class="text-muted">(Entries will appear here...)</p>
+            </div>
+        }
+        else if (ActiveTab == ScrumTab.Today)
+        {
+            <div>
+                <h5>What will you work on today?</h5>
+                <p class="text-muted">(Entries will appear here...)</p>
+            </div>
+        }
+        else if (ActiveTab == ScrumTab.Blockers)
+        {
+            <div>
+                <h5>What is blocking you?</h5>
+                <p class="text-muted">(Entries will appear here...)</p>
+            </div>
+        }
     </div>
 
-    <!-- Panels (responsive row on desktop, stacked on mobile) -->
-    <div class="d-flex flex-column flex-md-row gap-3 align-items-stretch">
-      <div class="flex-fill d-flex">
-        <ScrumQuestionPanel
-          Title="Yesterday"
-          Icon="bi-arrow-left-circle"
-          Tooltip="What did you work on yesterday?"
-          Entries="@YesterdayEntries"
-          OnAdd="OnAddYesterday" />
-      </div>
-      <div class="flex-fill d-flex">
-        <ScrumQuestionPanel
-          Title="Today"
-          Icon="bi-arrow-right-circle"
-          Tooltip="What will you work on today?"
-          Entries="@TodayEntries"
-          OnAdd="OnAddToday" />
-      </div>
-      <div class="flex-fill d-flex">
-        <ScrumQuestionPanel
-          Title="Blockers"
-          Icon="bi-exclamation-triangle-fill"
-          Tooltip="What is blocking your progress?"
-          Entries="@BlockerEntries"
-          OnAdd="OnAddBlockers"
-          Highlight="warning" />
-      </div>
-    </div>
-
-    <ScrumEntryModal
-        IsOpen="@IsModalOpen"
-        IsEdit="@IsEdit"
-        ShowBlockerField="@(ModalSection == "Blockers")"
-        TaskTitle="@ModalTaskTitle"
-        NoteText="@ModalNoteText"
-        BlockerDetails="@ModalBlockerDetails"
-        OnSave="@SaveModal"
-        OnCancel="@CloseModal" />
+    @if (ShowWorkCaptureModal)
+    {
+        <div class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,0.3);">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Work Capture Note</h5>
+                        <button type="button" class="btn-close" @onclick="CloseWorkCaptureModal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>(Work capture modal stub)</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" @onclick="CloseWorkCaptureModal">Cancel</button>
+                        <button class="btn btn-primary" disabled>Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (ShowHowItWorksModal)
+    {
+        <div class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,0.3);">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">How does this work?</h5>
+                        <button type="button" class="btn-close" @onclick="CloseHowItWorksModal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>This page helps you summarize your daily stand-up by answering the three core Scrum questions. Use the tabs to view and add your work for each section.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" @onclick="CloseHowItWorksModal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>
-
-<!-- All logic and properties are now in the code-behind file. -->
 

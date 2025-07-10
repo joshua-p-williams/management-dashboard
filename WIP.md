@@ -13,206 +13,107 @@ I want you to serve the role of a Software Engineer implementing various feature
 
 Refer to the [Scrum Summary Database Definition](feature-scrum-summary-database.md) for the data model and relationships that will inform the UI design. Also refer to the [Scrum Summary Feature Definition](feature-scrum-summary.md) for the feature requirements and user stories.  There is a "UI/UX Design Considerations (To Be Determined)" section in the feature definition that outlines open questions for UI/UX design.  Use this as a starting point to propose a design that addresses these questions and provides a cohesive user experience.
 
-# 📋 **Personal Scrum Ceremony Summary – UI/UX and Micro-Task Plan (WIP)**
+---
+
+# **Build Instructions: Scrum Ceremony Summary (Tabbed UI) Feature**
 
 > **How to use:**
-> Update this WIP as design/implementation evolves. Each checkpoint can be updated as tasks are in progress/completed or requirements shift. Use as an ongoing “vibe” code-generation checklist for Copilot or dev handoff.
+> Work through each task one at a time.
+> Each task is broken down into micro-tasks for clarity—check off or comment as you complete, adjust, or revisit.
+> If a design decision or blocker arises, note it below the relevant task.
 
 ---
 
-## **1. UI/UX Principles & Layout Direction**
+## 1. Scaffold the Page and Layout
 
-* **Audience:** Single user, prepping their own talking points and blockers.
-* **Workflow:** Quick entry, easy edit, focused on the user’s own work.
-* **Responsive:** Optimized for both desktop and mobile—no horizontal scrolling needed.
-* **Clarity:** Each of the 3 scrum questions is visually separated but equally accessible.
+### 1.1. Create Main Page
 
----
+Refer to the Eisenhower Matrix for the initial page structure and components as a pattern for how we are building pages using bootstrap 5.  Implement this with code in code-behind files to keep the razor file clean.
 
-## **2. Best-Practice Layout Proposal**
+* [x] Add new page/component: `ScrumSummary.razor` with route `/scrum-summary`
+* [x] Add a page header (e.g. “Scrum Ceremony Summary”)
+* [x] Insert a date picker (Bootstrap input, default to today)
+* [x] Add a "Work Capture" input field at the top - this will be used to capture work notes for the date specified in the date picker.  This will pop-up a modal to add/edit entries.
+* [x] Add a "How does this work?" button just like we see on the EisenhowerMatrix.razor page that opens a modal with an explanation of the Scrum Summary feature.
+* [x] Add Bootstrap 5 `nav-tabs` for “Yesterday”, “Today”, and “Blockers”
+* [x] For each tab, add a section (panel) for displaying entries related to that question (with a placeholder for now):
+  * “What did you work on yesterday?”
+  * “What will you work on today?”
+  * “What is blocking you?”
+* [x] Place an info icon (`bi-info-circle`) next to each tab label or panel header
+* [x] Tooltip explains the purpose of each section
+* [x] Ensure tab selection updates the visible panel below with custom text and content for each tab 
+* [x] Wire appropriate events for handlers for the controls in the code-behind file to handle the date change and work capture input.  For now these can be stubbed out as "not implemented yet" or similar.
 
-### **Desktop**
-
-* Use a **single card with 3 “question panels” in a row** (Yesterday | Today | Blockers).
-* Each panel includes its entries (structured/unstructured), a prominent “Add” button, and clear section heading.
-
-### **Mobile/Tablet**
-
-* **Stack panels vertically** so each section is full-width and readable.
-* Add persistent sticky/fixed “+ Add” button for quick capture.
-
-### **Universal**
-
-* All key actions are accessible with large touch targets.
-* Use Bootstrap 5’s responsive grid (`row` + `col-md-4`) and utility classes (`flex-column`, etc.) to control stacking.
+Pause for a build (dotnet build), fix any issues and ask for a review before proceeding to the next section.
 
 ---
 
-## **3. UI Components & Structure**
+## 2. Display and Manage Entries
 
-### **A. ScrumSummary.razor (Main Page)**
+### 2.1. Entry List
 
-* [x] **Header**: Title + date selector (to review/present past days)
-* [x] **Panels**: Render 3 summary panels (“Yesterday”, “Today”, “Blockers”)
+* [ ] Under each panel, display a list of entries (e.g., structured tasks and freeform notes, or blockers under the "Blockers" tab)
+  * structured tasks which will be fetched by the date selected as having updates or completion etc.. on the date selection at the top 
+  * and/or freeform notes
+* [ ] For each task entry, show:
 
-  * **Desktop:** `d-flex flex-row` with `col-md-4`
-  * **Mobile:** `flex-column`, each `w-100 mb-3`
-* [ ] **(Optional) Quick Nav:** Tab buttons or scrollspy to jump to each section on long screens.
+  * Title
+  * Description (if available)
+  * badge/icon (e.g., “Done”, “In Progress”, “Blocked”) - Refer to the Eisenhower Matrix for how to display these
 
-### **B. ScrumQuestionPanel.razor**
+* [ ] For each work capture note, show:
 
-* [x] For each section (Yesterday, Today, Blockers):
+  * Note text
+  * If associated with a task, fetch it and show the same task entry details as above
 
-  * Heading with icon + tooltip (explains question)
-  * List of entries (task/note rows, edit/delete)
-  * “+ Add” button at bottom or top-right
+**Note**
+* Since work capture notes are not required to be linked to tasks, we will allow freeform notes that are not associated with any task.
+* For blockers, we can only show the tasks that are blocked (will require a new repository method for fetching these).
+* Be sure to show the blocker details in the "Blockers" tab
 
-### **C. Add/Edit Entry Modal**
-
-* [x] Modal for quick entry (add only for now):
-
-  * Input for structured task selection (dropdown/search) [pending]
-  * Textarea for freeform note
-  * (Blockers: separate field for details) [pending]
-  * Save/Cancel
-* [x] Close modal on save/cancel, refresh panel data
-
-### **D. Entry Display**
-
-* [ ] Show icon for task/note, with badges for status
-* [ ] Ellipsis menu for edit/delete
-* [ ] Touch-friendly spacing (min 44px button areas)
-
-### **5. Responsive**
-
-* [x] Confirm 3 panels **stack** vertically on mobile
-* [x] All text/controls readable and usable one-handed
-* [ ] “+ Add” button is always visible (or sticky/fixed on mobile for quick add)
-
-### **6. Accessibility**
-
-* [ ] Ensure all headings/buttons are keyboard/tab navigable
-* [ ] Tooltips and icons have `aria-labels`
+Pause for a build (dotnet build), fix any issues and ask for a review before proceeding to the next section.
 
 ---
 
-## **4. Micro-task Checklist**
+## 3. Wire up all repositories and fetch and populate the data
 
-### **0. Data Access Layer**
+[ ] Implement repository methods to fetch entries by date (if not already done)
+[ ] Populate entry lists in each panel based on the selected date
+[ ] Ensure data is reactive and updates on state changes
 
-* [x] Implement WorkCaptureNotes data access layer (model, migration, constraints, repository) according to feature-scrum-summary-database.md and following the same patterns as Eisenhower Matrix in ManagementDashboard.Data.
 
-### **1. Page & Layout**
-
-* [x] Scaffold **ScrumSummary.razor** (initial markup; needs code-behind refactor)
-* [x] Add page header with icon and “Pick date” control (`<input type="date">` or Bootstrap datepicker)
-* [x] Arrange 3 question panels in a **row** on desktop (`d-none d-md-flex flex-row`) and **stacked** on mobile (`d-flex flex-column d-md-none`)
-* [x] Ensure each panel has equal height/spacing
-
-### **2. Panels**
-
-* [x] Build **ScrumQuestionPanel.razor** component with:
-
-  * Heading + tooltip (e.g., Yesterday: “What did you work on yesterday?”)
-  * List of entries (task/note rows, edit/delete)
-  * Prominent **“+ Add” button** (top right or bottom center)
-  * For blockers, use warning colors/icons (Bootstrap `text-warning`, etc.)
-
-### **3. Add/Edit Modal**
-
-* [x] Reusable modal for adding/editing entries
-
-  * Input: link a structured task (dropdown/search)
-  * Textarea: note
-  * (Blockers: separate field for details)
-  * Save/Cancel; auto-focus on open
-* [x] Close modal on save/cancel, refresh panel data
-
-### **4. Entry Display**
-
-* [ ] Show icon for task/note, with badges for status
-* [ ] Ellipsis menu for edit/delete
-* [ ] Touch-friendly spacing (min 44px button areas)
-
-### **5. Responsive**
-
-* [x] Confirm 3 panels **stack** vertically on mobile
-* [x] All text/controls readable and usable one-handed
-* [ ] “+ Add” button is always visible (or sticky/fixed on mobile for quick add)
-
-### **6. Accessibility**
-
-* [ ] Ensure all headings/buttons are keyboard/tab navigable
-* [ ] Tooltips and icons have `aria-labels`
+Pause for a build (dotnet build), fix any issues and ask for a review before proceeding to the next section.
 
 ---
 
-## **5. Component Sketch (Pseudocode/Bootstrap)**
+## 4. Add/Edit Entry Modal
 
-```razor
-<!-- Page Header -->
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h2><i class="bi bi-clipboard-check me-2"></i> Scrum Ceremony Summary</h2>
-  <input type="date" class="form-control w-auto" @bind="SelectedDate" />
-</div>
+### 4.1. Modal Implementation
 
-<!-- Panels (responsive row on desktop, stacked on mobile) -->
-<div class="d-flex flex-column flex-md-row gap-3">
-  <ScrumQuestionPanel
-    Title="Yesterday"
-    Icon="bi-arrow-left-circle"
-    Tooltip="What did you work on yesterday?"
-    Entries="@YesterdayEntries"
-    OnAdd="()=>OpenAddModal('Yesterday')" />
+* [ ] Reusable modal component for add/edit
 
-  <ScrumQuestionPanel
-    Title="Today"
-    Icon="bi-arrow-right-circle"
-    Tooltip="What will you work on today?"
-    Entries="@TodayEntries"
-    OnAdd="()=>OpenAddModal('Today')" />
+  * Fields: 
+    * note textarea
+    * structured task selector (optional) - we will need to implement an autocomplete or dropdown to select existing tasks later, stub it out for now
+    * DateCreated (auto-filled with current date)
+  * Save/cancel buttons
+  * Autofocus first field
 
-  <ScrumQuestionPanel
-    Title="Blockers"
-    Icon="bi-exclamation-triangle-fill"
-    Tooltip="What is blocking your progress?"
-    Entries="@BlockerEntries"
-    OnAdd="()=>OpenAddModal('Blockers')"
-    Highlight="warning" />
-</div>
-```
+* [ ] Modal opens when clicking the add from the main Scrum Summary page
+* [ ] Ensure all code is in the code-behind file to keep the Razor file clean
+* [ ] Wire up to the model and ensure we are persisting to the database
+* [ ] On save, add/update entry and refresh the panel list
+* [ ] On cancel, close modal with no changes
+
+Pause for a build (dotnet build), fix any issues and ask for a review before proceeding to the next section.
 
 ---
 
-## **6. WIP Guidance & Usage**
+## 5. Responsive and Accessibility
 
-* Treat this as a living doc—update as UI/UX evolves.
-* Check off completed tasks, add notes for design tweaks.
-* Feed each component/task section into Copilot/AI as a coding prompt.
-* Document design decisions (e.g., button placement, stacking breakpoints) as they are finalized.
+### 5.1. Responsive Layout
 
----
-
-## **7. Open Questions (to finalize as you build)**
-
-* Should “Add” always open a modal, or support inline quick add for “Today”/“Blockers”?
-* Should notes/tasks be editable/deletable after saving (for corrections)?
-* Is history navigation (see yesterday’s standup, etc) in-scope for v1?
-* What color/icon/label scheme works best for blockers (test on dark/light backgrounds)?
-
----
-
-## **8. Summary**
-
-* Use **3 side-by-side panels on desktop, stacked on mobile**, each focused on one of the three core Scrum questions.
-* Key actions are “add” and “edit,” always prominent and touch-friendly.
-* Responsive, Bootstrap 5, MAUI Blazor Hybrid-first UI.
-
----
-
-**Next starting point:**
-- Implement edit/delete actions for entries in the panels and modal.
-- Improve entry display: show task title, badges, note icon, and actions.
-- Wire up task selection to EisenhowerTask data.
-- Continue accessibility and responsive polish.
+* [ ] On desktop, tabs/panels fill the page with balanced margins
+* [ ] On mobile, tabs remain at top and each panel is full-width (no horizontal scroll)
 
