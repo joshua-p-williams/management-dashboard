@@ -37,47 +37,12 @@
                 <div class="card-body">
                     @foreach (var task in InboxTasks)
                     {
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div>
-                                <span class="fw-bold">@task.Title</span>
-                                @if (!string.IsNullOrWhiteSpace(task.Description))
-                                {
-                                    <span class="text-muted ms-2">@task.Description</span>
-                                }
-                                <span class="badge bg-light text-secondary ms-2">@task.CreatedAt.ToShortDateString()</span>
-                            </div>
-                            <div class="dropdown">
-                                <button class="btn btn-link btn-sm text-body" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-three-dots-vertical"></i>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li class="dropdown-header">Categorize as...</li>
-                                    <li>
-                                        <a class='dropdown-item' href='#' @onclick='() => OnCategorize(task, "Do")' @onclick:preventDefault>
-                                            <strong>Do Now</strong> – Urgent & Important
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class='dropdown-item' href='#' @onclick='() => OnCategorize(task, "Schedule")' @onclick:preventDefault>
-                                            <strong>Schedule</strong> – Important, Not Urgent
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class='dropdown-item' href='#' @onclick='() => OnCategorize(task, "Delegate")' @onclick:preventDefault>
-                                            <strong>Delegate</strong> – Urgent, Not Important
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class='dropdown-item' href='#' @onclick='() => OnCategorize(task, "Delete")' @onclick:preventDefault>
-                                            <strong>Delete</strong> – Not Urgent, Not Important
-                                        </a>
-                                    </li>
-                                    <li><hr class="dropdown-divider" /></li>
-                                    <li><a class="dropdown-item" href="#" @onclick="() => EditTask(task)" @onclick:preventDefault>Edit</a></li>
-                                    <li><a class="dropdown-item text-danger" href="#" @onclick="() => DeleteTask(task)" @onclick:preventDefault>Delete</a></li>
-                                </ul>
-                            </div>
-                        </div>
+                        <TaskCard Task="task"
+                                  OnEdit="@(() => EditTask(task))"
+                                  OnDelete="@(() => RequestDeleteTask(task))"
+                                  OnComplete="@(() => CompleteTask(task))"
+                                  OnAuditTrail="@(() => ShowAuditTrail(task))"
+                                  OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
                     }
                 </div>
             </div>
@@ -116,7 +81,7 @@
                                     {
                                         <TaskCard Task="task"
                                                   OnEdit="@(() => EditTask(task))"
-                                                  OnDelete="@(() => DeleteTask(task))"
+                                                  OnDelete="@(() => RequestDeleteTask(task))"
                                                   OnComplete="@(() => CompleteTask(task))"
                                                   OnAuditTrail="@(() => ShowAuditTrail(task))"
                                                   OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
@@ -143,7 +108,7 @@
                                     {
                                         <TaskCard Task="task"
                                                   OnEdit="@(() => EditTask(task))"
-                                                  OnDelete="@(() => DeleteTask(task))"
+                                                  OnDelete="@(() => RequestDeleteTask(task))"
                                                   OnComplete="@(() => CompleteTask(task))"
                                                   OnAuditTrail="@(() => ShowAuditTrail(task))"
                                                   OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
@@ -170,7 +135,7 @@
                                     {
                                         <TaskCard Task="task"
                                                   OnEdit="@(() => EditTask(task))"
-                                                  OnDelete="@(() => DeleteTask(task))"
+                                                  OnDelete="@(() => RequestDeleteTask(task))"
                                                   OnComplete="@(() => CompleteTask(task))"
                                                   OnAuditTrail="@(() => ShowAuditTrail(task))"
                                                   OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
@@ -197,7 +162,7 @@
                                     {
                                         <TaskCard Task="task"
                                                   OnEdit="@(() => EditTask(task))"
-                                                  OnDelete="@(() => DeleteTask(task))"
+                                                  OnDelete="@(() => RequestDeleteTask(task))"
                                                   OnComplete="@(() => CompleteTask(task))"
                                                   OnAuditTrail="@(() => ShowAuditTrail(task))"
                                                   OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
@@ -271,6 +236,27 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" @onclick="() => showHelpModal = false">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (showDeleteConfirm && taskToDelete != null)
+    {
+        <div class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true" style="background:rgba(0,0,0,0.3);">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title"><i class="bi bi-exclamation-triangle me-2"></i>Confirm Delete</h5>
+                        <button type="button" class="btn-close" aria-label="Close" @onclick="CancelDeleteTask"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete the task <strong>@taskToDelete.Title</strong>?</p>
+                        <p class="text-danger mb-0">This action cannot be undone.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="CancelDeleteTask">Cancel</button>
+                        <button type="button" class="btn btn-danger" @onclick="ConfirmDeleteTaskAsync">Delete</button>
                     </div>
                 </div>
             </div>

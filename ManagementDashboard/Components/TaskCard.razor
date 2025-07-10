@@ -2,7 +2,15 @@
 
 @* TaskCard.razor: Reusable component for displaying a single task in the Eisenhower Matrix *@
 
-<div class="card mb-2 shadow-sm eisenhower-task-card">
+@{
+    string tooltip = null;
+    if (!string.IsNullOrWhiteSpace(Task.Description))
+    {
+        tooltip = Task.Description.Length > 120 ? Task.Description.Substring(0, 120) + "…" : Task.Description;
+    }
+}
+
+<div class="card mb-2 shadow-sm eisenhower-task-card" title="@tooltip">
     <div class="card-body p-2 d-flex align-items-center justify-content-between">
         <div>
             <span class="fw-bold @(Task.IsCompleted ? "text-decoration-line-through text-muted" : "")">@Task.Title</span>
@@ -20,7 +28,7 @@
                 <span class="badge bg-danger ms-2"><i class="bi bi-exclamation-circle me-1"></i>Overdue</span>
             }
             @* Priority badge/icon (enum-based, only for Medium/High) *@
-            @if (Task.Priority == ManagementDashboard.Data.Models.PriorityLevel.High || Task.Priority == ManagementDashboard.Data.Models.PriorityLevel.Medium)
+            @if (Task.Priority != ManagementDashboard.Data.Models.PriorityLevel.Low)
             {
                 var priorityClass = Task.Priority switch
                 {

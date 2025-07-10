@@ -33,5 +33,15 @@ namespace ManagementDashboard.Data.Repositories
             }
             return await GetAsync(new System.Collections.Hashtable { { "Quadrant", quadrant } });
         }
+
+        public override async Task<int> DeleteAsync(object id, System.Data.IDbTransaction transaction = null!, int? commandTimeout = null)
+        {
+            // Soft delete: set DeletedAt to DateTime.UtcNow
+            var task = await this.GetAsync(id);
+            if (task == null)
+                return 0;
+            task.DeletedAt = System.DateTime.UtcNow;
+            return await this.UpdateAsync(task);
+        }
     }
 }
