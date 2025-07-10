@@ -10,6 +10,8 @@ namespace ManagementDashboard.Data.Repositories
     public interface IEisenhowerTaskRepository : IRepository<EisenhowerTask>
     {
         Task<IEnumerable<EisenhowerTask>> GetTasksByQuadrantAsync(string? quadrant);
+        Task<int> CompleteTaskAsync(EisenhowerTask task);
+        Task<int> MoveTaskToQuadrantAsync(EisenhowerTask task, string quadrant);
     }
 
     public class EisenhowerTaskRepository : RepositoryBase<EisenhowerTask, EisenhowerTaskConstraints>, IEisenhowerTaskRepository
@@ -21,7 +23,7 @@ namespace ManagementDashboard.Data.Repositories
             var constraints = new Hashtable();
             constraints.Add("DeletedAt", null); // Only include tasks that are not deleted
             return this.GetConstraints(constraints);
-        }        
+        }
 
         public async Task<IEnumerable<EisenhowerTask>> GetTasksByQuadrantAsync(string? quadrant)
         {
@@ -42,6 +44,22 @@ namespace ManagementDashboard.Data.Repositories
             if (task == null)
                 return 0;
             task.DeletedAt = System.DateTime.Now;
+            return await this.UpdateAsync(task);
+        }
+
+        public async Task<int> CompleteTaskAsync(EisenhowerTask task)
+        {
+            if (task.IsCompleted)
+                return 0;
+            task.CompletedAt = System.DateTime.Now;
+            return await this.UpdateAsync(task);
+        }
+
+        public async Task<int> MoveTaskToQuadrantAsync(EisenhowerTask task, string quadrant)
+        {
+            if (task.Quadrant == quadrant)
+                return 0; // No change needed
+            task.Quadrant = quadrant;
             return await this.UpdateAsync(task);
         }
     }

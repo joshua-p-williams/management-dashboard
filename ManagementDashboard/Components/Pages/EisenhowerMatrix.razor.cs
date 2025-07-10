@@ -121,11 +121,7 @@ namespace ManagementDashboard.Components.Pages
 
         private async Task CompleteTask(EisenhowerTask task)
         {
-            if (task.IsCompleted)
-                return;
-            task.IsCompleted = true;
-            task.CompletedAt = System.DateTime.Now;
-            await TaskRepository.UpdateAsync(task);
+            await TaskRepository.CompleteTaskAsync(task);
             await LoadTasks();
             StateHasChanged();
         }
@@ -143,21 +139,11 @@ namespace ManagementDashboard.Components.Pages
 
         private async Task MoveTaskToQuadrant(EisenhowerTask task, string targetQuadrant)
         {
-            if (task.Quadrant == targetQuadrant)
-                return;
-            task.Quadrant = targetQuadrant;
-            await TaskRepository.UpdateAsync(task);
+            await TaskRepository.MoveTaskToQuadrantAsync(task, targetQuadrant);
             await LoadTasks();
             StateHasChanged();
         }
 
-        private async Task OnCategorize(EisenhowerTask task, string quadrant)
-        {
-            task.Quadrant = quadrant;
-            await TaskRepository.UpdateAsync(task);
-            await LoadTasks();
-            StateHasChanged();
-        }
         private string GetQuadrantDisplayName(string quadrant)
         {
             return quadrant switch
