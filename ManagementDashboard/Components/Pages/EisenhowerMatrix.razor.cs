@@ -23,6 +23,10 @@ namespace ManagementDashboard.Components.Pages
         private bool showAuditTrail = false;
         private EisenhowerTask? auditTrailTask = null;
 
+        // Modal state for delete confirmation
+        private bool showDeleteConfirm = false;
+        private EisenhowerTask? taskToDelete = null;
+
         private static readonly string[] Quadrants = new[] { "Do", "Schedule", "Delegate", "Delete" };
 
         protected override async Task OnInitializedAsync()
@@ -91,8 +95,36 @@ namespace ManagementDashboard.Components.Pages
             showTaskEditor = true;
         }
 
-        private void DeleteTask(EisenhowerTask task) { /* TODO: Confirm and delete */ }
-        private void CompleteTask(EisenhowerTask task) { /* TODO: Mark as complete */ }
+        private void RequestDeleteTask(EisenhowerTask task)
+        {
+            taskToDelete = task;
+            showDeleteConfirm = true;
+        }
+
+        private void CancelDeleteTask()
+        {
+            showDeleteConfirm = false;
+            taskToDelete = null;
+        }
+
+        private async Task ConfirmDeleteTaskAsync()
+        {
+            if (taskToDelete != null)
+            {
+                await TaskRepository.DeleteAsync(taskToDelete.Id);
+                await LoadTasks();
+                StateHasChanged();
+            }
+            showDeleteConfirm = false;
+            taskToDelete = null;
+        }
+
+        private async Task CompleteTask(EisenhowerTask task)
+        {
+            await TaskRepository.CompleteTaskAsync(task);
+            await LoadTasks();
+            StateHasChanged();
+        }
         private void ShowAuditTrail(EisenhowerTask task)
         {
             auditTrailTask = task;
@@ -107,21 +139,11 @@ namespace ManagementDashboard.Components.Pages
 
         private async Task MoveTaskToQuadrant(EisenhowerTask task, string targetQuadrant)
         {
-            if (task.Quadrant == targetQuadrant)
-                return;
-            task.Quadrant = targetQuadrant;
-            await TaskRepository.UpdateAsync(task);
+            await TaskRepository.MoveTaskToQuadrantAsync(task, targetQuadrant);
             await LoadTasks();
             StateHasChanged();
         }
 
-        private async Task OnCategorize(EisenhowerTask task, string quadrant)
-        {
-            task.Quadrant = quadrant;
-            await TaskRepository.UpdateAsync(task);
-            await LoadTasks();
-            StateHasChanged();
-        }
         private string GetQuadrantDisplayName(string quadrant)
         {
             return quadrant switch

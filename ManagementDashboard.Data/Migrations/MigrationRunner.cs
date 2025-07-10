@@ -64,7 +64,7 @@ namespace ManagementDashboard.Data.Migrations
             p1.Value = migrationName;
             var p2 = cmd.CreateParameter();
             p2.ParameterName = "@utc";
-            p2.Value = DateTime.UtcNow;
+            p2.Value = DateTime.Now;
             cmd.Parameters.Add(p1);
             cmd.Parameters.Add(p2);
             cmd.ExecuteNonQuery();

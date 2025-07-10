@@ -72,8 +72,8 @@ namespace ManagementDashboard.Tests
                 Description = "Test Desc",
                 Quadrant = "Do",
                 IsCompleted = false,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             };
             await _repository.InsertAsync(task);
             var tasks = await _repository.GetTasksByQuadrantAsync("Do");
@@ -89,8 +89,8 @@ namespace ManagementDashboard.Tests
                 Description = "Desc",
                 Quadrant = "Schedule",
                 IsCompleted = false,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             };
             var id = await _repository.InsertAsync(task);
             // Fetch the inserted task to get its Id
@@ -99,7 +99,7 @@ namespace ManagementDashboard.Tests
             Assert.True(inserted.Id > 0); // Ensure Id is set
             Assert.Equal(id, inserted.Id);
             inserted.IsCompleted = true;
-            inserted.UpdatedAt = DateTime.UtcNow;
+            inserted.UpdatedAt = DateTime.Now;
             var count = await _repository.UpdateAsync(inserted);
             Assert.Equal(1, count);
             var updated = await _repository.GetTasksByQuadrantAsync("Schedule");
@@ -113,15 +113,15 @@ namespace ManagementDashboard.Tests
             {
                 Title = "Task 1",
                 Quadrant = "Do",
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             };
             var task2 = new EisenhowerTask
             {
                 Title = "Task 2",
                 Quadrant = "Delegate",
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             };
             await _repository.InsertAsync(task1);
             await _repository.InsertAsync(task2);

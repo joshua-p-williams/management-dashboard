@@ -20,13 +20,12 @@ Stores and manages all actionable tasks, their status, quadrant (optional for un
 | `Title`         | TEXT     | NOT NULL                          | Short title of task                         |
 | `Description`   | TEXT     |                                   | Optional details                            |
 | `Quadrant`      | TEXT     | NULLABLE, CHECK (IN values below) | 'Do', 'Schedule', 'Delegate', 'Delete', or NULL for uncategorized |
-| `IsCompleted`   | BOOLEAN  | Default: 0                        | Whether task is marked done                 |
 | `CompletedAt`   | DATETIME |                                   | Nullable timestamp of completion            |
-| `IsBlocked`     | BOOLEAN  | Default: 0                        | Whether task is blocked                     |
 | `BlockerReason` | TEXT     |                                   | Description of blocker                      |
 | `BlockedAt`     | DATETIME |                                   | When task was marked blocked                |
 | `UnblockedAt`   | DATETIME |                                   | When blocker was resolved                   |
 | `DelegatedTo`   | TEXT     |                                   | Name of person task is delegated to         |
+| `Priority`      | INTEGER  | NOT NULL DEFAULT 0                | 0=Low, 1=Medium, 2=High                     |
 | `CreatedAt`     | DATETIME | Default: CURRENT_TIMESTAMP        | When task was created                       |
 | `UpdatedAt`     | DATETIME | Default: CURRENT_TIMESTAMP        | Updated on each modification (manually set) |
 
@@ -48,13 +47,12 @@ CREATE TABLE IF NOT EXISTS Tasks (
     Title TEXT NOT NULL,
     Description TEXT,
     Quadrant TEXT CHECK (Quadrant IN ('Do', 'Schedule', 'Delegate', 'Delete') OR Quadrant IS NULL),
-    IsCompleted BOOLEAN DEFAULT 0,
     CompletedAt DATETIME,
-    IsBlocked BOOLEAN DEFAULT 0,
     BlockerReason TEXT,
     BlockedAt DATETIME,
     UnblockedAt DATETIME,
     DelegatedTo TEXT,
+    Priority INTEGER NOT NULL DEFAULT 0,
     CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     UpdatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
 );

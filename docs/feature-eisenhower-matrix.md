@@ -65,16 +65,32 @@ public class EisenhowerTask : IAuditableEntity
     public string Title { get; set; } = "";
     public string? Description { get; set; }
     public string? Quadrant { get; set; } // Do, Schedule, Delegate, Delete, or null for uncategorized
-    public bool IsCompleted { get; set; }
     public DateTime? CompletedAt { get; set; }
-    public bool IsBlocked { get; set; }
     public string? BlockerReason { get; set; }
     public DateTime? BlockedAt { get; set; }
     public DateTime? UnblockedAt { get; set; }
     public string? DelegatedTo { get; set; }
+    public PriorityLevel Priority { get; set; } // 0=Low, 1=Medium, 2=High
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+
+    // Computed properties for business logic/UI only
+    [Dapper.NotMapped]
+    public bool IsCompleted => CompletedAt != null;
+    [Dapper.NotMapped]
+    public bool IsBlocked => BlockedAt != null && UnblockedAt == null;
 }
+
+public interface IAuditableEntity
+{
+    DateTime CreatedAt { get; set; }
+    DateTime? CompletedAt { get; set; }
+    string? BlockerReason { get; set; }
+    DateTime? BlockedAt { get; set; }
+    DateTime? UnblockedAt { get; set; }
+}
+
+public enum PriorityLevel { Low = 0, Medium = 1, High = 2 }
 ```
 
 ---
@@ -85,9 +101,9 @@ public class EisenhowerTask : IAuditableEntity
 | --------------------------------- | -------------------------------------------------------- |
 | Task created                      | `Quadrant = null` by default (uncategorized)             |
 | Task assigned to quadrant         | `Quadrant` set to one of the four values                 |
-| Task marked “Done”                | `IsCompleted = true`, `CompletedAt = now()`              |
-| Task flagged “Blocked”            | `IsBlocked = true`, `BlockerReason`, `BlockedAt = now()` |
-| Task unblocked                    | `IsBlocked = false`, `UnblockedAt = now()`               |
+| Task marked “Done”                | `CompletedAt = now()`                                    |
+| Task flagged “Blocked”            | `BlockerReason`, `BlockedAt = now()`                     |
+| Task unblocked                    | `UnblockedAt = now()`                                    |
 | Task edited                       | `UpdatedAt = now()`                                      |
 | Task deleted from “Delete” Q      | Task is fully removed from DB                            |
 | Task deleted from other quadrants | Ask confirmation — soft delete or move to “Delete”       |
@@ -98,8 +114,8 @@ public class EisenhowerTask : IAuditableEntity
 
 * `Title` is required, 3–100 chars
 * `Quadrant` is optional; if set, must be one of `'Do'`, `'Schedule'`, `'Delegate'`, `'Delete'`
-* If `IsBlocked = true`, `BlockerReason` is required
-* If `IsCompleted = true`, set `CompletedAt` if null
+* If `IsBlocked` (computed) is true, `BlockerReason` is required
+* If `IsCompleted` (computed) is true, set `CompletedAt` if null
 
 ---
 

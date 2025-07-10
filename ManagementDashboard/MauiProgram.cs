@@ -36,7 +36,7 @@ namespace ManagementDashboard
             builder.Services.AddScoped<IEisenhowerTaskRepository, EisenhowerTaskRepository>();
 
             // Register configuration for SQLite connection string
-            var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "app.db");
+            var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "management-dashboard.db");
             var configBuilder = new ConfigurationBuilder();
             configBuilder.AddInMemoryCollection(new Dictionary<string, string?>
             {
