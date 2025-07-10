@@ -47,7 +47,7 @@ namespace ManagementDashboard.Components
                 return;
             }
             isSaving = true;
-            var now = DateTime.UtcNow;
+            var now = DateTime.Now;
             EisenhowerTask task;
             if (TaskToEdit != null)
             {

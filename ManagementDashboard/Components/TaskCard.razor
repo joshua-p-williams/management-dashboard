@@ -23,7 +23,7 @@
                 <span class="badge bg-warning text-dark ms-2"><i class="bi bi-exclamation-triangle me-1"></i>Blocked</span>
             }
             @* Overdue visual cue (now uses configurable threshold) *@
-            @if (Task.Quadrant == "Do" && Task.CompletedAt == null && Task.CreatedAt.AddDays(OverdueThresholdDays) < DateTime.UtcNow)
+            @if (Task.IsPastDue(OverdueThresholdDays))
             {
                 <span class="badge bg-danger ms-2"><i class="bi bi-exclamation-circle me-1"></i>Overdue</span>
             }

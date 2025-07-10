@@ -26,13 +26,20 @@ namespace ManagementDashboard.Data.Models
             {
                 if (value)
                 {
-                    DeletedAt = DateTime.UtcNow;
+                    DeletedAt = DateTime.Now;
                 }
                 else
                 {
                     DeletedAt = null;
                 }
             }
+        }
+
+        public Boolean IsPastDue(int overdueThresholdDays)
+        {
+            if (CompletedAt != null)
+                return false; // Task is completed, not past due
+            return CreatedAt.AddDays(overdueThresholdDays) < DateTime.Now;
         }
     }
 

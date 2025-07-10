@@ -124,7 +124,7 @@ namespace ManagementDashboard.Components.Pages
             if (task.IsCompleted)
                 return;
             task.IsCompleted = true;
-            task.CompletedAt = System.DateTime.UtcNow;
+            task.CompletedAt = System.DateTime.Now;
             await TaskRepository.UpdateAsync(task);
             await LoadTasks();
             StateHasChanged();

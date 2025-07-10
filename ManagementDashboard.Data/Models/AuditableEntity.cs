@@ -23,7 +23,7 @@ namespace ManagementDashboard.Data.Models
             {
                 if (value)
                 {
-                    CompletedAt = DateTime.UtcNow;
+                    CompletedAt = DateTime.Now;
                 }
                 else
                 {
@@ -40,12 +40,12 @@ namespace ManagementDashboard.Data.Models
             {
                 if (value)
                 {
-                    BlockedAt = DateTime.UtcNow;
+                    BlockedAt = DateTime.Now;
                     UnblockedAt = null;
                 }
                 else
                 {
-                    UnblockedAt = DateTime.UtcNow;
+                    UnblockedAt = DateTime.Now;
                 }
             }
         }

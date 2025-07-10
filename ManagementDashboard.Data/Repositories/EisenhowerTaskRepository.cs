@@ -25,22 +25,23 @@ namespace ManagementDashboard.Data.Repositories
 
         public async Task<IEnumerable<EisenhowerTask>> GetTasksByQuadrantAsync(string? quadrant)
         {
+            var constraints = new System.Collections.Hashtable { { "CurrentTasks", true } };
             if (string.IsNullOrEmpty(quadrant))
             {
-                // Use a custom constraint to fetch tasks where Quadrant is null or empty
-                var constraints = new System.Collections.Hashtable { { "Uncategorized", true } };
+                constraints.Add("Uncategorized", true);
                 return await GetAsync(constraints);
             }
-            return await GetAsync(new System.Collections.Hashtable { { "Quadrant", quadrant } });
+            constraints.Add("Quadrant", quadrant);
+            return await GetAsync(constraints);
         }
 
         public override async Task<int> DeleteAsync(object id, System.Data.IDbTransaction transaction = null!, int? commandTimeout = null)
         {
-            // Soft delete: set DeletedAt to DateTime.UtcNow
+            // Soft delete: set DeletedAt to DateTime.Now
             var task = await this.GetAsync(id);
             if (task == null)
                 return 0;
-            task.DeletedAt = System.DateTime.UtcNow;
+            task.DeletedAt = System.DateTime.Now;
             return await this.UpdateAsync(task);
         }
     }
