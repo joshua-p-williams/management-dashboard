@@ -58,21 +58,128 @@
         {
             <div>
                 <h5>What did you work on yesterday?</h5>
-                <p class="text-muted">(Entries will appear here...)</p>
+                @if (YesterdayTasks != null && YesterdayTasks.Any())
+                {
+                    <ul class="list-group mb-3">
+                        @foreach (var task in YesterdayTasks)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div class="ms-2 me-auto">
+                                    <div class="fw-bold">@task.Title</div>
+                                    @if (!string.IsNullOrWhiteSpace(task.Description))
+                                    {
+                                        <div class="text-muted small">@task.Description</div>
+                                    }
+                                </div>
+                                @GetTaskStatusBadge(task)
+                            </li>
+                        }
+                    </ul>
+                }
+                @if (YesterdayNotes != null && YesterdayNotes.Any())
+                {
+                    <ul class="list-group">
+                        @foreach (var note in YesterdayNotes)
+                        {
+                            <li class="list-group-item">
+                                <div class="mb-1">@note.Notes</div>
+                                @if (note.TaskId.HasValue && note.Task != null)
+                                {
+                                    <div class="border rounded p-2 bg-light mt-2">
+                                        <div class="fw-bold">@note.Task.Title</div>
+                                        @if (!string.IsNullOrWhiteSpace(note.Task.Description))
+                                        {
+                                            <div class="text-muted small">@note.Task.Description</div>
+                                        }
+                                        @GetTaskStatusBadge(note.Task)
+                                    </div>
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+                @if ((YesterdayTasks == null || !YesterdayTasks.Any()) && (YesterdayNotes == null || !YesterdayNotes.Any()))
+                {
+                    <p class="text-muted">No entries for yesterday.</p>
+                }
             </div>
         }
         else if (ActiveTab == ScrumTab.Today)
         {
             <div>
                 <h5>What will you work on today?</h5>
-                <p class="text-muted">(Entries will appear here...)</p>
+                @if (TodayTasks != null && TodayTasks.Any())
+                {
+                    <ul class="list-group mb-3">
+                        @foreach (var task in TodayTasks)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div class="ms-2 me-auto">
+                                    <div class="fw-bold">@task.Title</div>
+                                    @if (!string.IsNullOrWhiteSpace(task.Description))
+                                    {
+                                        <div class="text-muted small">@task.Description</div>
+                                    }
+                                </div>
+                                @GetTaskStatusBadge(task)
+                            </li>
+                        }
+                    </ul>
+                }
+                @if (TodayNotes != null && TodayNotes.Any())
+                {
+                    <ul class="list-group">
+                        @foreach (var note in TodayNotes)
+                        {
+                            <li class="list-group-item">
+                                <div class="mb-1">@note.Notes</div>
+                                @if (note.TaskId.HasValue && note.Task != null)
+                                {
+                                    <div class="border rounded p-2 bg-light mt-2">
+                                        <div class="fw-bold">@note.Task.Title</div>
+                                        @if (!string.IsNullOrWhiteSpace(note.Task.Description))
+                                        {
+                                            <div class="text-muted small">@note.Task.Description</div>
+                                        }
+                                        @GetTaskStatusBadge(note.Task)
+                                    </div>
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+                @if ((TodayTasks == null || !TodayTasks.Any()) && (TodayNotes == null || !TodayNotes.Any()))
+                {
+                    <p class="text-muted">No entries for today.</p>
+                }
             </div>
         }
         else if (ActiveTab == ScrumTab.Blockers)
         {
             <div>
                 <h5>What is blocking you?</h5>
-                <p class="text-muted">(Entries will appear here...)</p>
+                @if (BlockedTasks != null && BlockedTasks.Any())
+                {
+                    <ul class="list-group">
+                        @foreach (var task in BlockedTasks)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div class="ms-2 me-auto">
+                                    <div class="fw-bold">@task.Title</div>
+                                    @if (!string.IsNullOrWhiteSpace(task.Description))
+                                    {
+                                        <div class="text-muted small">@task.Description</div>
+                                    }
+                                </div>
+                                @GetTaskStatusBadge(task)
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted">No blockers found.</p>
+                }
             </div>
         }
     </div>
