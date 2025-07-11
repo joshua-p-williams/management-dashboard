@@ -6,22 +6,21 @@
 
 <div class="container py-4">
     <!-- Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2><i class="bi bi-clipboard-check me-2"></i> Scrum Ceremony Summary</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0"><i class="bi bi-clipboard-check me-2"></i> Scrum Summary</h1>
+        <div class="d-flex gap-2 ms-auto">
+            <button class="btn btn-primary btn-sm" type="button" @onclick="OpenWorkCaptureModal" aria-label="Add Work Note">
+                <i class="bi bi-pencil-square"></i> <span class="d-none d-md-inline">Work Capture</span>
+            </button>
+            <button class="btn btn-outline-secondary btn-sm" type="button" @onclick="OpenHelpModal" aria-label="How does this work?">
+                <i class="bi bi-question-circle"></i> <span class="d-none d-md-inline">How does this work?</span>
+            </button>
+        </div>
     </div>
     <div class="row mb-3 align-items-end">
         <div class="col-md-4 mb-2">
             <label for="summary-date" class="form-label">Date</label>
             <input id="summary-date" type="date" class="form-control" @bind="SelectedDate" />
-        </div>
-        <div class="col-md-5 mb-2">
-            <label class="form-label">Work Capture</label>
-            <input type="text" class="form-control" placeholder="Add a work note..." @onclick="OpenWorkCaptureModal" readonly />
-        </div>
-        <div class="col-md-3 mb-2 text-end">
-            <button class="btn btn-outline-info" @onclick="OpenHowItWorksModal">
-                <i class="bi bi-question-circle"></i> How does this work?
-            </button>
         </div>
     </div>
     <ul class="nav nav-tabs mb-3" id="scrumTabs" role="tablist">
@@ -41,7 +40,7 @@
             </button>
         </li>
     </ul>
-    <div class="tab-content p-3 border bg-light rounded-bottom">
+    <div class="tab-content p-3 border bg-body rounded-bottom">
         @if (ActiveTab == ScrumTab.Yesterday)
         {
             <div>
@@ -85,20 +84,39 @@
             </div>
         </div>
     }
-    @if (ShowHowItWorksModal)
+    @if (showHelpModal)
     {
-        <div class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,0.3);">
-            <div class="modal-dialog">
+        <div class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true" style="background:rgba(0,0,0,0.3);">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">How does this work?</h5>
-                        <button type="button" class="btn-close" @onclick="CloseHowItWorksModal"></button>
+                        <h5 class="modal-title">How does the Scrum Ceremony Summary work?</h5>
+                        <button type="button" class="btn-close" aria-label="Close" @onclick="CloseHelpModal"></button>
                     </div>
                     <div class="modal-body">
-                        <p>This page helps you summarize your daily stand-up by answering the three core Scrum questions. Use the tabs to view and add your work for each section.</p>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>What did you work on yesterday?</strong> – Review your completed tasks and work capture notes from the previous day.</li>
+                                    <li><strong>What will you work on today?</strong> – Plan and list your tasks for today, including ongoing and new work.</li>
+                                    <li><strong>What is blocking you?</strong> – Identify any blockers or issues that are preventing progress.</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <p>The Scrum Summary automatically pulls:</p>
+                                <ul class="mb-0 ps-3">
+                                    <li>Tasks updated or completed on the selected date</li>
+                                    <li>Work capture notes you log for each day</li>
+                                    <li>Blocked tasks for the "Blockers" tab</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="alert alert-info small mb-0">
+                            Use the <strong>Work Capture</strong> button to log daily notes, research, or events. The summary tabs will auto-populate with your tasks and notes, making stand-ups and reporting effortless.
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" @onclick="CloseHowItWorksModal">Close</button>
+                        <button type="button" class="btn btn-secondary" @onclick="CloseHelpModal">Close</button>
                     </div>
                 </div>
             </div>

@@ -16,7 +16,7 @@ namespace ManagementDashboard.Components.Pages
         protected DateTime SelectedDate { get; set; } = DateTime.Today;
         protected ScrumTab ActiveTab { get; set; } = ScrumTab.Today;
         protected bool ShowWorkCaptureModal { get; set; } = false;
-        protected bool ShowHowItWorksModal { get; set; } = false;
+        protected bool showHelpModal { get; set; } = false;
 
         protected void SelectTab(ScrumTab tab)
         {
@@ -33,14 +33,15 @@ namespace ManagementDashboard.Components.Pages
             ShowWorkCaptureModal = false;
         }
 
-        protected void OpenHowItWorksModal()
+
+        protected void OpenHelpModal()
         {
-            ShowHowItWorksModal = true;
+            showHelpModal = true;
         }
 
-        protected void CloseHowItWorksModal()
+        protected void CloseHelpModal()
         {
-            ShowHowItWorksModal = false;
+            showHelpModal = false;
         }
     }
 }
