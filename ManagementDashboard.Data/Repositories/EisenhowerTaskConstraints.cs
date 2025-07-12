@@ -1,4 +1,5 @@
 using Formula.SimpleRepo;
+using ManagementDashboard.Core.Services;
 using ManagementDashboard.Data.Models;
 
 namespace ManagementDashboard.Data.Repositories
@@ -30,7 +31,7 @@ namespace ManagementDashboard.Data.Repositories
         {
             var parameters = new Dictionary<string, object>();
             builder.Where("(DeletedAt IS NULL AND (CompletedAt IS NULL OR date(CompletedAt) >= date(@Today)))");
-            parameters.Add("Today", DateTime.Now.Date.ToString("yyyy-MM-dd"));
+            parameters.Add("Today", DataTransformationService.ToSqliteDateString(DateTime.Now));
             return parameters;
         }
     }
@@ -41,9 +42,8 @@ namespace ManagementDashboard.Data.Repositories
         public override Dictionary<string, object> Bind(Dapper.SqlBuilder builder)
         {
             var parameters = new Dictionary<string, object>();
-            var date = Value is DateTime dt ? dt.ToString("yyyy-MM-dd") : Value?.ToString();
             builder.Where("(date(UpdatedAt) = date(@WorkedOnDate) OR date(CompletedAt) = date(@WorkedOnDate) OR date(BlockedAt) = date(@WorkedOnDate) OR date(CreatedAt) = date(@WorkedOnDate) OR date(UnblockedAt) = date(@WorkedOnDate) OR date(DeletedAt) = date(@WorkedOnDate))");
-            parameters.Add("WorkedOnDate", date);
+            parameters.Add("WorkedOnDate", DataTransformationService.ToSqliteDateString(Value));
             return parameters;
         }
     }
@@ -53,16 +53,13 @@ namespace ManagementDashboard.Data.Repositories
         public override Dictionary<string, object> Bind(Dapper.SqlBuilder builder)
         {
             var parameters = new Dictionary<string, object>();
-            if (Value is bool isBlocked)
+            if (DataTransformationService.ToBool(Value))
             {
-                if (isBlocked)
-                {
-                    builder.Where("BlockedAt IS NOT NULL AND UnblockedAt IS NULL");
-                }
-                else
-                {
-                    builder.Where("BlockedAt IS NULL OR UnblockedAt IS NOT NULL");
-                }
+                builder.Where("BlockedAt IS NOT NULL AND UnblockedAt IS NULL");
+            }
+            else
+            {
+                builder.Where("BlockedAt IS NULL OR UnblockedAt IS NOT NULL");
             }
             // If Value is null, do not add any filter
             return parameters;
