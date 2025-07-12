@@ -1,5 +1,5 @@
 using Formula.SimpleRepo;
-using ManagementDashboard.Core.Services;
+using ManagementDashboard.Data.Services;
 using ManagementDashboard.Data.Models;
 
 namespace ManagementDashboard.Data.Repositories

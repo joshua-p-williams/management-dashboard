@@ -1,6 +1,7 @@
 using ManagementDashboard.Data.Models;
 using ManagementDashboard.Data.Repositories;
 using Microsoft.AspNetCore.Components;
+using ManagementDashboard.Core.Extensions;
 
 namespace ManagementDashboard.Components.Pages
 {
@@ -16,7 +17,19 @@ namespace ManagementDashboard.Components.Pages
         [Inject] protected IEisenhowerTaskRepository TaskRepository { get; set; } = default!;
         [Inject] protected IWorkCaptureNoteRepository NoteRepository { get; set; } = default!;
 
-        protected DateTime SelectedDate { get; set; } = DateTime.Today;
+        private DateTime _selectedDate = DateTime.Today;
+        protected DateTime SelectedDate
+        {
+            get => _selectedDate;
+            set
+            {
+                if (_selectedDate != value)
+                {
+                    _selectedDate = value;
+                    _ = LoadEntriesAsync();
+                }
+            }
+        }
         protected ScrumTab ActiveTab { get; set; } = ScrumTab.Today;
         protected bool ShowWorkCaptureModal { get; set; } = false;
         protected bool showHelpModal { get; set; } = false;
@@ -100,12 +113,14 @@ namespace ManagementDashboard.Components.Pages
 
         protected RenderFragment GetTaskStatusBadge(EisenhowerTask task) => builder =>
         {
-            var status = GetTaskStatus(task);
+            var status = task.GetStatus();
             var badgeClass = status switch
             {
                 "Done" => "badge bg-success",
                 "Blocked" => "badge bg-danger",
+                "Removed" => "badge bg-dark",
                 "In Progress" => "badge bg-warning text-dark",
+                "Unknown" => "badge bg-secondary",
                 _ => "badge bg-secondary"
             };
             builder.OpenElement(0, "span");
@@ -113,13 +128,5 @@ namespace ManagementDashboard.Components.Pages
             builder.AddContent(2, status);
             builder.CloseElement();
         };
-
-        protected string GetTaskStatus(EisenhowerTask task)
-        {
-            // Example logic, adjust as needed
-            if (task.Quadrant == "Blocked") return "Blocked";
-            if (task.Quadrant == "Done") return "Done";
-            return "In Progress";
-        }
     }
 }

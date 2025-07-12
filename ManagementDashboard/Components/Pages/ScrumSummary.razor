@@ -1,6 +1,5 @@
-@using ManagementDashboard.Data.Models
-@using ManagementDashboard.Data.Repositories
 @using ManagementDashboard.Components
+@using ManagementDashboard.Data.Models
 
 @page "/scrum-summary"
 
@@ -70,6 +69,7 @@
                                     {
                                         <div class="text-muted small">@task.Description</div>
                                     }
+                                    <TaskSummary Task="task" Date="@SelectedDate.AddDays(-1)" />
                                 </div>
                                 @GetTaskStatusBadge(task)
                             </li>
@@ -120,6 +120,7 @@
                                     {
                                         <div class="text-muted small">@task.Description</div>
                                     }
+                                    <TaskSummary Task="task" Date="@SelectedDate" />
                                 </div>
                                 @GetTaskStatusBadge(task)
                             </li>
@@ -170,6 +171,7 @@
                                     {
                                         <div class="text-muted small">@task.Description</div>
                                     }
+                                    <TaskSummary Task="task" Date="@SelectedDate" />
                                 </div>
                                 @GetTaskStatusBadge(task)
                             </li>

@@ -1,0 +1,51 @@
+@using ManagementDashboard.Data.Models
+@using ManagementDashboard.Core.Extensions
+
+<div class="row g-2">
+    @if (Events.Any())
+    {
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <span><i class="bi bi-lightning-charge me-1"></i> Events (@Events.Count())</span>
+                    <button class="btn btn-sm btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#eventsCardCollapse" aria-expanded="false" aria-controls="eventsCardCollapse">
+                        <span class="bi bi-chevron-down"></span>
+                    </button>
+                </div>
+                <div id="eventsCardCollapse" class="collapse">
+                    <div class="card-body p-2">
+                        <ul class="list-unstyled mb-0">
+                            @foreach (var evt in Events)
+                            {
+                                <li class="text-info small"><i class="bi bi-lightning-charge me-1"></i>@evt</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (State.Any())
+    {
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <span><i class="bi bi-info-circle me-1"></i> State (@State.Count())</span>
+                    <button class="btn btn-sm btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#stateCardCollapse" aria-expanded="false" aria-controls="stateCardCollapse">
+                        <span class="bi bi-chevron-down"></span>
+                    </button>
+                </div>
+                <div id="stateCardCollapse" class="collapse">
+                    <div class="card-body p-2">
+                        <ul class="list-unstyled mb-0">
+                            @foreach (var s in State)
+                            {
+                                <li class="text-secondary small"><i class="bi bi-info-circle me-1"></i>@s</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

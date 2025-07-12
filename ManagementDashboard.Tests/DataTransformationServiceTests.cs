@@ -1,5 +1,5 @@
 using System;
-using ManagementDashboard.Core.Services;
+using ManagementDashboard.Data.Services;
 using Xunit;
 
 namespace ManagementDashboard.Tests
@@ -41,7 +41,7 @@ namespace ManagementDashboard.Tests
         [InlineData("N", false)]
         [InlineData("random", false)]
         [InlineData(null, false)]
-        public void ToBool_ConvertsVariousInputs(object input, bool expected)
+        public void ToBool_ConvertsVariousInputs(object? input, bool expected)
         {
             var result = DataTransformationService.ToBool(input);
             Assert.Equal(expected, result);

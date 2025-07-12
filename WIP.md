@@ -53,16 +53,16 @@ Pause for a build (dotnet build), fix any issues and ask for a review before pro
 
 ### 2.1. Entry List
 
-* [ ] Under each panel, display a list of entries (e.g., structured tasks and freeform notes, or blockers under the "Blockers" tab)
+* [x] Under each panel, display a list of entries (e.g., structured tasks and freeform notes, or blockers under the "Blockers" tab)
   * structured tasks which will be fetched by the date selected as having updates or completion etc.. on the date selection at the top 
   * and/or freeform notes
-* [ ] For each task entry, show:
+* [x] For each task entry, show:
 
   * Title
   * Description (if available)
   * badge/icon (e.g., “Done”, “In Progress”, “Blocked”) - Refer to the Eisenhower Matrix for how to display these
 
-* [ ] For each work capture note, show:
+* [x] For each work capture note, show:
 
   * Note text
   * If associated with a task, fetch it and show the same task entry details as above
@@ -74,13 +74,13 @@ Pause for a build (dotnet build), fix any issues and ask for a review before pro
 
 Pause for a build (dotnet build), fix any issues and ask for a review before proceeding to the next section.
 
----
 
 ## 3. Wire up all repositories and fetch and populate the data
 
-[ ] Implement repository methods to fetch entries by date (if not already done)
-[ ] Populate entry lists in each panel based on the selected date
-[ ] Ensure data is reactive and updates on state changes
+
+* [x] Implement repository methods to fetch entries by date (if not already done)
+* [x] Populate entry lists in each panel based on the selected date
+* [x] Ensure data is reactive and updates on state changes
 
 
 Pause for a build (dotnet build), fix any issues and ask for a review before proceeding to the next section.
@@ -110,10 +110,8 @@ Pause for a build (dotnet build), fix any issues and ask for a review before pro
 
 ---
 
-## 5. Responsive and Accessibility
+## Improvements and Enhancements
 
-### 5.1. Responsive Layout
+I'd like to be able to get a list of events that happened on a Task. For example, if I had a method called "SummarizeEvents", and it takes a date as a parameter, it could look at the date properties on the task (UpdatedAt, CompletedAt, BlockedAt, UnblockedAt, CreatedAt, DeletedAt, etc..), it can give an IEnumerable of descriptions for things that happened on the task for the date given. Example.. If it was Blocked on the date passed in, one of the SummarizedEvents would be "Became blocked", and if it has a blocker reason, it could be included to say "Became blocked - {Blocker Reason)". Make this a new testable service with extension methods for the EisenhowerTasks, but place it in the ManagementDashboard.Core project under it's list of services as appropriate. Maybe a new Folder called Extensions or something? And call it EisenhowerTasksExtensions. Consider whatever best practices are, implement this, and make it tested within the ManagementDashboard.Tests project.
 
-* [ ] On desktop, tabs/panels fill the page with balanced margins
-* [ ] On mobile, tabs remain at top and each panel is full-width (no horizontal scroll)
-
+Now that we have the extension methods, we can use them to summarize the events for a task in the Scrum Summary page. This will allow users to see a quick summary of what happened with each task on the selected date.  Can you implement this under each applicable section (Yesterday, Today, Blockers) in the Scrum Summary page?

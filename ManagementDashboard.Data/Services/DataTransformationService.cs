@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace ManagementDashboard.Core.Services
+namespace ManagementDashboard.Data.Services
 {
     public static class DataTransformationService
     {

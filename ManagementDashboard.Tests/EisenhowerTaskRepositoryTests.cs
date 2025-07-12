@@ -45,7 +45,9 @@ namespace ManagementDashboard.Tests
                 {
                     columns.Add(reader.GetString(1));
                 }
-                var expected = new[] { "Id", "Title", "Description", "Quadrant", "IsCompleted", "CompletedAt", "IsBlocked", "BlockerReason", "BlockedAt", "UnblockedAt", "DelegatedTo", "CreatedAt", "UpdatedAt" };
+                var expected = new[] {
+                    "Id", "Title", "Description", "Quadrant", "Priority", "CompletedAt", "BlockerReason", "BlockedAt", "UnblockedAt", "DelegatedTo", "CreatedAt", "UpdatedAt", "DeletedAt"
+                };
                 foreach (var col in expected)
                 {
                     Assert.Contains(col, columns);
