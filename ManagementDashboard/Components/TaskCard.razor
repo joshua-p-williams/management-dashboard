@@ -3,7 +3,7 @@
 @* TaskCard.razor: Reusable component for displaying a single task in the Eisenhower Matrix *@
 
 @{
-    string tooltip = null;
+    string tooltip = string.Empty;
     if (!string.IsNullOrWhiteSpace(Task.Description))
     {
         tooltip = Task.Description.Length > 120 ? Task.Description.Substring(0, 120) + "…" : Task.Description;

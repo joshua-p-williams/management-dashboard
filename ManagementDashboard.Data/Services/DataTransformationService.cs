@@ -17,7 +17,7 @@ namespace ManagementDashboard.Data.Services
                     return parsed.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
                 return str; // fallback: return as-is
             }
-            return value.ToString();
+            return value.ToString() ?? string.Empty;
         }
 
         // Converts an object to a boolean, handling various string representations
