@@ -40,6 +40,9 @@ namespace ManagementDashboard.Components.Pages
         protected List<WorkCaptureNote> YesterdayNotes { get; set; } = new();
         protected List<WorkCaptureNote> TodayNotes { get; set; } = new();
 
+        protected List<EisenhowerTask> OpenTasks { get; set; } = new();
+        protected WorkCaptureNote NewWorkCaptureNote { get; set; } = new();
+
         protected void SelectTab(ScrumTab tab)
         {
             ActiveTab = tab;
@@ -47,14 +50,33 @@ namespace ManagementDashboard.Components.Pages
 
         protected void OpenWorkCaptureModal()
         {
+            NewWorkCaptureNote = new WorkCaptureNote { CreatedAt = DateTime.Now, UpdatedAt = DateTime.Now };
             ShowWorkCaptureModal = true;
         }
 
-        protected void CloseWorkCaptureModal()
+
+        protected async Task HandleWorkCaptureSave(WorkCaptureNote note)
+        {
+            await NoteRepository.InsertAsync(note);
+            ShowWorkCaptureModal = false;
+            await LoadEntriesAsync();
+            StateHasChanged();
+        }
+
+        protected void HandleWorkCaptureCancel()
         {
             ShowWorkCaptureModal = false;
         }
 
+
+        protected async Task LoadOpenTasksAsync()
+        {
+            // Get open tasks: not deleted, not completed before today
+            var openTasks = await TaskRepository.GetTasksByQuadrantAsync(null);
+            OpenTasks = openTasks.ToList();
+        }
+
+        // Remove duplicate OnInitializedAsync if present elsewhere in partial class
 
         protected void OpenHelpModal()
         {

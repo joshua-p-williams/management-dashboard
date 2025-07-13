@@ -1,0 +1,33 @@
+@using ManagementDashboard.Data.Models
+@inherits WorkCaptureNoteModalBase
+
+<div class="modal fade show" tabindex="-1" style="display: block;" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@((IsEditMode ? "Edit" : "Add") + " Work Capture Note")</h5>
+                <button type="button" class="btn-close" aria-label="Close" @onclick="HandleCancel"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="notes" class="form-label">Notes</label>
+                    <textarea id="notes" class="form-control" @bind="Note.Notes" autofocus rows="4"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="task" class="form-label">Task (optional)</label>
+                    <select id="task" class="form-select" @bind="Note.TaskId">
+                        <option value="">-- Select a Task --</option>
+                        @foreach (var task in OpenTasks)
+                        {
+                            <option value="@task.Id">@task.Title</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="HandleCancel">Cancel</button>
+                <button type="button" class="btn btn-primary" @onclick="HandleSave">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

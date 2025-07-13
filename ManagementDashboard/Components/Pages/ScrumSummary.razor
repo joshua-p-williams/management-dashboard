@@ -188,23 +188,12 @@
 
     @if (ShowWorkCaptureModal)
     {
-        <div class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,0.3);">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Add Work Capture Note</h5>
-                        <button type="button" class="btn-close" @onclick="CloseWorkCaptureModal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>(Work capture modal stub)</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" @onclick="CloseWorkCaptureModal">Cancel</button>
-                        <button class="btn btn-primary" disabled>Save</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+            <WorkCaptureNoteModal 
+                Note="NewWorkCaptureNote"
+                IsEditMode="false"
+                OpenTasks="OpenTasks"
+                OnSave="HandleWorkCaptureSave"
+                OnCancel="HandleWorkCaptureCancel" />
     }
     @if (showHelpModal)
     {
