@@ -20,6 +20,13 @@ namespace ManagementDashboard.Components
 
         private int OverdueThresholdDays => AppPreferences?.GetInt("OverdueThresholdDays", 2) ?? 2;
 
+        private bool ShowDetails = false;
+
+        private void ToggleDetails()
+        {
+            ShowDetails = !ShowDetails;
+        }
+
         protected RenderFragment GetTaskStatusBadge(EisenhowerTask task) => builder =>
         {
             var status = task.GetStatus();
