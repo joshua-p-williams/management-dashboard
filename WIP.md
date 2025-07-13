@@ -27,66 +27,31 @@ Refer to the [Scrum Summary Database Definition](feature-scrum-summary-database.
 ---
 
 
-I'd like to work on the cosmetics of the scrum summary feature.  Currently it looks clunky.
+I want to make improvements to the WorkCaptureCard —using a hamburger (ellipsis) menu for actions keeps your card header clean, while truncating both note and task titles maintains a compact, scannable summary. Showing the full note in the body and revealing task details only when the user requests them balances clarity and depth, improving both desktop and mobile experience.
 
-### **Condensed Critique**
-
-* **Too many borders and nested cards/lists** create visual clutter, making the UI hard to scan and overwhelming.
-* **Lack of clear hierarchy:** Notes, tasks, and meta info all look equally important and are not visually grouped together.
-* **Notes and tasks feel disconnected:** When a note is linked to a task, it appears as a separate block instead of as part of a single work capture.
-* **Overuse of Bootstrap defaults** (list-groups, cards) results in a “samey” look and excess space.
-* **Status and blockers don’t stand out:** Important info is buried in noise, not highlighted visually.
-
-**Summary:**
-The interface feels cluttered, with information fragmented and hard to follow. Use a single card or block per work capture, combine notes/tasks/meta into one group, and rely more on simple backgrounds or badge bars—less on borders—to clarify hierarchy and flow.
+**In summary:**
+You’re presenting only the most important info at a glance—short note (truncated in the header), a tidy action menu, and (if present) a task title preview. Users can choose to expand for the full note or to reveal all task details via the “show more” icon. This keeps the UI uncluttered and highly readable, without hiding important actions.
 
 ---
 
-## Refactor to use cards for a cleaner, more cohesive UI
+## **Micro-task Checklist for This Approach**
 
-**Why Cards?**
+* [ ] Truncate the card header note to the first 40 characters (ending with “…” if longer).
+* [ ] Move the full note text to the card body—displayed in full beneath the header.
+* [ ] Place a right-aligned ellipsis (hamburger) menu in the card header for all actions (Edit, Delete, etc.). Just like we do on the TaskCard for the Eisenhower Matrix.
 
-* Cards are the most effective modern design pattern for visually grouping related information and actions, especially in productivity and dashboard-style apps.
-* Each “thing” (work capture or task) becomes a clear, scannable visual block, making it easier for users to track what’s important, see relationships, and interact with content.
-* Cards adapt beautifully to both desktop (side-by-side, grid) and mobile (stacked) layouts using Bootstrap’s responsive utilities.
-* **Expandable details** inside cards (e.g., show more task info, work capture meta) keep the UI uncluttered while always giving users access to depth.
-* Using cards for both work captures and tasks creates a **consistent, unified UX**—everything important is presented as a card, so users always know what’s actionable and what belongs together.
+  * [ ] Ensure this is accessible and touch-friendly.
+* [ ] If the note has an associated task:
+
+  * [ ] Display the **task title** (truncated to 40 characters with ellipsis if needed, just like we did on the header for the work capture in the first task) in the card body, just below the note, with a small icon/button (chevron or info) to “Show Task Details.”
+  * [ ] When the user clicks this icon, expand to show the full **TaskSummary** control in place of the preview title.
+  * [ ] Collapse again to return to just the task title preview.
+* [ ] Style the preview/expand icon to be visually distinct but not dominant.
+* [ ] Test how this behaves with and without associated tasks, on desktop and mobile.
+* [ ] Check keyboard and screen reader accessibility for the hamburger menu and expand/collapse controls.
 
 ---
 
-## **Micro-task Checklist for Cards-First Scrum Summary**
-
-We'll implement this in a series of micro-tasks to ensure clarity and focus. Each task will build on the previous one, gradually transforming the UI to a card-based layout.
-
-### **1. Refactor TaskSummary as a Card Component**
-
-* [X] Convert TaskSummary so that each task displays as a standalone Bootstrap card (not a list item).
-* [X] Card should show: task title (bold), key meta (status, priority, quadrant, badges) as a horizontal bar or chips.  Be sure not to lose functionality, jsut refactor it's layout.
-* [X] Add expandable/collapsible area (accordion/collapse) for task events/state details, only visible when expanded.
-* [X] Apply subtle card shadow/background, minimize borders for clean look.
-* [X] Ensure all actions (edit, delete, complete) are shown as icon buttons within the card, clearly separated from content.
-* [X] Test layout at different screen sizes (cards should stack on mobile).
-
-### **2. Build WorkCaptureCard Component**
-
-* [X] Create a new component (e.g., `WorkCaptureCard.razor`) for individual work captures (notes/entries).  Make sure to use a clean markup only razor component with the code implmentation in the code-behind file.
-* [X] Card displays:
-  * Note/entry text as main content.
-  * If there’s an associated task, show an “expand for task details” button or icon; when expanded, render the TaskSummary card inside (as a nested card, but with reduced visual weight—lighter shadow, less padding).
-  * Actions (edit, delete) as icon buttons at top right.  Make sure to use the same event handlers that are already in place.
-* [X] Apply matching card style to TaskSummary for consistency.
-
-### **3. Implement Card Components in ScrumSummary.razor**
-
-* [X] In each tab (Yesterday, Today, Blockers), map over work captures and render a `WorkCaptureCard` for each.
-* [X] Below work captures, display any standalone task summaries (not tied to a work capture) as TaskSummary cards in a grid or stacked list.
-* [X] Remove all legacy list-group/list-item markup and any nested Bootstrap cards/lists inside cards.
-* [X] Ensure spacing and layout are clean and visually consistent.
-
-### **4. Polish & Responsive Design**
-
-* [ ] Use Bootstrap grid/flex to layout cards responsively—stacked on mobile, grid on desktop.
-* [ ] Test expand/collapse, actions, and keyboard accessibility.
-* [ ] Refine spacing, background colors, and shadows for clear card separation without excess borders.
-* [ ] Make sure blockers and statuses use visually strong color/indicator on card edge or header.
+**This pattern keeps your Scrum Summary UI concise, powerful, and user-friendly—surfacing key info and actions, while hiding detail until it’s needed.**
+Let me know if you’d like a diagram or want to move to implementation tips for any step!
 
