@@ -58,6 +58,7 @@ namespace ManagementDashboard.Components.Pages
         {
             ShowWorkCaptureModal = false;
             await LoadEntriesAsync();
+            StateHasChanged();
         }
 
         protected Task HandleWorkCaptureEdit(WorkCaptureNote note)

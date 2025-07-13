@@ -21,6 +21,9 @@ namespace ManagementDashboard.Components
         [Parameter]
         public EventCallback OnCancel { get; set; }
 
+        [Parameter]
+        public EventCallback<WorkCaptureNote> OnSave { get; set; }
+
         [Inject]
         protected IWorkCaptureNoteRepository NoteRepository { get; set; } = default!;
 
@@ -46,7 +49,7 @@ namespace ManagementDashboard.Components
             {
                 await NoteRepository.InsertAsync(Note);
             }
-            await OnCancel.InvokeAsync(); // Close modal after save
+            await OnSave.InvokeAsync(Note); // Close modal after save
         }
 
         protected async Task HandleCancel()
