@@ -1,0 +1,32 @@
+@using ManagementDashboard.Data.Models
+@using ManagementDashboard.Components.Pages
+
+<div class="card shadow-sm mb-3 work-capture-card" style="border: none;">
+    <div class="card-header d-flex flex-wrap align-items-center justify-content-between bg-body-tertiary border-0">
+        <div class="fw-bold h6 mb-0">@Note.Notes</div>
+        <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-sm btn-outline-secondary" title="Edit" @onclick="() => OnEdit.InvokeAsync(Note)"><i class="bi bi-pencil"></i></button>
+            <button class="btn btn-sm btn-outline-danger" title="Delete" @onclick="() => OnDelete.InvokeAsync(Note)"><i class="bi bi-trash"></i></button>
+        </div>
+    </div>
+    <div class="card-body pb-2 pt-2 bg-body">
+        @if (Note.TaskId.HasValue && Note.Task != null)
+        {
+            <div class="accordion" id="workCaptureAccordion-@Note.Id">
+                <div class="accordion-item border-0">
+                    <h2 class="accordion-header" id="headingTask-@Note.Id">
+                        <button class="accordion-button collapsed bg-body" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTask-@Note.Id" aria-expanded="false" aria-controls="collapseTask-@Note.Id">
+                            <i class="bi bi-list-task me-1"></i> View Associated Task
+                        </button>
+                    </h2>
+                    <div id="collapseTask-@Note.Id" class="accordion-collapse collapse" aria-labelledby="headingTask-@Note.Id" data-bs-parent="#workCaptureAccordion-@Note.Id">
+                        <div class="accordion-body p-2">
+                            <TaskSummary Task="Note.Task" Date="Note.CreatedAt" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="text-muted small mt-2">@Note.CreatedAt.ToString("g")</div>
+    </div>
+</div>

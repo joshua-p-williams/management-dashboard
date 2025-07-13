@@ -26,98 +26,67 @@ Refer to the [Scrum Summary Database Definition](feature-scrum-summary-database.
 
 ---
 
-## 1. Scaffold the Page and Layout
 
-### 1.1. Create Main Page
+I'd like to work on the cosmetics of the scrum summary feature.  Currently it looks clunky.
 
-Refer to the Eisenhower Matrix for the initial page structure and components as a pattern for how we are building pages using bootstrap 5.  Implement this with code in code-behind files to keep the razor file clean.
+### **Condensed Critique**
 
-* [x] Add new page/component: `ScrumSummary.razor` with route `/scrum-summary`
-* [x] Add a page header (e.g. “Scrum Ceremony Summary”)
-* [x] Insert a date picker (Bootstrap input, default to today)
-* [x] Add a "Work Capture" input field at the top - this will be used to capture work notes for the date specified in the date picker.  This will pop-up a modal to add/edit entries.
-* [x] Add a "How does this work?" button just like we see on the EisenhowerMatrix.razor page that opens a modal with an explanation of the Scrum Summary feature.
-* [x] Add Bootstrap 5 `nav-tabs` for “Yesterday”, “Today”, and “Blockers”
-* [x] For each tab, add a section (panel) for displaying entries related to that question (with a placeholder for now):
-  * “What did you work on yesterday?”
-  * “What will you work on today?”
-  * “What is blocking you?”
-* [x] Place an info icon (`bi-info-circle`) next to each tab label or panel header
-* [x] Tooltip explains the purpose of each section
-* [x] Ensure tab selection updates the visible panel below with custom text and content for each tab 
-* [x] Wire appropriate events for handlers for the controls in the code-behind file to handle the date change and work capture input.  For now these can be stubbed out as "not implemented yet" or similar.
+* **Too many borders and nested cards/lists** create visual clutter, making the UI hard to scan and overwhelming.
+* **Lack of clear hierarchy:** Notes, tasks, and meta info all look equally important and are not visually grouped together.
+* **Notes and tasks feel disconnected:** When a note is linked to a task, it appears as a separate block instead of as part of a single work capture.
+* **Overuse of Bootstrap defaults** (list-groups, cards) results in a “samey” look and excess space.
+* **Status and blockers don’t stand out:** Important info is buried in noise, not highlighted visually.
 
-Pause for a build (dotnet build), fix any issues and ask for a review before proceeding to the next section.
+**Summary:**
+The interface feels cluttered, with information fragmented and hard to follow. Use a single card or block per work capture, combine notes/tasks/meta into one group, and rely more on simple backgrounds or badge bars—less on borders—to clarify hierarchy and flow.
 
 ---
 
-## 2. Display and Manage Entries
+## Refactor to use cards for a cleaner, more cohesive UI
 
-### 2.1. Entry List
+**Why Cards?**
 
-* [x] Under each panel, display a list of entries (e.g., structured tasks and freeform notes, or blockers under the "Blockers" tab)
-  * structured tasks which will be fetched by the date selected as having updates or completion etc.. on the date selection at the top 
-  * and/or freeform notes
-* [x] For each task entry, show:
-
-  * Title
-  * Description (if available)
-  * badge/icon (e.g., “Done”, “In Progress”, “Blocked”) - Refer to the Eisenhower Matrix for how to display these
-
-* [x] For each work capture note, show:
-
-  * Note text
-  * If associated with a task, fetch it and show the same task entry details as above
-
-**Note**
-* Since work capture notes are not required to be linked to tasks, we will allow freeform notes that are not associated with any task.
-* For blockers, we can only show the tasks that are blocked (will require a new repository method for fetching these).
-* Be sure to show the blocker details in the "Blockers" tab
-
-Pause for a build (dotnet build), fix any issues and ask for a review before proceeding to the next section.
-
-
-## 3. Wire up all repositories and fetch and populate the data
-
-
-* [x] Implement repository methods to fetch entries by date (if not already done)
-* [x] Populate entry lists in each panel based on the selected date
-* [x] Ensure data is reactive and updates on state changes
-
-
-Pause for a build (dotnet build), fix any issues and ask for a review before proceeding to the next section.
+* Cards are the most effective modern design pattern for visually grouping related information and actions, especially in productivity and dashboard-style apps.
+* Each “thing” (work capture or task) becomes a clear, scannable visual block, making it easier for users to track what’s important, see relationships, and interact with content.
+* Cards adapt beautifully to both desktop (side-by-side, grid) and mobile (stacked) layouts using Bootstrap’s responsive utilities.
+* **Expandable details** inside cards (e.g., show more task info, work capture meta) keep the UI uncluttered while always giving users access to depth.
+* Using cards for both work captures and tasks creates a **consistent, unified UX**—everything important is presented as a card, so users always know what’s actionable and what belongs together.
 
 ---
 
-## 4. Add/Edit Entry Modal
+## **Micro-task Checklist for Cards-First Scrum Summary**
 
-### 4.1. Modal Implementation
+We'll implement this in a series of micro-tasks to ensure clarity and focus. Each task will build on the previous one, gradually transforming the UI to a card-based layout.
 
-* [ ] Reusable modal component for add/edit
+### **1. Refactor TaskSummary as a Card Component**
 
-  * Fields: 
-    * note textarea
-    * structured task selector (optional) - we will need to implement an autocomplete or dropdown to select existing tasks later, stub it out for now
-    * DateCreated (auto-filled with current date)
-  * Save/cancel buttons
-  * Autofocus first field
+* [X] Convert TaskSummary so that each task displays as a standalone Bootstrap card (not a list item).
+* [X] Card should show: task title (bold), key meta (status, priority, quadrant, badges) as a horizontal bar or chips.  Be sure not to lose functionality, jsut refactor it's layout.
+* [X] Add expandable/collapsible area (accordion/collapse) for task events/state details, only visible when expanded.
+* [X] Apply subtle card shadow/background, minimize borders for clean look.
+* [X] Ensure all actions (edit, delete, complete) are shown as icon buttons within the card, clearly separated from content.
+* [X] Test layout at different screen sizes (cards should stack on mobile).
 
-* [ ] Modal opens when clicking the add from the main Scrum Summary page
-* [ ] Ensure all code is in the code-behind file to keep the Razor file clean
-* [ ] Wire up to the model and ensure we are persisting to the database
-* [ ] On save, add/update entry and refresh the panel list
-* [ ] On cancel, close modal with no changes
+### **2. Build WorkCaptureCard Component**
 
-Pause for a build (dotnet build), fix any issues and ask for a review before proceeding to the next section.
+* [X] Create a new component (e.g., `WorkCaptureCard.razor`) for individual work captures (notes/entries).  Make sure to use a clean markup only razor component with the code implmentation in the code-behind file.
+* [X] Card displays:
+  * Note/entry text as main content.
+  * If there’s an associated task, show an “expand for task details” button or icon; when expanded, render the TaskSummary card inside (as a nested card, but with reduced visual weight—lighter shadow, less padding).
+  * Actions (edit, delete) as icon buttons at top right.  Make sure to use the same event handlers that are already in place.
+* [X] Apply matching card style to TaskSummary for consistency.
 
----
+### **3. Implement Card Components in ScrumSummary.razor**
 
-## Improvements and Enhancements
+* [ ] In each tab (Yesterday, Today, Blockers), map over work captures and render a `WorkCaptureCard` for each.
+* [ ] Below work captures, display any standalone task summaries (not tied to a work capture) as TaskSummary cards in a grid or stacked list.
+* [ ] Remove all legacy list-group/list-item markup and any nested Bootstrap cards/lists inside cards.
+* [ ] Ensure spacing and layout are clean and visually consistent.
 
-I'm ready to work on populating the task dropdown in the WorkCaptureNoteModal.  I was thinking we might give a button instead of a dropdown first (sort of in the style of the advanced on the TaskEditor where we then open up other input fields).  Anyhow, once the user has specified they want to associate a work capture note with a task, we need to do a repository call to get all of the open non-deleted tasks that are not completed and then display them in a dropdown or similar control.  The user can then select the task they want to associate with the work capture note.
+### **4. Polish & Responsive Design**
 
-To do this, we will need to:
-* [ ] Make the WorkCaptureNoteModal component able to provide a way to "associate" a work capture note with a task (again similiar to the TaskEditor where it enables advanced mode).
-* [ ] Implement a method in the `EisenhowerTaskRepository` to fetch open tasks that are not deleted and not completed.
-* [ ] Populate the dropdown with the results from the repository call.
-* [ ] Ensure the selected task is saved with the work capture note when the modal is submitted.
+* [ ] Use Bootstrap grid/flex to layout cards responsively—stacked on mobile, grid on desktop.
+* [ ] Test expand/collapse, actions, and keyboard accessibility.
+* [ ] Refine spacing, background colors, and shadows for clear card separation without excess borders.
+* [ ] Make sure blockers and statuses use visually strong color/indicator on card edge or header.
+

@@ -1,4 +1,5 @@
 @using ManagementDashboard.Components
+@using ManagementDashboard.Components.Pages
 @using ManagementDashboard.Data.Models
 
 @page "/scrum-summary"
@@ -57,97 +58,87 @@
         {
             <div>
                 <h5>What did you work on yesterday?</h5>
-                @if (YesterdayTasks != null && YesterdayTasks.Any())
-                {
-                    <ul class="list-group mb-3">
-                        @foreach (var task in YesterdayTasks)
-                        {
-                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                <TaskSummary Task="task" Date="@SelectedDate.AddDays(-1)" />
-                            </li>
-                        }
-                    </ul>
-                }
-                @if (YesterdayNotes != null && YesterdayNotes.Any())
-                {
-                    <ul class="list-group">
+                <div class="row g-3">
+                    @if (YesterdayNotes != null && YesterdayNotes.Any())
+                    {
                         @foreach (var note in YesterdayNotes)
                         {
-                            <li class="list-group-item">
-                                <div class="mb-1">@note.Notes</div>
-                                @if (note.TaskId.HasValue && note.Task != null)
-                                {
-                                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                                        <TaskSummary Task="note.Task" Date="note.CreatedAt" />
-                                    </li>
-                                }
-                            </li>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <WorkCaptureCard Note="note" OnEdit="HandleWorkCaptureEdit" OnDelete="HandleWorkCaptureDelete" />
+                            </div>
                         }
-                    </ul>
-                }
-                @if ((YesterdayTasks == null || !YesterdayTasks.Any()) && (YesterdayNotes == null || !YesterdayNotes.Any()))
-                {
-                    <p class="text-muted">No entries for yesterday.</p>
-                }
+                    }
+                    @if (YesterdayTasks != null && YesterdayTasks.Any())
+                    {
+                        @foreach (var task in YesterdayTasks)
+                        {
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <TaskSummary Task="task" Date="@SelectedDate.AddDays(-1)" />
+                            </div>
+                        }
+                    }
+                    @if ((YesterdayTasks == null || !YesterdayTasks.Any()) && (YesterdayNotes == null || !YesterdayNotes.Any()))
+                    {
+                        <div class="col-12">
+                            <p class="text-muted">No entries for yesterday.</p>
+                        </div>
+                    }
+                </div>
             </div>
         }
         else if (ActiveTab == ScrumTab.Today)
         {
             <div>
                 <h5>What will you work on today?</h5>
-                @if (TodayTasks != null && TodayTasks.Any())
-                {
-                    <ul class="list-group mb-3">
-                        @foreach (var task in TodayTasks)
-                        {
-                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                <TaskSummary Task="task" Date="@SelectedDate" />
-                            </li>
-                        }
-                    </ul>
-                }
-                @if (TodayNotes != null && TodayNotes.Any())
-                {
-                    <ul class="list-group">
+                <div class="row g-3">
+                    @if (TodayNotes != null && TodayNotes.Any())
+                    {
                         @foreach (var note in TodayNotes)
                         {
-                            <li class="list-group-item">
-                                <div class="mb-1">@note.Notes</div>
-                                @if (note.TaskId.HasValue && note.Task != null)
-                                {
-                                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                                        <TaskSummary Task="note.Task" Date="note.CreatedAt" />
-                                    </li>
-                                }
-                            </li>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <WorkCaptureCard Note="note" OnEdit="HandleWorkCaptureEdit" OnDelete="HandleWorkCaptureDelete" />
+                            </div>
                         }
-                    </ul>
-                }
-                @if ((TodayTasks == null || !TodayTasks.Any()) && (TodayNotes == null || !TodayNotes.Any()))
-                {
-                    <p class="text-muted">No entries for today.</p>
-                }
+                    }
+                    @if (TodayTasks != null && TodayTasks.Any())
+                    {
+                        @foreach (var task in TodayTasks)
+                        {
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <TaskSummary Task="task" Date="@SelectedDate" />
+                            </div>
+                        }
+                    }
+                    @if ((TodayTasks == null || !TodayTasks.Any()) && (TodayNotes == null || !TodayNotes.Any()))
+                    {
+                        <div class="col-12">
+                            <p class="text-muted">No entries for today.</p>
+                        </div>
+                    }
+                </div>
             </div>
         }
         else if (ActiveTab == ScrumTab.Blockers)
         {
             <div>
                 <h5>What is blocking you?</h5>
-                @if (BlockedTasks != null && BlockedTasks.Any())
-                {
-                    <ul class="list-group">
+                <div class="row g-3">
+                    @if (BlockedTasks != null && BlockedTasks.Any())
+                    {
                         @foreach (var task in BlockedTasks)
                         {
-                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="col-12 col-md-6 col-lg-4">
                                 <TaskSummary Task="task" Date="@SelectedDate" />
-                            </li>
+                            </div>
                         }
-                    </ul>
-                }
-                else
-                {
-                    <p class="text-muted">No blockers found.</p>
-                }
+                    }
+                    else
+                    {
+                        <div class="col-12">
+                            <p class="text-muted">No blockers found.</p>
+                        </div>
+                    }
+                </div>
             </div>
         }
     </div>

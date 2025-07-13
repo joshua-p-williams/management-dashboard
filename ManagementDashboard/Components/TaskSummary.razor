@@ -1,59 +1,76 @@
 @using ManagementDashboard.Data.Models
 @using ManagementDashboard.Core.Extensions
 
-<div class="ms-2 me-auto">
-    <div class="row g-2">
-        <div class="fw-bold">@Task.Title</div>
+
+<div class="card shadow-sm mb-3 task-summary-card" style="border: none;">
+    <div class="card-header d-flex flex-wrap align-items-center justify-content-between bg-body-tertiary border-0">
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+            <span class="fw-bold h5 mb-0">@Task.Title</span>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            @GetTaskStatusBadge(Task)
+            <!-- Action icons (stubbed, wire up as needed)
+            <button class="btn btn-sm btn-outline-secondary" title="Edit"><i class="bi bi-pencil"></i></button>
+            <button class="btn btn-sm btn-outline-danger" title="Delete"><i class="bi bi-trash"></i></button>
+            <button class="btn btn-sm btn-outline-success" title="Complete"><i class="bi bi-check-lg"></i></button>
+             -->
+        </div>
+    </div>
+    <div class="card-body pb-2 pt-2 bg-body">
+        <div class="d-flex flex-wrap gap-2">
+            <!-- Meta bar: status, priority, quadrant, badges
+            <span class="badge bg-info text-dark">@Task.Priority</span>
+            <span class="badge bg-secondary">@Task.Quadrant</span>
+             -->
+            @if (Task.IsPastDue(OverdueThresholdDays))
+            {
+                <span class="badge bg-danger"><i class="bi bi-exclamation-circle me-1"></i>Overdue</span>
+            }
+        </div>
         @if (!string.IsNullOrWhiteSpace(Task.Description))
         {
-            <div class="text-muted small">@Task.Description</div>
+            <div class="text-muted small mb-2">@Task.Description</div>
         }
-        @if (Events.Any())
-        {
-            <div class="col-12 col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                        <span><i class="bi bi-lightning-charge me-1"></i> Events (@Events.Count())</span>
-                        <button class="btn btn-sm btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#eventsCardCollapse" aria-expanded="false" aria-controls="eventsCardCollapse">
-                            <span class="bi bi-chevron-down"></span>
-                        </button>
-                    </div>
-                    <div id="eventsCardCollapse" class="collapse">
-                        <div class="card-body p-2">
-                            <ul class="list-unstyled mb-0">
-                                @foreach (var evt in Events)
-                                {
-                                    <li class="text-info small"><i class="bi bi-lightning-charge me-1"></i>@evt</li>
-                                }
-                            </ul>
-                        </div>
+        <div class="accordion mt-2" id="taskAccordion-@Task.Id">
+            <div class="accordion-item border-0">
+                <h2 class="accordion-header" id="headingEvents-@Task.Id">
+                    <button class="accordion-button collapsed bg-body" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEvents-@Task.Id" aria-expanded="false" aria-controls="collapseEvents-@Task.Id">
+                        <i class="bi bi-lightning-charge me-1"></i> Events & State
+                    </button>
+                </h2>
+                <div id="collapseEvents-@Task.Id" class="accordion-collapse collapse" aria-labelledby="headingEvents-@Task.Id" data-bs-parent="#taskAccordion-@Task.Id">
+                    <div class="accordion-body p-2">
+                        @if (Events.Any())
+                        {
+                            <div class="mb-2">
+                                <strong>Events:</strong>
+                                <ul class="list-unstyled mb-0">
+                                    @foreach (var evt in Events)
+                                    {
+                                        <li class="text-info small"><i class="bi bi-lightning-charge me-1"></i>@evt</li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                        @if (State.Any())
+                        {
+                            <div>
+                                <strong>State:</strong>
+                                <ul class="list-unstyled mb-0">
+                                    @foreach (var s in State)
+                                    {
+                                        <li class="text-secondary small"><i class="bi bi-info-circle me-1"></i>@s</li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                        @if (!Events.Any() && !State.Any())
+                        {
+                            <span class="text-muted small">No events or state details.</span>
+                        }
                     </div>
                 </div>
             </div>
-        }
-        @if (State.Any())
-        {
-            <div class="col-12 col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                        <span><i class="bi bi-info-circle me-1"></i> State (@State.Count())</span>
-                        <button class="btn btn-sm btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#stateCardCollapse" aria-expanded="false" aria-controls="stateCardCollapse">
-                            <span class="bi bi-chevron-down"></span>
-                        </button>
-                    </div>
-                    <div id="stateCardCollapse" class="collapse">
-                        <div class="card-body p-2">
-                            <ul class="list-unstyled mb-0">
-                                @foreach (var s in State)
-                                {
-                                    <li class="text-secondary small"><i class="bi bi-info-circle me-1"></i>@s</li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
+        </div>
     </div>
 </div>
-@GetTaskStatusBadge(Task)
