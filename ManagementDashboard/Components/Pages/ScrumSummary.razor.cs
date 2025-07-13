@@ -62,16 +62,21 @@ namespace ManagementDashboard.Components.Pages
 
         protected Task HandleWorkCaptureEdit(WorkCaptureNote note)
         {
-            // TODO: Implement edit logic for work capture note
+            // Use reference to existing note for editing
+            NewWorkCaptureNote = note;
+            ShowWorkCaptureModal = true;
             StateHasChanged();
             return Task.CompletedTask;
         }
 
-        protected Task HandleWorkCaptureDelete(WorkCaptureNote note)
+        protected async Task HandleWorkCaptureDelete(WorkCaptureNote note)
         {
-            // TODO: Implement delete logic for work capture note
+            if (note.Id > 0)
+            {
+                await NoteRepository.DeleteAsync(note.Id);
+                await LoadEntriesAsync();
+            }
             StateHasChanged();
-            return Task.CompletedTask;
         }
 
         protected void HandleWorkCaptureCancel()

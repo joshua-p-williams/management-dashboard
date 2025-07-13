@@ -37,7 +37,15 @@ namespace ManagementDashboard.Components
 
         protected async Task HandleSave()
         {
-            await NoteRepository.InsertAsync(Note);
+            // If editing, update; if new, insert
+            if (Note.Id > 0)
+            {
+                await NoteRepository.UpdateAsync(Note);
+            }
+            else
+            {
+                await NoteRepository.InsertAsync(Note);
+            }
             await OnCancel.InvokeAsync(); // Close modal after save
         }
 
