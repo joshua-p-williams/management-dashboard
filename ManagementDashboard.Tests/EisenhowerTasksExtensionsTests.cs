@@ -88,6 +88,18 @@ namespace ManagementDashboard.Tests
             Assert.Contains("Currently blocked - Waiting for review", state);
             Assert.Contains("Removed from active tasks", state);
         }
+
+        [Fact]
+        public void SummarizedState_ReturnsOverdueIfPastDue()
+        {
+            var overdueDays = 2;
+            var task = new EisenhowerTask {
+                CreatedAt = DateTime.Now.AddDays(-overdueDays - 1),
+                Priority = PriorityLevel.High
+            };
+            var state = task.SummarizedState(overdueDays).ToList();
+            Assert.Contains("Overdue", state);
+        }
         
         [Fact]
         public void SummarizeEvents_ReturnsNoEventsForOtherDates()

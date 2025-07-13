@@ -78,10 +78,10 @@ We'll implement this in a series of micro-tasks to ensure clarity and focus. Eac
 
 ### **3. Implement Card Components in ScrumSummary.razor**
 
-* [ ] In each tab (Yesterday, Today, Blockers), map over work captures and render a `WorkCaptureCard` for each.
-* [ ] Below work captures, display any standalone task summaries (not tied to a work capture) as TaskSummary cards in a grid or stacked list.
-* [ ] Remove all legacy list-group/list-item markup and any nested Bootstrap cards/lists inside cards.
-* [ ] Ensure spacing and layout are clean and visually consistent.
+* [X] In each tab (Yesterday, Today, Blockers), map over work captures and render a `WorkCaptureCard` for each.
+* [X] Below work captures, display any standalone task summaries (not tied to a work capture) as TaskSummary cards in a grid or stacked list.
+* [X] Remove all legacy list-group/list-item markup and any nested Bootstrap cards/lists inside cards.
+* [X] Ensure spacing and layout are clean and visually consistent.
 
 ### **4. Polish & Responsive Design**
 

@@ -16,7 +16,7 @@ namespace ManagementDashboard.Components
         [Inject] public IAppPreferences AppPreferences { get; set; } = default!;
 
         protected IEnumerable<string> Events => Task?.SummarizeEvents(Date) ?? Enumerable.Empty<string>();
-        protected IEnumerable<string> State => Task?.SummarizedState() ?? Enumerable.Empty<string>();
+        protected IEnumerable<string> State => Task?.SummarizedState(AppPreferences?.GetInt("OverdueThresholdDays", 2) ?? 2) ?? Enumerable.Empty<string>();
 
         private int OverdueThresholdDays => AppPreferences?.GetInt("OverdueThresholdDays", 2) ?? 2;
 
