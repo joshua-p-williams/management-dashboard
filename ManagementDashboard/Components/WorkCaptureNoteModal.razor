@@ -1,5 +1,4 @@
 @using ManagementDashboard.Data.Models
-@inherits WorkCaptureNoteModalBase
 
 <div class="modal fade show" tabindex="-1" style="display: block;" aria-modal="true" role="dialog">
     <div class="modal-dialog">
@@ -14,15 +13,23 @@
                     <textarea id="notes" class="form-control" @bind="Note.Notes" autofocus rows="4"></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="task" class="form-label">Task (optional)</label>
-                    <select id="task" class="form-select" @bind="Note.TaskId">
-                        <option value="">-- Select a Task --</option>
-                        @foreach (var task in OpenTasks)
-                        {
-                            <option value="@task.Id">@task.Title</option>
-                        }
-                    </select>
+                    <button type="button" class="btn btn-outline-secondary" @onclick="EnableAssociateTask" aria-label="Associate with Task">
+                        <i class="bi bi-link"></i> Associate with Task
+                    </button>
                 </div>
+                @if (IsAssociateTaskMode)
+                {
+                    <div class="mb-3">
+                        <label for="task" class="form-label">Select Task</label>
+                        <select id="task" class="form-select" @bind="Note.TaskId">
+                            <option value="">-- Select a Task --</option>
+                            @foreach (var task in OpenTasks)
+                            {
+                                <option value="@task.Id">@task.Title</option>
+                            }
+                        </select>
+                    </div>
+                }
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" @onclick="HandleCancel">Cancel</button>

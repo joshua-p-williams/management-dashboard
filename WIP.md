@@ -114,6 +114,10 @@ Pause for a build (dotnet build), fix any issues and ask for a review before pro
 
 ## Improvements and Enhancements
 
-I'd like to be able to get a list of events that happened on a Task. For example, if I had a method called "SummarizeEvents", and it takes a date as a parameter, it could look at the date properties on the task (UpdatedAt, CompletedAt, BlockedAt, UnblockedAt, CreatedAt, DeletedAt, etc..), it can give an IEnumerable of descriptions for things that happened on the task for the date given. Example.. If it was Blocked on the date passed in, one of the SummarizedEvents would be "Became blocked", and if it has a blocker reason, it could be included to say "Became blocked - {Blocker Reason)". Make this a new testable service with extension methods for the EisenhowerTasks, but place it in the ManagementDashboard.Core project under it's list of services as appropriate. Maybe a new Folder called Extensions or something? And call it EisenhowerTasksExtensions. Consider whatever best practices are, implement this, and make it tested within the ManagementDashboard.Tests project.
+I'm ready to work on populating the task dropdown in the WorkCaptureNoteModal.  I was thinking we might give a button instead of a dropdown first (sort of in the style of the advanced on the TaskEditor where we then open up other input fields).  Anyhow, once the user has specified they want to associate a work capture note with a task, we need to do a repository call to get all of the open non-deleted tasks that are not completed and then display them in a dropdown or similar control.  The user can then select the task they want to associate with the work capture note.
 
-Now that we have the extension methods, we can use them to summarize the events for a task in the Scrum Summary page. This will allow users to see a quick summary of what happened with each task on the selected date.  Can you implement this under each applicable section (Yesterday, Today, Blockers) in the Scrum Summary page?
+To do this, we will need to:
+* [ ] Make the WorkCaptureNoteModal component able to provide a way to "associate" a work capture note with a task (again similiar to the TaskEditor where it enables advanced mode).
+* [ ] Implement a method in the `EisenhowerTaskRepository` to fetch open tasks that are not deleted and not completed.
+* [ ] Populate the dropdown with the results from the repository call.
+* [ ] Ensure the selected task is saved with the work capture note when the modal is submitted.

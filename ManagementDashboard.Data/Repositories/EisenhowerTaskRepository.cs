@@ -14,6 +14,7 @@ namespace ManagementDashboard.Data.Repositories
         Task<int> MoveTaskToQuadrantAsync(EisenhowerTask task, string quadrant);
         Task<IEnumerable<EisenhowerTask>> GetWorkedOnByDateAsync(DateTime date);
         Task<IEnumerable<EisenhowerTask>> GetBlockedAsync();
+        Task<IEnumerable<EisenhowerTask>> GetOpenTasksAsync();
     }
 
     public class EisenhowerTaskRepository : RepositoryBase<EisenhowerTask, EisenhowerTaskConstraints>, IEisenhowerTaskRepository
@@ -25,6 +26,15 @@ namespace ManagementDashboard.Data.Repositories
             var constraints = new Hashtable();
             constraints.Add("DeletedAt", null); // Only include tasks that are not deleted
             return this.GetConstraints(constraints);
+        }
+
+        public async Task<IEnumerable<EisenhowerTask>> GetOpenTasksAsync()
+        {
+            var constraints = new System.Collections.Hashtable {
+                { "DeletedAt", null },
+                { "CompletedAt", null }
+            };
+            return await GetAsync(constraints);
         }
 
         public async Task<IEnumerable<EisenhowerTask>> GetTasksByQuadrantAsync(string? quadrant)

@@ -54,10 +54,8 @@ namespace ManagementDashboard.Components.Pages
             ShowWorkCaptureModal = true;
         }
 
-
         protected async Task HandleWorkCaptureSave(WorkCaptureNote note)
         {
-            await NoteRepository.InsertAsync(note);
             ShowWorkCaptureModal = false;
             await LoadEntriesAsync();
             StateHasChanged();
@@ -67,16 +65,6 @@ namespace ManagementDashboard.Components.Pages
         {
             ShowWorkCaptureModal = false;
         }
-
-
-        protected async Task LoadOpenTasksAsync()
-        {
-            // Get open tasks: not deleted, not completed before today
-            var openTasks = await TaskRepository.GetTasksByQuadrantAsync(null);
-            OpenTasks = openTasks.ToList();
-        }
-
-        // Remove duplicate OnInitializedAsync if present elsewhere in partial class
 
         protected void OpenHelpModal()
         {
@@ -132,23 +120,5 @@ namespace ManagementDashboard.Components.Pages
                 await LoadEntriesAsync();
             }
         }
-
-        protected RenderFragment GetTaskStatusBadge(EisenhowerTask task) => builder =>
-        {
-            var status = task.GetStatus();
-            var badgeClass = status switch
-            {
-                "Done" => "badge bg-success",
-                "Blocked" => "badge bg-danger",
-                "Removed" => "badge bg-dark",
-                "In Progress" => "badge bg-warning text-dark",
-                "Unknown" => "badge bg-secondary",
-                _ => "badge bg-secondary"
-            };
-            builder.OpenElement(0, "span");
-            builder.AddAttribute(1, "class", badgeClass);
-            builder.AddContent(2, status);
-            builder.CloseElement();
-        };
     }
 }
