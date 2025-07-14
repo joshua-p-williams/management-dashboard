@@ -19,7 +19,7 @@ namespace ManagementDashboard.Data.Repositories
         public override Dictionary<string, object> Bind(Dapper.SqlBuilder builder)
         {
             var parameters = new Dictionary<string, object>();
-            builder.Where("(Quadrant IS NULL OR Quadrant = '')");
+            builder.Where("(Quadrant IS NULL OR Quadrant NOT IN ('Do', 'Delegate', 'Schedule', 'Delete'))");
             return parameters;
         }
     }
