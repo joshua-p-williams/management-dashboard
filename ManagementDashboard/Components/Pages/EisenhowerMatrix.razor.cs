@@ -19,13 +19,7 @@ namespace ManagementDashboard.Components.Pages
         private string? taskEditorQuadrant = null;
         private EisenhowerTask? taskToEdit = null;
 
-        // Modal state for TaskAuditTrail
-        private bool showAuditTrail = false;
-        private EisenhowerTask? auditTrailTask = null;
-
-        // Modal state for delete confirmation
-        private bool showDeleteConfirm = false;
-        private EisenhowerTask? taskToDelete = null;
+        private bool showHelpModal = false;
 
         private static readonly string[] Quadrants = new[] { "Do", "Schedule", "Delegate", "Delete" };
 
@@ -88,58 +82,22 @@ namespace ManagementDashboard.Components.Pages
             StateHasChanged();
         }
 
-        private void EditTask(EisenhowerTask task)
-        {
-            taskToEdit = task;
-            taskEditorQuadrant = task.Quadrant;
-            showTaskEditor = true;
-        }
-
-        private void RequestDeleteTask(EisenhowerTask task)
-        {
-            taskToDelete = task;
-            showDeleteConfirm = true;
-        }
-
-        private void CancelDeleteTask()
-        {
-            showDeleteConfirm = false;
-            taskToDelete = null;
-        }
-
-        private async Task ConfirmDeleteTaskAsync()
-        {
-            if (taskToDelete != null)
-            {
-                await TaskRepository.DeleteAsync(taskToDelete.Id);
-                await LoadTasks();
-                StateHasChanged();
-            }
-            showDeleteConfirm = false;
-            taskToDelete = null;
-        }
-
-        private async Task CompleteTask(EisenhowerTask task)
+        private async Task TaskCardStateChanged(EisenhowerTask task)
         {
             await LoadTasks();
             StateHasChanged();
-        }
-        private void ShowAuditTrail(EisenhowerTask task)
-        {
-            auditTrailTask = task;
-            showAuditTrail = true;
-        }
-
-        private void CloseAuditTrail()
-        {
-            showAuditTrail = false;
-            auditTrailTask = null;
         }
 
         private async Task MoveTaskToQuadrant(EisenhowerTask task, string targetQuadrant)
         {
             await LoadTasks();
             StateHasChanged();
+        }
+        private void OpenAddTaskModalInbox()
+        {
+            taskEditorQuadrant = null;
+            taskToEdit = null;
+            showTaskEditor = true;
         }
     }
 }
