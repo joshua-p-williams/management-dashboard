@@ -12,6 +12,19 @@ namespace ManagementDashboard.Components
 
         private bool ShowTaskDetails = false;
 
+        private string Title(int maxLength)
+        {
+            // If we have a task, show the truncated title of the task, else show the truncated note text
+            if (Note.Task != null)
+            {
+                return Truncate(Note.Task.Title, maxLength);
+            }
+            else
+            {
+                return Truncate(Note.Notes, maxLength);
+            }
+        }
+
         private string Truncate(string? text, int maxLength)
         {
             if (string.IsNullOrEmpty(text)) return "";
