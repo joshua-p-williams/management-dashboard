@@ -4,10 +4,11 @@ using ManagementDashboard.Data.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ManagementDashboard.Core.Contracts;
 
 namespace ManagementDashboard.Core.Services
 {
-    public class TaskService
+    public class TaskService : ITaskService
     {
         private readonly IEisenhowerTaskRepository _repository;
         public TaskService(IEisenhowerTaskRepository repository)

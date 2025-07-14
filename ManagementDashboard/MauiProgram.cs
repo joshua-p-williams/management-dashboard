@@ -38,6 +38,9 @@ namespace ManagementDashboard
             // Register WorkCaptureNoteRepository as scoped
             builder.Services.AddScoped<IWorkCaptureNoteRepository, WorkCaptureNoteRepository>();
 
+            // Register TaskService and ITaskService as scoped
+            builder.Services.AddScoped<ITaskService, TaskService>();
+
             // Register configuration for SQLite connection string
             var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "management-dashboard.db");
             var configBuilder = new ConfigurationBuilder();

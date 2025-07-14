@@ -109,10 +109,16 @@
                             </div>
                         }
                     }
-                    @if ((TodayTasks == null || !TodayTasks.Any()) && (TodayNotes == null || !TodayNotes.Any()))
+                    @if (SelectedDate.Date != DateTime.Now.Date &&(TodayTasks == null || !TodayTasks.Any()) && (TodayNotes == null || !TodayNotes.Any()))
                     {
                         <div class="col-12">
-                            <p class="text-muted">No entries for today.</p>
+                            <p class="text-muted">No work capture entries found for this date.</p>
+                        </div>
+                    }
+                    @if (SelectedDate.Date == DateTime.Now.Date)
+                    {
+                        <div class="col-12 mt-4">
+                            <NextTasksList />
                         </div>
                     }
                 </div>

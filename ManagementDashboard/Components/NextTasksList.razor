@@ -1,0 +1,44 @@
+@using ManagementDashboard.Data.Models
+
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span class="h5 mb-0">Next Tasks to Work On</span>
+        <div>
+            <label class="visually-hidden" for="taskCountDropdown">Show</label>
+            <select id="taskCountDropdown" class="form-select form-select-sm"
+                    aria-label="Select number of tasks to display"
+                    @onchange="OnCountChanged">
+                <option value="5" selected="@IsSelected(5)">Top 5</option>
+                <option value="10" selected="@IsSelected(10)">Top 10</option>
+                <option value="all" selected="@IsSelected(null)">All</option>
+            </select>
+        </div>
+    </div>
+    <div class="card-body">
+        @if (IsLoading)
+        {
+            <div class="d-flex justify-content-center my-4">
+                <div class="spinner-border" role="status" aria-label="Loading tasks"></div>
+            </div>
+        }
+        else if (ErrorMessage != null)
+        {
+            <div class="alert alert-danger" role="alert">@ErrorMessage</div>
+        }
+        else if (Tasks == null || !Tasks.Any())
+        {
+            <div class="text-center text-muted my-4">You’re all caught up!</div>
+        }
+        else
+        {
+            <div class="row row-cols-1 g-3">
+                @foreach (var task in Tasks)
+                {
+                    <div class="col">
+                        <TaskCard Task="task" />
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
