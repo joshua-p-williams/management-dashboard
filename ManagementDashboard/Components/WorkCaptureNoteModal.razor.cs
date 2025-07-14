@@ -30,6 +30,16 @@ namespace ManagementDashboard.Components
         protected bool IsAssociateTaskMode { get; set; } = false;
         protected List<EisenhowerTask> OpenTasks { get; set; } = new List<EisenhowerTask>();
 
+        protected override async Task OnParametersSetAsync()
+        {
+            // If Note.TaskId is set, show the associate task dropdown and load tasks
+            if (Note?.TaskId != null)
+            {
+                await EnableAssociateTask();
+                // TaskId will be bound in the select, so no extra assignment needed
+            }
+        }
+
         protected async Task EnableAssociateTask()
         {
             IsAssociateTaskMode = true;

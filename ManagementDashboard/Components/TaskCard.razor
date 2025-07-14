@@ -54,6 +54,7 @@
                 <li><a class="dropdown-item" href="#" @onclick="RequestDelete" @onclick:preventDefault><i class="bi bi-trash me-2"></i>Delete</a></li>
                 <li><a class="dropdown-item" href="#" @onclick="OnCompleteTask" @onclick:preventDefault disabled="@Task.IsCompleted"><i class="bi bi-check2 me-2"></i>Mark Complete</a></li>
                 <li><a class="dropdown-item" href="#" @onclick="RequestAuditTrail" @onclick:preventDefault><i class="bi bi-clock-history me-2"></i>Audit Trail</a></li>
+                <li><a class="dropdown-item" href="#" @onclick="RequestWorkCapture" @onclick:preventDefault><i class="bi bi-pencil-square me-2"></i>Work Capture</a></li>
                 <li><hr class="dropdown-divider" /></li>
                 <li class="dropdown-header">Move To...</li>
                 @foreach (var quadrant in Quadrants.Where(q => q != Task.Quadrant))
@@ -102,4 +103,13 @@
                 TaskToEdit="@Task"
                 OnCancel="CloseTaskEditor"
                 OnSaved="OnTaskSaved" />
+}
+
+@if (showWorkCaptureModal)
+{
+    <WorkCaptureNoteModal
+        Note="WorkCaptureNoteDraft"
+        IsEditMode="false"
+        OnCancel="CloseWorkCaptureModal"
+        OnSave="OnWorkCaptureSaved" />
 }

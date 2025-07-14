@@ -3,6 +3,7 @@ using ManagementDashboard.Data.Models;
 using ManagementDashboard.Data.Repositories;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Maui.Storage;
+using System.Threading.Tasks;
 
 namespace ManagementDashboard.Components
 {
@@ -26,6 +27,9 @@ namespace ManagementDashboard.Components
         private bool showDeleteConfirm = false;
         private bool showTaskEditor = false;
         private string? taskEditorQuadrant = null;
+
+        private bool showWorkCaptureModal = false;
+        private WorkCaptureNote WorkCaptureNoteDraft = new WorkCaptureNote();
 
         private void RequestAuditTrail()
         {
@@ -97,6 +101,29 @@ namespace ManagementDashboard.Components
             {
                 await OnEdit.InvokeAsync();
             }
+        }
+
+        private void RequestWorkCapture()
+        {
+            WorkCaptureNoteDraft = new WorkCaptureNote
+            {
+                TaskId = Task.Id,
+                Task = Task,
+                CreatedAt = System.DateTime.Now,
+                UpdatedAt = System.DateTime.Now
+            };
+            showWorkCaptureModal = true;
+        }
+
+        private void CloseWorkCaptureModal()
+        {
+            showWorkCaptureModal = false;
+        }
+
+        private async Task OnWorkCaptureSaved(WorkCaptureNote note)
+        {
+            showWorkCaptureModal = false;
+            // Optionally, trigger a refresh or toast here
         }
 
     }

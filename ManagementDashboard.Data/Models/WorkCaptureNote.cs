@@ -14,7 +14,10 @@ namespace ManagementDashboard.Data.Models
         public int? TaskId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+
         [Dapper.NotMapped]
+        [System.Text.Json.Serialization.JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]        
         public EisenhowerTask? Task { get; set; }
     }
 }
