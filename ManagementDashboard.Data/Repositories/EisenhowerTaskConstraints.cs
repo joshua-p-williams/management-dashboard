@@ -55,11 +55,11 @@ namespace ManagementDashboard.Data.Repositories
             var parameters = new Dictionary<string, object>();
             if (DataTransformationService.ToBool(Value))
             {
-                builder.Where("BlockedAt IS NOT NULL AND UnblockedAt IS NULL");
+                builder.Where("BlockedAt IS NOT NULL AND UnblockedAt IS NULL AND CompletedAt IS NULL");
             }
             else
             {
-                builder.Where("BlockedAt IS NULL OR UnblockedAt IS NOT NULL");
+                builder.Where("(BlockedAt IS NULL OR UnblockedAt IS NOT NULL) AND CompletedAt IS NULL");
             }
             // If Value is null, do not add any filter
             return parameters;

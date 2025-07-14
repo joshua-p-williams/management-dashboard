@@ -121,7 +121,6 @@ namespace ManagementDashboard.Components.Pages
 
         private async Task CompleteTask(EisenhowerTask task)
         {
-            await TaskRepository.CompleteTaskAsync(task);
             await LoadTasks();
             StateHasChanged();
         }
@@ -139,21 +138,8 @@ namespace ManagementDashboard.Components.Pages
 
         private async Task MoveTaskToQuadrant(EisenhowerTask task, string targetQuadrant)
         {
-            await TaskRepository.MoveTaskToQuadrantAsync(task, targetQuadrant);
             await LoadTasks();
             StateHasChanged();
-        }
-
-        private string GetQuadrantDisplayName(string quadrant)
-        {
-            return quadrant switch
-            {
-                "Do" => "Do Now",
-                "Schedule" => "Schedule",
-                "Delegate" => "Delegate",
-                "Delete" => "Delete",
-                _ => quadrant
-            };
         }
     }
 }
