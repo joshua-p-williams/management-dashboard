@@ -17,26 +17,26 @@ Refer to the [Scrum Summary Database Definition](feature-scrum-summary-database.
 
 ---
 
-# **Build Instructions: Scrum Ceremony Summary (Tabbed UI) Feature**
+#  Create a self-contained component for displaying next tasks to work on
 
-> **How to use:**
-> Work through each task one at a time.
-> Each task is broken down into micro-tasks for clarity—check off or comment as you complete, adjust, or revisit.
-> If a design decision or blocker arises, note it below the relevant task.
+Now that I have my eisenhower matrix and a basic scrum ceremony, on the "today" tab, I'd like to be able to show "What I plan on working today".  I'd like this to be a component (that is sel-contained), as I'd like to list it on both my "today" tab, as well as my dashboard.  I'm thinking of a simple list of tasks (that can be expanded for details) that I can show.
 
----
+At a minimum, I need to be able to show items that aren't deleted (DeletedAt == null) and that are not completed (CompletedAt == null).  If it's blocked, I need to be able to show that as we can't work on it until it's cleared.
 
-I really like what you did on the WorkCaptureCard component when a task is associated with it.
+I need to be able to show the task in order honoring the eisenhower matrix category, the priority under that, and then probably anything that's "overdue".
 
-            <div class="d-flex align-items-center mb-2">
-                <span class="fw-semibold text-truncate" style="max-width: 60%">
-                    <i class="bi bi-list-task me-1"></i>@Truncate(Note.Task.Title, 40)
-                </span>
-                <button class="btn btn-sm btn-link ms-2" @onclick="ToggleTaskDetails" aria-label="Show Task Details">
-                    <i class="bi @(ShowTaskDetails ? "bi-chevron-up" : "bi-chevron-down")"></i>
-                </button>
-            </div>
+I want to add a constraint to the ManagementDashboard.Data\Repositories\EisenhowerTaskConstraints.cs file to limit these tasks to only those that are not deleted and not complete.  This can be a "ReadyToWork" constraint that can be used in the repository to filter tasks.
 
-I like it so much I'd like to do that on the TaskSummary.razor component as well in place of the current Events & State Accordion.  Make the following changes to the TaskSummary.razor component:
+I then need a new service in ManagementDashboard.Core that can be used to retrieve these tasks, and return them in the order that we want them displayed based on priority.  The service could be called TaskService and this method could be called GetNextTasksToWorkOnAsync.  It should return a list of EisenhowerTask objects that are ready to work on. It can take a parameter for the number of tasks to return, defaulting to 5 if not specified.
 
-* [ ] Instead of doing an accordion for the Events & State, present the icon followed by the text "Events & State" followed by a chevron icon that toggles the visibility of the events and state, replacing the text "Events & State" and chevron with the actual events and state when expanded.
+The priority order for the tasks should be:
+1. Honor the Eisenhower Matrix Category (called Quadrant in the code and on the task model) "Do", "Schedule", "Delegate", and "Delete"
+    * We will need to establish a numeric order for these categories, e.g., "Do" = 1, "Schedule" = 2, "Delegate" = 3, "Delete" = * You can establish an enum for this in the ManagementDashboard.Core project.
+2. Within each category, order by priority (We have a PriorityLevel enum in code we can use)
+3. After priority, it would be by blocked status (The task has a property called IsBlocked that can be used for this)
+4. After that the CreatedDate (oldest date has higest priority)
+
+I would then like the to have some unit tests for this service in the ManagementDashboard.Tests project.  The tests should cover the following scenarios:
+1. Retrieve the correct number of tasks.
+2. Retrieve tasks in the correct order.
+3. Handle cases where there are no tasks to retrieve.
