@@ -15,16 +15,19 @@ namespace ManagementDashboard.Core.Services
             _repository = repository;
         }
 
-        public async Task<List<EisenhowerTask>> GetNextTasksToWorkOnAsync(int count = 5)
+        public async Task<List<EisenhowerTask>> GetNextTasksToWorkOnAsync(int? count = 5)
         {
             var tasks = await _repository.GetOpenTasksAsync() ?? new List<EisenhowerTask>();
-            return tasks
+            var orderedTasks = tasks
                 .OrderBy(t => GetQuadrantOrder(t.Quadrant))
                 .ThenByDescending(t => t.Priority)
                 .ThenBy(t => t.IsBlocked)
-                .ThenBy(t => t.CreatedAt)
-                .Take(count)
-                .ToList();
+                .ThenBy(t => t.CreatedAt);
+
+            if (count.HasValue)
+                return orderedTasks.Take(count.Value).ToList();
+            else
+                return orderedTasks.ToList();
         }
 
         private int GetQuadrantOrder(string? quadrant)

@@ -88,11 +88,6 @@ namespace ManagementDashboard.Components.Pages
             StateHasChanged();
         }
 
-        private async Task MoveTaskToQuadrant(EisenhowerTask task, string targetQuadrant)
-        {
-            await LoadTasks();
-            StateHasChanged();
-        }
         private void OpenAddTaskModalInbox()
         {
             taskEditorQuadrant = null;

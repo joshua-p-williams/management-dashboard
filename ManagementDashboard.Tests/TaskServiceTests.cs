@@ -138,5 +138,17 @@ namespace ManagementDashboard.Tests
             var result = await service.GetNextTasksToWorkOnAsync();
             Assert.Empty(result);
         }
+
+        [Fact]
+        public async Task GetNextTasksToWorkOnAsync_WithNullCount_ReturnsAllTasks()
+        {
+            var mockRepo = new Mock<IEisenhowerTaskRepository>();
+            mockRepo.Setup(r => r.GetOpenTasksAsync()).ReturnsAsync(GetSampleTasks());
+            var service = new TaskService(mockRepo.Object);
+
+            var result = await service.GetNextTasksToWorkOnAsync(null);
+
+            Assert.Equal(GetSampleTasks().Count, result.Count);
+        }
     }
 }

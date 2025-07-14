@@ -6,6 +6,6 @@ namespace ManagementDashboard.Core.Contracts
 {
     public interface ITaskService
     {
-        Task<List<EisenhowerTask>> GetNextTasksToWorkOnAsync(int count = 5);
+        Task<List<EisenhowerTask>> GetNextTasksToWorkOnAsync(int? count = 5);
     }
 }

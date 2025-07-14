@@ -17,26 +17,61 @@ Refer to the [Scrum Summary Database Definition](feature-scrum-summary-database.
 
 ---
 
-#  Create a self-contained component for displaying next tasks to work on
+## NextTasksList Feature
 
-Now that I have my eisenhower matrix and a basic scrum ceremony, on the "today" tab, I'd like to be able to show "What I plan on working today".  I'd like this to be a component (that is sel-contained), as I'd like to list it on both my "today" tab, as well as my dashboard.  I'm thinking of a simple list of tasks (that can be expanded for details) that I can show.
+> **NextTasksList Component — Design & Usage**
+>
+> The `NextTasksList` component is a self-contained, reusable UI element that displays a prioritized list of actionable tasks for the user, based on the Eisenhower Matrix and task priority. Designed for MAUI/Blazor Hybrid with Bootstrap 5, it injects its own repositories/services and manages state internally. The component fetches tasks from `TaskService.GetNextTasksToWorkOnAsync`, supports both a “Top N” and “All” view (user-selectable via dropdown), and displays each task using the existing `TaskCard` component. Intended for easy inclusion on any dashboard or feature page, it offers a quick, scannable overview of what’s next, with responsive design and accessibility as first-class goals.
 
-At a minimum, I need to be able to show items that aren't deleted (DeletedAt == null) and that are not completed (CompletedAt == null).  If it's blocked, I need to be able to show that as we can't work on it until it's cleared.
+---
 
-I need to be able to show the task in order honoring the eisenhower matrix category, the priority under that, and then probably anything that's "overdue".
+## **UI/UX Design Considerations (Best Practices)**
 
-I want to add a constraint to the ManagementDashboard.Data\Repositories\EisenhowerTaskConstraints.cs file to limit these tasks to only those that are not deleted and not complete.  This can be a "ReadyToWork" constraint that can be used in the repository to filter tasks.
+* **Self-contained**: Handles its own data fetch/state, so it’s easy to drop into any layout.
+* **Dropdown or Toggle for Item Count**: Place a Bootstrap dropdown or segmented toggle above the list for user to select “Top 5”, “Top 10”, or “All” tasks. Default to a reasonable number (e.g., 5 or 10).
+* **Task Cards**: Render tasks using the standard `TaskCard` for consistent look and feature set.
+* **Responsive Grid/List**: On desktop, display as a grid or stacked cards with margin; on mobile, cards should stack vertically and remain easy to tap.
+* **Loading State**: Show a Bootstrap spinner or skeleton loader while fetching.
+* **Empty State**: Friendly message (“You’re all caught up!”) if no tasks are returned.
+* **Blocked Tasks**: Visually mark blocked tasks with a badge/icon and fade/disable actions as needed.
+* **Header/Title**: Clear, concise section title (e.g., “Next Tasks to Work On”).
+* **Accessibility**: All dropdowns/buttons are keyboard-accessible and labeled; ensure screen reader compatibility.
 
-I then need a new service in ManagementDashboard.Core that can be used to retrieve these tasks, and return them in the order that we want them displayed based on priority.  The service could be called TaskService and this method could be called GetNextTasksToWorkOnAsync.  It should return a list of EisenhowerTask objects that are ready to work on. It can take a parameter for the number of tasks to return, defaulting to 5 if not specified.
+---
 
-The priority order for the tasks should be:
-1. Honor the Eisenhower Matrix Category (called Quadrant in the code and on the task model) "Do", "Schedule", "Delegate", and "Delete"
-    * We will need to establish a numeric order for these categories, e.g., "Do" = 1, "Schedule" = 2, "Delegate" = 3, "Delete" = * You can establish an enum for this in the ManagementDashboard.Core project.
-2. Within each category, order by priority (We have a PriorityLevel enum in code we can use)
-3. After priority, it would be by blocked status (The task has a property called IsBlocked that can be used for this)
-4. After that the CreatedDate (oldest date has higest priority)
+## **Micro-task Checklist**
 
-I would then like the to have some unit tests for this service in the ManagementDashboard.Tests project.  The tests should cover the following scenarios:
-1. Retrieve the correct number of tasks.
-2. Retrieve tasks in the correct order.
-3. Handle cases where there are no tasks to retrieve.
+1. **Component Setup**
+
+   * [ ] Scaffold new Razor component: `NextTasksList.razor`
+   * [ ] Inject required services (`TaskService` etc.) and manage loading/error state locally
+
+2. **Dropdown for Item Count**
+
+   * [ ] Add Bootstrap 5 dropdown/select or segmented toggle for number of tasks to display (“Top 5”, “Top 10”, “All”)
+   * [ ] Wire dropdown to trigger reload of task list
+
+3. **Data Fetching**
+
+   * [ ] On parameter or dropdown change, fetch tasks using `GetNextTasksToWorkOnAsync(n)`
+   * [ ] Show spinner/loading indicator during fetch
+   * [ ] Handle error and empty states gracefully
+
+4. **Task Rendering**
+
+   * [ ] Render tasks using `<TaskCard Task=... />`, passing all needed props
+   * [ ] Stack in a Bootstrap grid or vertical list, responsive for all screen sizes
+   * [ ] Visually mark blocked tasks (badge, icon, faded look)
+   * [ ] Optionally, expand/collapse for more task details
+
+5. **UI Polish**
+
+   * [ ] Add component header/title (“Next Tasks to Work On”)
+   * [ ] Apply Bootstrap spacing/margins for clean appearance
+   * [ ] Make sure all buttons/controls have tooltips and aria-labels
+
+6. **Testing**
+
+   * [ ] Confirm usability and layout on both desktop and mobile
+   * [ ] Test keyboard navigation and screen reader experience
+

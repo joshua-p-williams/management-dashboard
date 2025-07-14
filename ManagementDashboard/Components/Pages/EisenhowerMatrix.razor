@@ -39,7 +39,7 @@
                                   OnEdit="@(() => TaskCardStateChanged(task))"
                                   OnDelete="@(() => TaskCardStateChanged(task))"
                                   OnComplete="@(() => TaskCardStateChanged(task))"
-                                  OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
+                                  OnMoveToQuadrant="@(() => TaskCardStateChanged(task))" />
                     }
                 </div>
             </div>
@@ -80,7 +80,7 @@
                                                   OnEdit="@(() => TaskCardStateChanged(task))"
                                                   OnDelete="@(() => TaskCardStateChanged(task))"
                                                   OnComplete="@(() => TaskCardStateChanged(task))"
-                                                  OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
+                                                  OnMoveToQuadrant="@(() => TaskCardStateChanged(task))" />
                                     }
                                 }
                             </div>
@@ -106,7 +106,7 @@
                                                   OnEdit="@(() => TaskCardStateChanged(task))"
                                                   OnDelete="@(() => TaskCardStateChanged(task))"
                                                   OnComplete="@(() => TaskCardStateChanged(task))"
-                                                  OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
+                                                  OnMoveToQuadrant="@(() => TaskCardStateChanged(task))" />
                                     }
                                 }
                             </div>
@@ -132,7 +132,7 @@
                                                   OnEdit="@(() => TaskCardStateChanged(task))"
                                                   OnDelete="@(() => TaskCardStateChanged(task))"
                                                   OnComplete="@(() => TaskCardStateChanged(task))"
-                                                  OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
+                                                  OnMoveToQuadrant="@(() => TaskCardStateChanged(task))" />
                                     }
                                 }
                             </div>
@@ -158,7 +158,7 @@
                                                   OnEdit="@(() => TaskCardStateChanged(task))"
                                                   OnDelete="@(() => TaskCardStateChanged(task))"
                                                   OnComplete="@(() => TaskCardStateChanged(task))"
-                                                  OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
+                                                  OnMoveToQuadrant="@(() => TaskCardStateChanged(task))" />
                                     }
                                 }
                             </div>
