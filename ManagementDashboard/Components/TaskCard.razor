@@ -3,7 +3,7 @@
 @* TaskCard.razor: Reusable component for displaying a single task in the Eisenhower Matrix *@
 
 @{
-    string tooltip = null;
+    string tooltip = string.Empty;
     if (!string.IsNullOrWhiteSpace(Task.Description))
     {
         tooltip = Task.Description.Length > 120 ? Task.Description.Substring(0, 120) + "…" : Task.Description;
@@ -50,10 +50,11 @@
                 <i class="bi bi-three-dots-vertical fs-5" style="color: var(--bs-body-color);"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton-@Task.Id">
-                <li><a class="dropdown-item" href="#" @onclick="OnEdit" @onclick:preventDefault><i class="bi bi-pencil me-2"></i>Edit</a></li>
-                <li><a class="dropdown-item" href="#" @onclick="OnDelete" @onclick:preventDefault><i class="bi bi-trash me-2"></i>Delete</a></li>
-                <li><a class="dropdown-item" href="#" @onclick="OnComplete" @onclick:preventDefault disabled="@Task.IsCompleted"><i class="bi bi-check2 me-2"></i>Mark Complete</a></li>
-                <li><a class="dropdown-item" href="#" @onclick="OnAuditTrail" @onclick:preventDefault><i class="bi bi-clock-history me-2"></i>Audit Trail</a></li>
+                <li><a class="dropdown-item" href="#" @onclick="RequestEdit" @onclick:preventDefault><i class="bi bi-pencil me-2"></i>Edit</a></li>
+                <li><a class="dropdown-item" href="#" @onclick="RequestDelete" @onclick:preventDefault><i class="bi bi-trash me-2"></i>Delete</a></li>
+                <li><a class="dropdown-item" href="#" @onclick="OnCompleteTask" @onclick:preventDefault disabled="@Task.IsCompleted"><i class="bi bi-check2 me-2"></i>Mark Complete</a></li>
+                <li><a class="dropdown-item" href="#" @onclick="RequestAuditTrail" @onclick:preventDefault><i class="bi bi-clock-history me-2"></i>Audit Trail</a></li>
+                <li><a class="dropdown-item" href="#" @onclick="RequestWorkCapture" @onclick:preventDefault><i class="bi bi-pencil-square me-2"></i>Work Capture</a></li>
                 <li><hr class="dropdown-divider" /></li>
                 <li class="dropdown-header">Move To...</li>
                 @foreach (var quadrant in Quadrants.Where(q => q != Task.Quadrant))
@@ -69,6 +70,46 @@
     </div>
 </div>
 
-@code {
-    private static readonly string[] Quadrants = new[] { "Do", "Schedule", "Delegate", "Delete" };
+@if (showDeleteConfirm)
+{
+    <div class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true" style="background:rgba(0,0,0,0.3);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle me-2"></i>Confirm Delete</h5>
+                    <button type="button" class="btn-close" aria-label="Close" @onclick="CancelDelete"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete the task <strong>@Task.Title</strong>?</p>
+                    <p class="text-danger mb-0">This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CancelDelete">Cancel</button>
+                    <button type="button" class="btn btn-danger" @onclick="ConfirmDeleteAsync">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (showAuditTrail)
+{
+    <TaskAuditTrail Task="@Task" OnClose="CloseAuditTrail" />
+}
+
+@if (showTaskEditor)
+{
+    <TaskEditor Quadrant="@taskEditorQuadrant"
+                TaskToEdit="@Task"
+                OnCancel="CloseTaskEditor"
+                OnSaved="OnTaskSaved" />
+}
+
+@if (showWorkCaptureModal)
+{
+    <WorkCaptureNoteModal
+        Note="WorkCaptureNoteDraft"
+        IsEditMode="false"
+        OnCancel="CloseWorkCaptureModal"
+        OnSave="OnWorkCaptureSaved" />
 }

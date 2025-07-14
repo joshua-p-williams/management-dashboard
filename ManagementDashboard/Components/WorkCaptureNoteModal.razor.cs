@@ -1,0 +1,70 @@
+using ManagementDashboard.Data.Models;
+using ManagementDashboard.Data.Repositories;
+using Microsoft.AspNetCore.Components;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace ManagementDashboard.Components
+{
+    public partial class WorkCaptureNoteModal : ComponentBase
+    {
+        [Inject]
+        protected IEisenhowerTaskRepository TaskRepository { get; set; } = default!;
+
+
+        [Parameter]
+        public WorkCaptureNote Note { get; set; } = new WorkCaptureNote();
+
+        [Parameter]
+        public bool IsEditMode { get; set; } = false;
+
+        [Parameter]
+        public EventCallback OnCancel { get; set; }
+
+        [Parameter]
+        public EventCallback<WorkCaptureNote> OnSave { get; set; }
+
+        [Inject]
+        protected IWorkCaptureNoteRepository NoteRepository { get; set; } = default!;
+
+        protected bool IsAssociateTaskMode { get; set; } = false;
+        protected List<EisenhowerTask> OpenTasks { get; set; } = new List<EisenhowerTask>();
+
+        protected override async Task OnParametersSetAsync()
+        {
+            // If Note.TaskId is set, show the associate task dropdown and load tasks
+            if (Note?.TaskId != null)
+            {
+                await EnableAssociateTask();
+                // TaskId will be bound in the select, so no extra assignment needed
+            }
+        }
+
+        protected async Task EnableAssociateTask()
+        {
+            IsAssociateTaskMode = true;
+            var openTasks = await TaskRepository.GetOpenTasksAsync();
+            OpenTasks = openTasks.ToList();
+            StateHasChanged();
+        }
+
+        protected async Task HandleSave()
+        {
+            // If editing, update; if new, insert
+            if (Note.Id > 0)
+            {
+                await NoteRepository.UpdateAsync(Note);
+            }
+            else
+            {
+                await NoteRepository.InsertAsync(Note);
+            }
+            await OnSave.InvokeAsync(Note); // Close modal after save
+        }
+
+        protected async Task HandleCancel()
+        {
+            await OnCancel.InvokeAsync();
+        }
+    }
+}

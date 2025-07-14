@@ -85,6 +85,14 @@ dotnet run --project ManagementDashboard
 
 ---
 
+## 📦 Publishing a Self-Contained Windows Executable
+
+To publish a self-contained, single-file executable for Windows:
+dotnet publish ManagementDashboard/ManagementDashboard.csproj -c Release -f net8.0-windows10.0.19041.0 -r win-x64 /p:PublishSingleFile=true /p:SelfContained=true
+The published `.exe` will be located in:bin/Release/net8.0-windows10.0.19041.0/win-x64/publish/You can share this file with others; they do not need to install .NET separately.
+
+---
+
 ## 💬 Contributing
 
 This project is maintained in a "vibe coding" workflow. If you're adding new utilities or features, please follow the architectural structure and update:

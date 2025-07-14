@@ -4,11 +4,9 @@
 
 @page "/eisenhower"
 
-@* Markup only; logic moved to code-behind *@
-
 <div class="container my-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">Eisenhower Matrix</h1>
+        <h1 class="mb-0"><i class="bi bi-grid me-2"></i>Eisenhower Matrix</h1>
         <div class="d-flex gap-2 ms-auto">
             <button class="btn btn-primary btn-sm" type="button" @onclick="OpenAddTaskModalInbox" aria-label="Add Task">
                 <i class="bi bi-plus-circle"></i> <span class="d-none d-md-inline">Add Task</span>
@@ -38,11 +36,10 @@
                     @foreach (var task in InboxTasks)
                     {
                         <TaskCard Task="task"
-                                  OnEdit="@(() => EditTask(task))"
-                                  OnDelete="@(() => RequestDeleteTask(task))"
-                                  OnComplete="@(() => CompleteTask(task))"
-                                  OnAuditTrail="@(() => ShowAuditTrail(task))"
-                                  OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
+                                  OnEdit="@(() => TaskCardStateChanged(task))"
+                                  OnDelete="@(() => TaskCardStateChanged(task))"
+                                  OnComplete="@(() => TaskCardStateChanged(task))"
+                                  OnMoveToQuadrant="@(() => TaskCardStateChanged(task))" />
                     }
                 </div>
             </div>
@@ -80,11 +77,10 @@
                                     @foreach (var task in DoTasks)
                                     {
                                         <TaskCard Task="task"
-                                                  OnEdit="@(() => EditTask(task))"
-                                                  OnDelete="@(() => RequestDeleteTask(task))"
-                                                  OnComplete="@(() => CompleteTask(task))"
-                                                  OnAuditTrail="@(() => ShowAuditTrail(task))"
-                                                  OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
+                                                  OnEdit="@(() => TaskCardStateChanged(task))"
+                                                  OnDelete="@(() => TaskCardStateChanged(task))"
+                                                  OnComplete="@(() => TaskCardStateChanged(task))"
+                                                  OnMoveToQuadrant="@(() => TaskCardStateChanged(task))" />
                                     }
                                 }
                             </div>
@@ -107,11 +103,10 @@
                                     @foreach (var task in ScheduleTasks)
                                     {
                                         <TaskCard Task="task"
-                                                  OnEdit="@(() => EditTask(task))"
-                                                  OnDelete="@(() => RequestDeleteTask(task))"
-                                                  OnComplete="@(() => CompleteTask(task))"
-                                                  OnAuditTrail="@(() => ShowAuditTrail(task))"
-                                                  OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
+                                                  OnEdit="@(() => TaskCardStateChanged(task))"
+                                                  OnDelete="@(() => TaskCardStateChanged(task))"
+                                                  OnComplete="@(() => TaskCardStateChanged(task))"
+                                                  OnMoveToQuadrant="@(() => TaskCardStateChanged(task))" />
                                     }
                                 }
                             </div>
@@ -134,11 +129,10 @@
                                     @foreach (var task in DelegateTasks)
                                     {
                                         <TaskCard Task="task"
-                                                  OnEdit="@(() => EditTask(task))"
-                                                  OnDelete="@(() => RequestDeleteTask(task))"
-                                                  OnComplete="@(() => CompleteTask(task))"
-                                                  OnAuditTrail="@(() => ShowAuditTrail(task))"
-                                                  OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
+                                                  OnEdit="@(() => TaskCardStateChanged(task))"
+                                                  OnDelete="@(() => TaskCardStateChanged(task))"
+                                                  OnComplete="@(() => TaskCardStateChanged(task))"
+                                                  OnMoveToQuadrant="@(() => TaskCardStateChanged(task))" />
                                     }
                                 }
                             </div>
@@ -161,11 +155,10 @@
                                     @foreach (var task in DeleteTasks)
                                     {
                                         <TaskCard Task="task"
-                                                  OnEdit="@(() => EditTask(task))"
-                                                  OnDelete="@(() => RequestDeleteTask(task))"
-                                                  OnComplete="@(() => CompleteTask(task))"
-                                                  OnAuditTrail="@(() => ShowAuditTrail(task))"
-                                                  OnMoveToQuadrant="@((string q) => MoveTaskToQuadrant(task, q))" />
+                                                  OnEdit="@(() => TaskCardStateChanged(task))"
+                                                  OnDelete="@(() => TaskCardStateChanged(task))"
+                                                  OnComplete="@(() => TaskCardStateChanged(task))"
+                                                  OnMoveToQuadrant="@(() => TaskCardStateChanged(task))" />
                                     }
                                 }
                             </div>
@@ -181,10 +174,6 @@
                     TaskToEdit="@taskToEdit"
                     OnCancel="CloseTaskEditor"
                     OnSaved="OnTaskSaved" />
-    }
-    @if (showAuditTrail)
-    {
-        <TaskAuditTrail Task="@auditTrailTask" OnClose="CloseAuditTrail" />
     }
     @if (showHelpModal)
     {
@@ -241,35 +230,4 @@
             </div>
         </div>
     }
-    @if (showDeleteConfirm && taskToDelete != null)
-    {
-        <div class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true" style="background:rgba(0,0,0,0.3);">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-danger text-white">
-                        <h5 class="modal-title"><i class="bi bi-exclamation-triangle me-2"></i>Confirm Delete</h5>
-                        <button type="button" class="btn-close" aria-label="Close" @onclick="CancelDeleteTask"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Are you sure you want to delete the task <strong>@taskToDelete.Title</strong>?</p>
-                        <p class="text-danger mb-0">This action cannot be undone.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @onclick="CancelDeleteTask">Cancel</button>
-                        <button type="button" class="btn btn-danger" @onclick="ConfirmDeleteTaskAsync">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
 </div>
-
-@code {
-    private bool showHelpModal = false;
-    private void OpenAddTaskModalInbox()
-    {
-        taskEditorQuadrant = null;
-        taskToEdit = null;
-        showTaskEditor = true;
-    }
-}

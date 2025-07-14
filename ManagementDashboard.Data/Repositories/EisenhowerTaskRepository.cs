@@ -12,6 +12,9 @@ namespace ManagementDashboard.Data.Repositories
         Task<IEnumerable<EisenhowerTask>> GetTasksByQuadrantAsync(string? quadrant);
         Task<int> CompleteTaskAsync(EisenhowerTask task);
         Task<int> MoveTaskToQuadrantAsync(EisenhowerTask task, string quadrant);
+        Task<IEnumerable<EisenhowerTask>> GetWorkedOnByDateAsync(DateTime date);
+        Task<IEnumerable<EisenhowerTask>> GetBlockedAsync();
+        Task<IEnumerable<EisenhowerTask>> GetOpenTasksAsync();
     }
 
     public class EisenhowerTaskRepository : RepositoryBase<EisenhowerTask, EisenhowerTaskConstraints>, IEisenhowerTaskRepository
@@ -23,6 +26,15 @@ namespace ManagementDashboard.Data.Repositories
             var constraints = new Hashtable();
             constraints.Add("DeletedAt", null); // Only include tasks that are not deleted
             return this.GetConstraints(constraints);
+        }
+
+        public async Task<IEnumerable<EisenhowerTask>> GetOpenTasksAsync()
+        {
+            var constraints = new System.Collections.Hashtable {
+                { "DeletedAt", null },
+                { "CompletedAt", null }
+            };
+            return await GetAsync(constraints);
         }
 
         public async Task<IEnumerable<EisenhowerTask>> GetTasksByQuadrantAsync(string? quadrant)
@@ -61,6 +73,18 @@ namespace ManagementDashboard.Data.Repositories
                 return 0; // No change needed
             task.Quadrant = quadrant;
             return await this.UpdateAsync(task);
+        }
+
+        public async Task<IEnumerable<EisenhowerTask>> GetWorkedOnByDateAsync(DateTime date)
+        {
+            var constraints = new System.Collections.Hashtable { { "WorkedOnDate", date.Date } };
+            return await GetAsync(constraints);
+        }
+
+        public async Task<IEnumerable<EisenhowerTask>> GetBlockedAsync()
+        {
+            var constraints = new System.Collections.Hashtable { { "Blocked", true } };
+            return await GetAsync(constraints);
         }
     }
 }

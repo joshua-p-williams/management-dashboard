@@ -1,0 +1,45 @@
+
+@using ManagementDashboard.Data.Models
+@using ManagementDashboard.Components.Pages
+
+<div class="card shadow-sm mb-3 work-capture-card" style="border: none;">
+    <div class="card-header d-flex flex-wrap align-items-center justify-content-between bg-body-tertiary border-0">
+        <div class="fw-bold h6 mb-0 text-truncate" style="max-width: 70%">
+            @Truncate(Note.Notes, 40)
+        </div>
+        <div class="dropdown ms-auto">
+            <button class="btn btn-link p-0" type="button" id="dropdownMenuButton-@Note.Id" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Note actions">
+                <i class="bi bi-three-dots-vertical fs-5" style="color: var(--bs-body-color);"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton-@Note.Id">
+                <li><a class="dropdown-item" href="#" @onclick="() => OnEdit.InvokeAsync(Note)" @onclick:preventDefault><i class="bi bi-pencil me-2"></i>Edit</a></li>
+                <li><a class="dropdown-item" href="#" @onclick="() => OnDelete.InvokeAsync(Note)" @onclick:preventDefault><i class="bi bi-trash me-2"></i>Delete</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body pb-2 pt-2 bg-body">
+        <div class="mb-2">
+            <span class="text-muted small">@Note.CreatedAt.ToString("g")</span>
+        </div>
+        <div class="mb-2">
+            @Note.Notes
+        </div>
+        @if (Note.TaskId.HasValue && Note.Task != null)
+        {
+            <div class="d-flex align-items-center mb-2">
+                <span class="fw-semibold text-truncate" style="max-width: 60%">
+                    <i class="bi bi-list-task me-1"></i>@Truncate(Note.Task.Title, 40)
+                </span>
+                <button class="btn btn-sm btn-link ms-2" @onclick="ToggleTaskDetails" aria-label="Show Task Details">
+                    <i class="bi @(ShowTaskDetails ? "bi-chevron-up" : "bi-chevron-down")"></i>
+                </button>
+            </div>
+            @if (ShowTaskDetails)
+            {
+                <div class="mt-2">
+                    <TaskSummary Task="Note.Task" Date="Note.CreatedAt" />
+                </div>
+            }
+        }
+    </div>
+</div>

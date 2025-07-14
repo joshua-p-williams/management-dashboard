@@ -35,7 +35,7 @@ namespace ManagementDashboard.Data.Models
         [Dapper.NotMapped]
         public bool IsBlocked
         {
-            get => BlockedAt != null && UnblockedAt == null;
+            get => BlockedAt != null && UnblockedAt == null && !IsCompleted;
             set
             {
                 if (value)
