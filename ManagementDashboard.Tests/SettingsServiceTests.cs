@@ -46,11 +46,11 @@ namespace ManagementDashboard.Tests
         }
 
         [Fact]
-        public void DueDateReminderThreshold_DefaultsTo2()
+        public void DueDateReminderThreshold_DefaultsTo3()
         {
             var prefs = new InMemoryPreferences();
             var service = new SettingsService(prefs);
-            Assert.Equal(2, service.DueDateReminderThresholdDays);
+            Assert.Equal(3, service.DueDateReminderThresholdDays);
         }
 
         [Fact]

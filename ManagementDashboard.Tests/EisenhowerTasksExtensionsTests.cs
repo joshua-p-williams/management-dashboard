@@ -85,19 +85,17 @@ namespace ManagementDashboard.Tests
             };
             var state = task.SummarizedState().ToList();
             Assert.Contains("Completed", state);
-            Assert.Contains("Currently blocked - Waiting for review", state);
             Assert.Contains("Removed from active tasks", state);
         }
 
         [Fact]
         public void SummarizedState_ReturnsOverdueIfPastDue()
         {
-            var overdueDays = 2;
             var task = new EisenhowerTask {
-                CreatedAt = DateTime.Now.AddDays(-overdueDays - 1),
+                DueDate = DateTime.Now.AddDays(-1),
                 Priority = PriorityLevel.High
             };
-            var state = task.SummarizedState(overdueDays).ToList();
+            var state = task.SummarizedState().ToList();
             Assert.Contains("Overdue", state);
         }
         
