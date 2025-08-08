@@ -82,23 +82,22 @@ Introduce an optional "Due Date" for Eisenhower tasks. This enables users to set
 
 ### 🧩 Phase 2: Data Model & Repository Refactor
 
-- [ ] **Update Model**
+- [x] **Update Model**
   - Add a nullable `DueDate` property to `EisenhowerTask` in `ManagementDashboard.Data.Models`.
-- [ ] **Update Repository**
-  - Ensure all CRUD operations in `EisenhowerTaskRepository` handle the new `DueDate` field.
-  - Update mapping, inserts, and updates to support `DueDate`.
-- [ ] **Update Interfaces**
-  - Update any relevant interfaces or DTOs to include `DueDate`.
+- [x] **Update Repository**
+  - Ensure all CRUD operations in `EisenhowerTaskRepository` handle the new `DueDate` field. (No changes needed for SimpleRepo/Dapper if property is present and migration is applied.)
+- [x] **Update Interfaces**
+  - Update any relevant interfaces or DTOs to include `DueDate`. (No additional DTOs/interfaces found that require changes.)
 
 ---
 
 ### 🎨 Phase 3: UI/UX Changes
 
-- [ ] **Task Editor UI**
+- [x] **Task Editor UI**
   - Update `TaskEditor.razor` and code-behind to allow users to set, update, or clear the due date.
   - Use a date picker input (Blazor/Bootstrap) for due date selection.
   - Show the due date in the editor if already set.
-- [ ] **Task Display**
+- [x] **Task Display**
   - Optionally display the due date on `TaskCard.razor` if present.
   - Consider visual cues for tasks with due dates approaching or past.
 
@@ -106,12 +105,17 @@ Introduce an optional "Due Date" for Eisenhower tasks. This enables users to set
 
 ### 🧠 Phase 4: Overdue Logic Refactor
 
-- [ ] **Update Overdue Calculation**
+- [x] **Update Overdue Calculation**
   - Refactor `IsPastDue(int overdueThresholdDays)` in `EisenhowerTask`:
-    - If `DueDate` is set, use it for overdue calculation.
-    - If not, fall back to `CreatedAt + threshold`.
-- [ ] **Update UI Logic**
-  - Ensure overdue badge and logic in `TaskCard` and related components use the new logic.
+    - Ensure that past due is anything past due, not just overdueThresholdDays
+- [x] **Refactor the overdueThresholdDays to be the concept of dueDateReminderThresholdDays. We want to show a new badge on the displays when the due day is approaching and within a "threshold".**
+    - This will require a new property on the EisenhowerTask that takes this parameter (used to be passed on the IsPastDue), to be dueDateReminder.
+    - I also want a new property that returns a dueDateSummary (which returns the due date, and the number of days till that due date) as a string
+    - We will need to remove the SettingsService references to overdueThresholdDays and replace with dueDateReminderThresholdDays
+- [x] **Update UI Logic**
+  - Settings.razor needs to remove "Overdue Threshold (days)" from the UI and the code behind logic, and this needs to be replaced with a means to set the dueDateReminderThresholdDays setting.
+  - Ensure that if dueDateReminder is true a badge and notice shows in the and logic in `TaskCard` and related components use the new logic.
+  - We need to refactor the SummarizedState in EisenhowerTasksExtensions method for both isPastDue (now that it doesn't take a threshold), but also to leverage the dueDateReminder and dueDateSummary
 
 ---
 

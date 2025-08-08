@@ -20,6 +20,7 @@ namespace ManagementDashboard.Components
         private string? DelegatedTo { get; set; }
         private string Status { get; set; } = "Open";
         private string? BlockerReason { get; set; }
+        private DateTime? DueDate { get; set; }
         private bool isSaving = false;
         private string? error;
 
@@ -35,6 +36,7 @@ namespace ManagementDashboard.Components
                 DelegatedTo = TaskToEdit.DelegatedTo;
                 Status = TaskToEdit.IsCompleted ? "Completed" : (TaskToEdit.IsBlocked ? "Blocked" : "Open");
                 BlockerReason = TaskToEdit.BlockerReason;
+                DueDate = TaskToEdit.DueDate;
             }
         }
 
@@ -67,6 +69,7 @@ namespace ManagementDashboard.Components
                 if (!task.IsBlocked)
                     task.BlockedAt = null;
                 task.Priority = Priority;
+                task.DueDate = DueDate;
                 await TaskRepository.UpdateAsync(task);
             }
             else
@@ -82,7 +85,8 @@ namespace ManagementDashboard.Components
                     DelegatedTo = DelegatedTo,
                     CreatedAt = now,
                     UpdatedAt = now,
-                    Priority = Priority
+                    Priority = Priority,
+                    DueDate = DueDate
                 };
                 if (CompletedAt.HasValue)
                     task.CompletedAt = CompletedAt;

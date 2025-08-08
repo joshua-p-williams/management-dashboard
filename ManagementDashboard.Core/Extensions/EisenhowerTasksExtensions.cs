@@ -37,7 +37,7 @@ namespace ManagementDashboard.Core.Extensions
         /// <summary>
         /// Returns a list of general state summaries for the given EisenhowerTask.
         /// </summary>
-        public static IEnumerable<string> SummarizedState(this EisenhowerTask task, int overdueThresholdDays = 2)
+        public static IEnumerable<string> SummarizedState(this EisenhowerTask task, int dueDateReminderThresholdDays = 3)
         {
             var state = new List<string>();
 
@@ -52,8 +52,12 @@ namespace ManagementDashboard.Core.Extensions
             }
             if (task.IsDeleted)
                 state.Add("Removed from active tasks");
-            if (task.IsPastDue(overdueThresholdDays))
+            if (task.IsPastDue)
                 state.Add("Overdue");
+            else if (task.IsDueDateReminder(dueDateReminderThresholdDays))
+                state.Add("Due soon");
+            if (task.DueDate.HasValue)
+                state.Add(task.DueDateSummary);
             if (string.IsNullOrWhiteSpace(task.Quadrant))
                 state.Add("Uncategorized");
             else

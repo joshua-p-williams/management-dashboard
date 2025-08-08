@@ -46,23 +46,23 @@ namespace ManagementDashboard.Tests
         }
 
         [Fact]
-        public void OverdueThreshold_DefaultsTo2()
+        public void DueDateReminderThreshold_DefaultsTo2()
         {
             var prefs = new InMemoryPreferences();
             var service = new SettingsService(prefs);
-            Assert.Equal(2, service.OverdueThresholdDays);
+            Assert.Equal(2, service.DueDateReminderThresholdDays);
         }
 
         [Fact]
-        public void CanSetOverdueThreshold()
+        public void CanSetDueDateReminderThreshold()
         {
             var prefs = new InMemoryPreferences();
             var service = new SettingsService(prefs);
-            service.OverdueThresholdDays = 5;
-            Assert.Equal(5, service.OverdueThresholdDays);
+            service.DueDateReminderThresholdDays = 5;
+            Assert.Equal(5, service.DueDateReminderThresholdDays);
             // Also check persistence
             var service2 = new SettingsService(prefs);
-            Assert.Equal(5, service2.OverdueThresholdDays);
+            Assert.Equal(5, service2.DueDateReminderThresholdDays);
         }
     }
 }
