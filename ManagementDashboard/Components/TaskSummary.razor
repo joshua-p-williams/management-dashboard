@@ -1,6 +1,10 @@
 @using ManagementDashboard.Data.Models
 @using ManagementDashboard.Core.Extensions
+@inject ManagementDashboard.Core.Services.SettingsService SettingsService
 
+@{
+    var dueDateReminderThresholdDays = SettingsService.DueDateReminderThresholdDays;
+}
 
 <div class="card shadow-sm mb-3 task-summary-card" style="border: none;">
     <div class="card-header d-flex flex-wrap align-items-center justify-content-between bg-body-tertiary border-0">
@@ -18,16 +22,20 @@
     </div>
     <div class="card-body pb-2 pt-2 bg-body">
         <div class="d-flex flex-wrap gap-2">
-            <!-- Meta bar: status, priority, quadrant, badges
-            <span class="badge bg-info text-dark">@Task.Priority</span>
-            <span class="badge bg-secondary">@Task.Quadrant</span>
-             -->
-            @if (Task.IsPastDue(OverdueThresholdDays))
+            @if (Task.IsPastDue)
             {
                 <span class="badge bg-danger"><i class="bi bi-exclamation-circle me-1"></i>Overdue</span>
                 <span class="text-danger ms-2 small">
                     <i class="bi bi-calendar me-1"></i>
-                    Created @Task.CreatedAt.ToString("MMM d, yyyy") &bull; Open for @(Math.Max(1, (int)(DateTime.Now - Task.CreatedAt).TotalDays)) day@(Math.Max(1, (int)(DateTime.Now - Task.CreatedAt).TotalDays) == 1 ? "" : "s")
+                    Due @Task.DueDateSummary
+                </span>
+            }
+            else if (Task.IsDueDateReminder(dueDateReminderThresholdDays))
+            {
+                <span class="badge bg-info text-dark"><i class="bi bi-clock me-1"></i>Due Soon</span>
+                <span class="text-info ms-2 small">
+                    <i class="bi bi-calendar me-1"></i>
+                    Due @Task.DueDateSummary
                 </span>
             }
             @if (Task.IsBlocked && !string.IsNullOrWhiteSpace(Task.BlockerReason))

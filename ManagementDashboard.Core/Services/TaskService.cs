@@ -11,18 +11,23 @@ namespace ManagementDashboard.Core.Services
     public class TaskService : ITaskService
     {
         private readonly IEisenhowerTaskRepository _repository;
-        public TaskService(IEisenhowerTaskRepository repository)
+        private readonly ISettingsService _settingsService;
+        public TaskService(IEisenhowerTaskRepository repository, ISettingsService settingsService)
         {
             _repository = repository;
+            _settingsService = settingsService;
         }
 
         public async Task<List<EisenhowerTask>> GetNextTasksToWorkOnAsync(int? count = 5)
         {
             var tasks = await _repository.GetOpenTasksAsync() ?? new List<EisenhowerTask>();
+            int reminderThreshold = _settingsService.DueDateReminderThresholdDays;
             var orderedTasks = tasks
-                .OrderBy(t => GetQuadrantOrder(t.Quadrant))
+                .OrderBy(t => t.IsPastDue ? 0 : t.IsDueDateReminder(reminderThreshold) ? 1 : 2)
+                .ThenBy(t => GetQuadrantOrder(t.Quadrant))
                 .ThenByDescending(t => t.Priority)
                 .ThenBy(t => t.IsBlocked)
+                .ThenBy(t => t.DueDate ?? DateTime.MaxValue)
                 .ThenBy(t => t.CreatedAt);
 
             if (count.HasValue)

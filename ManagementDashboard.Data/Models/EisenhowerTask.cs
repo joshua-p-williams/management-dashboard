@@ -17,6 +17,7 @@ namespace ManagementDashboard.Data.Models
         public string? DelegatedTo { get; set; }
         public PriorityLevel Priority { get; set; } // 0=Low, 1=Medium, 2=High
         public DateTime? DeletedAt { get; set; }
+        public DateTime? DueDate { get; set; }
 
         [Dapper.NotMapped]
         public Boolean IsDeleted
@@ -35,11 +36,35 @@ namespace ManagementDashboard.Data.Models
             }
         }
 
-        public Boolean IsPastDue(int overdueThresholdDays)
+        // Returns true if the task is past its due date (if set)
+        [Dapper.NotMapped]
+        public bool IsPastDue
         {
-            if (CompletedAt != null)
-                return false; // Task is completed, not past due
-            return CreatedAt.AddDays(overdueThresholdDays) < DateTime.Now;
+            get => DueDate.HasValue && DueDate.Value.Date < DateTime.Now.Date;
+            set { }
+        }
+
+        // Returns a summary string for the due date (e.g. "Due in 3 days (2024-06-10)")
+        [Dapper.NotMapped]
+        public string DueDateSummary
+        {
+            get
+            {
+                if (!DueDate.HasValue) return "No due date";
+                var days = (DueDate.Value.Date - DateTime.Now.Date).Days;
+                if (days > 0) return $"Due in {days} day{(days == 1 ? "" : "s")} ({DueDate.Value:yyyy-MM-dd})";
+                if (days == 0) return $"Due today ({DueDate.Value:yyyy-MM-dd})";
+                return $"Past due ({DueDate.Value:yyyy-MM-dd})";
+            }
+            set { }
+        }
+
+        // Returns true if the due date is within the reminder threshold (and not past due)
+        public bool IsDueDateReminder(int dueDateReminderThresholdDays)
+        {
+            if (!DueDate.HasValue || IsPastDue) return false;
+            var daysUntilDue = (DueDate.Value.Date - DateTime.Now.Date).TotalDays;
+            return daysUntilDue >= 0 && daysUntilDue <= dueDateReminderThresholdDays;
         }
     }
 

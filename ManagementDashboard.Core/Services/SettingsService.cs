@@ -6,7 +6,7 @@ namespace ManagementDashboard.Core.Services
     public class SettingsService : ISettingsService
     {
         private const string ThemeKey = "AppTheme";
-        private const string OverdueKey = "OverdueThresholdDays";
+        private const string DueDateReminderKey = "DueDateReminderThresholdDays";
         private readonly IAppPreferences _preferences;
         public event Action? OnThemeChanged;
 
@@ -27,10 +27,10 @@ namespace ManagementDashboard.Core.Services
 
         public string GetTheme() => IsDarkMode ? "dark" : "light";
 
-        public int OverdueThresholdDays
+        public int DueDateReminderThresholdDays
         {
-            get => _preferences.GetInt(OverdueKey, 2);
-            set => _preferences.SetInt(OverdueKey, value);
+            get => _preferences.GetInt(DueDateReminderKey, 3);
+            set => _preferences.SetInt(DueDateReminderKey, value);
         }
     }
 }

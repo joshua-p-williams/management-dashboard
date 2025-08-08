@@ -22,14 +22,14 @@ namespace ManagementDashboard.Components.Pages
             }
         }
 
-        protected int OverdueThresholdDays
+        protected int DueDateReminderThresholdDays
         {
-            get => SettingsService.OverdueThresholdDays;
+            get => SettingsService.DueDateReminderThresholdDays;
             set
             {
-                if (SettingsService.OverdueThresholdDays != value)
+                if (SettingsService.DueDateReminderThresholdDays != value)
                 {
-                    SettingsService.OverdueThresholdDays = value;
+                    SettingsService.DueDateReminderThresholdDays = value;
                     StateHasChanged();
                 }
             }

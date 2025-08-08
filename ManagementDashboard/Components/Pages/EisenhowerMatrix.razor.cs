@@ -33,7 +33,6 @@ namespace ManagementDashboard.Components.Pages
         private async Task LoadTasks()
         {
             InboxTasks = (await TaskRepository.GetTasksByQuadrantAsync(null))
-                .Where(t => string.IsNullOrEmpty(t.Quadrant) || t.Quadrant == "Uncategorized")
                 .OrderByDescending(t => t.CreatedAt)
                 .ToList();
             DoTasks = (await TaskRepository.GetTasksByQuadrantAsync("Do"))

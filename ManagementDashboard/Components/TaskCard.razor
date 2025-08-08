@@ -1,4 +1,5 @@
 @using ManagementDashboard.Data.Models
+@inject ManagementDashboard.Core.Services.SettingsService SettingsService
 
 @* TaskCard.razor: Reusable component for displaying a single task in the Eisenhower Matrix *@
 
@@ -8,6 +9,7 @@
     {
         tooltip = Task.Description.Length > 120 ? Task.Description.Substring(0, 120) + "…" : Task.Description;
     }
+    var dueDateReminderThresholdDays = SettingsService.DueDateReminderThresholdDays;
 }
 
 <div class="card mb-2 shadow-sm eisenhower-task-card" title="@tooltip">
@@ -22,10 +24,19 @@
             {
                 <span class="badge bg-warning text-dark ms-2"><i class="bi bi-exclamation-triangle me-1"></i>Blocked</span>
             }
-            @* Overdue visual cue (now uses configurable threshold) *@
-            @if (Task.IsPastDue(OverdueThresholdDays))
+            @* Overdue visual cue *@
+            @if (Task.IsPastDue)
             {
                 <span class="badge bg-danger ms-2"><i class="bi bi-exclamation-circle me-1"></i>Overdue</span>
+            }
+            @* Due soon visual cue *@
+            else if (Task.IsDueDateReminder(dueDateReminderThresholdDays))
+            {
+                <span class="badge bg-info text-dark ms-2"><i class="bi bi-clock me-1"></i>Due Soon</span>
+            }
+            @if (Task.DueDate.HasValue)
+            {
+                <span class="badge bg-light text-dark border ms-2">@Task.DueDateSummary</span>
             }
             @* Priority badge/icon (enum-based, only for Medium/High) *@
             @if (Task.Priority != ManagementDashboard.Data.Models.PriorityLevel.Low)
