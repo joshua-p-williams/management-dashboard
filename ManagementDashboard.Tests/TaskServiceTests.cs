@@ -29,8 +29,10 @@ namespace ManagementDashboard.Tests
         public async Task GetNextTasksToWorkOnAsync_ReturnsCorrectNumberOfTasks()
         {
             var mockRepo = new Mock<IEisenhowerTaskRepository>();
+            var mockSettings = new Mock<ISettingsService>();
+            mockSettings.Setup(s => s.DueDateReminderThresholdDays).Returns(3);
             mockRepo.Setup(r => r.GetOpenTasksAsync()).ReturnsAsync(GetSampleTasks());
-            var service = new TaskService(mockRepo.Object);
+            var service = new TaskService(mockRepo.Object, mockSettings.Object);
 
             var result = await service.GetNextTasksToWorkOnAsync(3);
 
@@ -41,8 +43,10 @@ namespace ManagementDashboard.Tests
         public async Task GetNextTasksToWorkOnAsync_ReturnsTasksInCorrectOrder()
         {
             var mockRepo = new Mock<IEisenhowerTaskRepository>();
+            var mockSettings = new Mock<ISettingsService>();
+            mockSettings.Setup(s => s.DueDateReminderThresholdDays).Returns(3);
             mockRepo.Setup(r => r.GetOpenTasksAsync()).ReturnsAsync(GetSampleTasks());
-            var service = new TaskService(mockRepo.Object);
+            var service = new TaskService(mockRepo.Object, mockSettings.Object);
 
             var result = await service.GetNextTasksToWorkOnAsync(5);
 
@@ -58,8 +62,10 @@ namespace ManagementDashboard.Tests
         public async Task GetNextTasksToWorkOnAsync_ReturnsEmptyListIfNoTasks()
         {
             var mockRepo = new Mock<IEisenhowerTaskRepository>();
+            var mockSettings = new Mock<ISettingsService>();
+            mockSettings.Setup(s => s.DueDateReminderThresholdDays).Returns(3);
             mockRepo.Setup(r => r.GetOpenTasksAsync()).ReturnsAsync(new List<EisenhowerTask>());
-            var service = new TaskService(mockRepo.Object);
+            var service = new TaskService(mockRepo.Object, mockSettings.Object);
 
             var result = await service.GetNextTasksToWorkOnAsync();
 
@@ -75,8 +81,10 @@ namespace ManagementDashboard.Tests
                 new EisenhowerTask { Id = 2, Title = "Do Task 2", Quadrant = "Do", Priority = PriorityLevel.High, IsBlocked = false, CreatedAt = DateTime.Now.AddDays(-1) },
             };
             var mockRepo = new Mock<IEisenhowerTaskRepository>();
+            var mockSettings = new Mock<ISettingsService>();
+            mockSettings.Setup(s => s.DueDateReminderThresholdDays).Returns(3);
             mockRepo.Setup(r => r.GetOpenTasksAsync()).ReturnsAsync(tasks);
-            var service = new TaskService(mockRepo.Object);
+            var service = new TaskService(mockRepo.Object, mockSettings.Object);
 
             var result = await service.GetNextTasksToWorkOnAsync(2);
             Assert.Equal("Do Task 2", result[0].Title); // Unblocked first
@@ -92,8 +100,10 @@ namespace ManagementDashboard.Tests
                 new EisenhowerTask { Id = 2, Title = "Do Task", Quadrant = "Do", Priority = PriorityLevel.High, IsBlocked = false, CreatedAt = DateTime.Now.AddDays(-2) },
             };
             var mockRepo = new Mock<IEisenhowerTaskRepository>();
+            var mockSettings = new Mock<ISettingsService>();
+            mockSettings.Setup(s => s.DueDateReminderThresholdDays).Returns(3);
             mockRepo.Setup(r => r.GetOpenTasksAsync()).ReturnsAsync(tasks);
-            var service = new TaskService(mockRepo.Object);
+            var service = new TaskService(mockRepo.Object, mockSettings.Object);
 
             var result = await service.GetNextTasksToWorkOnAsync(2);
             Assert.Equal("Do Task", result[0].Title); // Known quadrant first
@@ -109,8 +119,10 @@ namespace ManagementDashboard.Tests
                 new EisenhowerTask { Id = 2, Title = "Newer", Quadrant = "Do", Priority = PriorityLevel.High, IsBlocked = false, CreatedAt = DateTime.Now.AddDays(-1) },
             };
             var mockRepo = new Mock<IEisenhowerTaskRepository>();
+            var mockSettings = new Mock<ISettingsService>();
+            mockSettings.Setup(s => s.DueDateReminderThresholdDays).Returns(3);
             mockRepo.Setup(r => r.GetOpenTasksAsync()).ReturnsAsync(tasks);
-            var service = new TaskService(mockRepo.Object);
+            var service = new TaskService(mockRepo.Object, mockSettings.Object);
 
             var result = await service.GetNextTasksToWorkOnAsync(2);
             Assert.Equal("Older", result[0].Title); // Oldest first
@@ -121,8 +133,10 @@ namespace ManagementDashboard.Tests
         public async Task GetNextTasksToWorkOnAsync_RespectsDefaultCountParameter()
         {
             var mockRepo = new Mock<IEisenhowerTaskRepository>();
+            var mockSettings = new Mock<ISettingsService>();
+            mockSettings.Setup(s => s.DueDateReminderThresholdDays).Returns(3);
             mockRepo.Setup(r => r.GetOpenTasksAsync()).ReturnsAsync(GetSampleTasks());
-            var service = new TaskService(mockRepo.Object);
+            var service = new TaskService(mockRepo.Object, mockSettings.Object);
 
             var result = await service.GetNextTasksToWorkOnAsync();
             Assert.Equal(5, result.Count); // Default is 5
@@ -132,8 +146,10 @@ namespace ManagementDashboard.Tests
         public async Task GetNextTasksToWorkOnAsync_HandlesNullTaskList()
         {
             var mockRepo = new Mock<IEisenhowerTaskRepository>();
+            var mockSettings = new Mock<ISettingsService>();
+            mockSettings.Setup(s => s.DueDateReminderThresholdDays).Returns(3);
             mockRepo.Setup(r => r.GetOpenTasksAsync()).ReturnsAsync((List<EisenhowerTask>)null);
-            var service = new TaskService(mockRepo.Object);
+            var service = new TaskService(mockRepo.Object, mockSettings.Object);
 
             var result = await service.GetNextTasksToWorkOnAsync();
             Assert.Empty(result);
@@ -143,8 +159,10 @@ namespace ManagementDashboard.Tests
         public async Task GetNextTasksToWorkOnAsync_WithNullCount_ReturnsAllTasks()
         {
             var mockRepo = new Mock<IEisenhowerTaskRepository>();
+            var mockSettings = new Mock<ISettingsService>();
+            mockSettings.Setup(s => s.DueDateReminderThresholdDays).Returns(3);
             mockRepo.Setup(r => r.GetOpenTasksAsync()).ReturnsAsync(GetSampleTasks());
-            var service = new TaskService(mockRepo.Object);
+            var service = new TaskService(mockRepo.Object, mockSettings.Object);
 
             var result = await service.GetNextTasksToWorkOnAsync(null);
 
