@@ -17,6 +17,7 @@ namespace ManagementDashboard.Data.Models
         public string? DelegatedTo { get; set; }
         public PriorityLevel Priority { get; set; } // 0=Low, 1=Medium, 2=High
         public DateTime? DeletedAt { get; set; }
+        public DateTime? DueDate { get; set; }
 
         [Dapper.NotMapped]
         public Boolean IsDeleted
@@ -37,9 +38,12 @@ namespace ManagementDashboard.Data.Models
 
         public Boolean IsPastDue(int overdueThresholdDays)
         {
-            if (CompletedAt != null)
-                return false; // Task is completed, not past due
-            return CreatedAt.AddDays(overdueThresholdDays) < DateTime.Now;
+            var pastDue = false;
+            if (DueDate.HasValue)
+            {
+                pastDue = DueDate.Value.Date < DateTime.Now.Date;
+            }
+            return pastDue;
         }
     }
 

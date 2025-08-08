@@ -46,7 +46,7 @@ namespace ManagementDashboard.Tests
                     columns.Add(reader.GetString(1));
                 }
                 var expected = new[] {
-                    "Id", "Title", "Description", "Quadrant", "Priority", "CompletedAt", "BlockerReason", "BlockedAt", "UnblockedAt", "DelegatedTo", "CreatedAt", "UpdatedAt", "DeletedAt"
+                    "Id", "Title", "Description", "Quadrant", "Priority", "CompletedAt", "BlockerReason", "BlockedAt", "UnblockedAt", "DelegatedTo", "CreatedAt", "UpdatedAt", "DeletedAt", "DueDate"
                 };
                 foreach (var col in expected)
                 {
