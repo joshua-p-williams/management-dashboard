@@ -10,7 +10,7 @@ It features a set of lightweight utilities designed to streamline task managemen
 
 ### ✅ Eisenhower Matrix Utility
 Prioritize and manage your tasks across four quadrants: **Do**, **Schedule**, **Delegate**, and **Delete**.  
-Track completion, delegation, blockers, and audit history.
+Track completion, delegation, blockers, due dates, overdue status, reminders, and audit history.
 
 📄 See [docs/feature-eisenhower-matrix.md](docs/feature-eisenhower-matrix.md)
 
@@ -88,8 +88,12 @@ dotnet run --project ManagementDashboard
 ## 📦 Publishing a Self-Contained Windows Executable
 
 To publish a self-contained, single-file executable for Windows:
+
 dotnet publish ManagementDashboard/ManagementDashboard.csproj -c Release -f net8.0-windows10.0.19041.0 -r win-x64 /p:PublishSingleFile=true /p:SelfContained=true
-The published `.exe` will be located in:bin/Release/net8.0-windows10.0.19041.0/win-x64/publish/You can share this file with others; they do not need to install .NET separately.
+
+The published `.exe` will be located in:
+bin/Release/net8.0-windows10.0.19041.0/win-x64/publish/
+You can share this file with others; they do not need to install .NET separately.
 
 ---
 

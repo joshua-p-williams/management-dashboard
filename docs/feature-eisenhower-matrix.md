@@ -16,7 +16,7 @@ The **Eisenhower Matrix Utility** helps you prioritize and act on tasks by class
 | View Uncategorized     | See a list of tasks not yet assigned to a quadrant                        |
 | Assign Quadrant        | Assign a quadrant to an uncategorized task                                |
 | Quadrant Assignment    | Tasks appear in one of 4 quadrants: Do, Schedule, Delegate, Delete         |
-| Edit Task              | Modify task title, description, quadrant, delegation, etc.                 |
+| Edit Task              | Modify task title, description, quadrant, delegation, due date, etc.       |
 | Move Between Quadrants | Drag & drop or reclassify tasks manually                                   |
 | Complete Task          | Mark task as completed with timestamp                                      |
 | Block Task             | Mark task as blocked with reason and timestamp                             |
@@ -24,6 +24,7 @@ The **Eisenhower Matrix Utility** helps you prioritize and act on tasks by class
 | Delete Task            | Hard delete or soft-delete depending on quadrant                           |
 | Audit Trail            | Track created, updated, completed, and blocked timestamps                  |
 | Delegation             | Capture "who" a task was delegated to (freeform text for now)              |
+| Due Date & Overdue     | Optionally set a due date; see overdue and due soon badges in UI           |
 | Responsive UI          | Grid layout adapts to screen size (especially important for MAUI)          |
 
 ---
@@ -48,7 +49,7 @@ The **Eisenhower Matrix Utility** helps you prioritize and act on tasks by class
 | `Card`                     | Individual task display inside each quadrant        |
 | `Modal`                    | Modal for add/edit task                             |
 | `Dropdown` or `Navbar`     | Per-task menu: mark done, move, block, delete, etc. |
-| `Badge`                    | Optional indicators (blocked, delegated, done)      |
+| `Badge`                    | Optional indicators (blocked, delegated, done, overdue, due soon) |
 | `Tooltip`                  | Show audit metadata on hover/tap                    |
 | `Toast`                    | Feedback for user actions                           |
 | `Navbar` / Nav Panel       | Entry point to Eisenhower Matrix utility            |
@@ -73,12 +74,22 @@ public class EisenhowerTask : IAuditableEntity
     public PriorityLevel Priority { get; set; } // 0=Low, 1=Medium, 2=High
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+    public DateTime? DueDate { get; set; } // Optional due date
 
     // Computed properties for business logic/UI only
     [Dapper.NotMapped]
     public bool IsCompleted => CompletedAt != null;
     [Dapper.NotMapped]
     public bool IsBlocked => BlockedAt != null && UnblockedAt == null;
+    [Dapper.NotMapped]
+    public bool IsPastDue => DueDate.HasValue && DueDate.Value.Date < DateTime.Now.Date;
+    [Dapper.NotMapped]
+    public string DueDateSummary => !DueDate.HasValue ? "No due date" :
+        (DueDate.Value.Date - DateTime.Now.Date).Days > 0 ? $"Due in {(DueDate.Value.Date - DateTime.Now.Date).Days} days ({DueDate.Value:yyyy-MM-dd})" :
+        (DueDate.Value.Date - DateTime.Now.Date).Days == 0 ? $"Due today ({DueDate.Value:yyyy-MM-dd})" :
+        $"Past due ({DueDate.Value:yyyy-MM-dd})";
+    public bool IsDueDateReminder(int dueDateReminderThresholdDays) =>
+        DueDate.HasValue && !IsPastDue && (DueDate.Value.Date - DateTime.Now.Date).TotalDays >= 0 && (DueDate.Value.Date - DateTime.Now.Date).TotalDays <= dueDateReminderThresholdDays;
 }
 
 public interface IAuditableEntity
@@ -107,6 +118,7 @@ public enum PriorityLevel { Low = 0, Medium = 1, High = 2 }
 | Task edited                       | `UpdatedAt = now()`                                      |
 | Task deleted from “Delete” Q      | Task is fully removed from DB                            |
 | Task deleted from other quadrants | Ask confirmation — soft delete or move to “Delete”       |
+| Task due date set                 | `DueDate` is set; overdue and due soon logic applies     |
 
 ---
 
@@ -116,6 +128,7 @@ public enum PriorityLevel { Low = 0, Medium = 1, High = 2 }
 * `Quadrant` is optional; if set, must be one of `'Do'`, `'Schedule'`, `'Delegate'`, `'Delete'`
 * If `IsBlocked` (computed) is true, `BlockerReason` is required
 * If `IsCompleted` (computed) is true, set `CompletedAt` if null
+* If `DueDate` is set, must be a valid date (not in the far past)
 
 ---
 
@@ -139,6 +152,7 @@ public enum PriorityLevel { Low = 0, Medium = 1, High = 2 }
 | Complete Task        | Checkmark / icon  | UPDATE    |
 | Block / Unblock Task | Context menu      | UPDATE    |
 | Delete Task          | Trash icon        | DELETE    |
+| Set/Clear Due Date   | Date picker       | UPDATE    |
 
 ---
 
