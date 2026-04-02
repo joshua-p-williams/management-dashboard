@@ -1,0 +1,320 @@
+{
+  "settings": {
+    "components": {
+      "code": true,
+      "binaries": false
+    },
+    "targetId": "net10.0",
+    "targetDisplayName": ".NETCoreApp,Version=v10.0"
+  },
+  "analysisStartTime": "2026-04-02T04:45:21.271859Z",
+  "analysisEndTime": "2026-04-02T04:45:24.3316767Z",
+  "privacyModeHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2270980",
+  "stats": {
+    "summary": {
+      "projects": 4,
+      "issues": 2,
+      "incidents": 6,
+      "effort": 6
+    },
+    "charts": {
+      "severity": {
+        "Mandatory": 4,
+        "Optional": 0,
+        "Potential": 2,
+        "Information": 0
+      },
+      "category": {
+        "NuGet": 2,
+        "Project": 4
+      }
+    }
+  },
+  "projects": [
+    {
+      "path": "ManagementDashboard.Core\\ManagementDashboard.Core.csproj",
+      "startingProject": true,
+      "issues": 1,
+      "storyPoints": 1,
+      "properties": {
+        "appName": "ManagementDashboard.Core",
+        "projectKind": "ClassLibrary",
+        "frameworks": [
+          "net8.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 7,
+        "numberOfCodeFiles": 7,
+        "linesTotal": 207,
+        "linesOfCode": 207,
+        "totalApiScanned": 228,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "965bf211-05f4-4e08-9b4d-f982172425d2",
+          "ruleId": "Project.0002",
+          "projectPath": "ManagementDashboard.Core\\ManagementDashboard.Core.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net8.0\nRecommended target framework: net10.0",
+              "protected": "Current target framework: net8.0\nRecommended target framework: net10.0"
+            },
+            "kind": "File",
+            "path": "ManagementDashboard.Core\\ManagementDashboard.Core.csproj",
+            "snippet": "Current target framework: net8.0\nRecommended target framework: net10.0",
+            "protectedSnippet": "Current target framework: net8.0\nRecommended target framework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": "net8.0",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "ManagementDashboard\\ManagementDashboard.csproj",
+      "startingProject": true,
+      "issues": 2,
+      "storyPoints": 2,
+      "properties": {
+        "appName": "ManagementDashboard",
+        "projectKind": "DotNetCoreApp",
+        "frameworks": [
+          "net8.0-android",
+          "net8.0-ios",
+          "net8.0-maccatalyst",
+          "net8.0-windows10.0.19041.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 2176,
+        "numberOfCodeFiles": 26,
+        "linesTotal": 77822,
+        "linesOfCode": 1075,
+        "totalApiScanned": 946,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "4c7283d9-64b5-43cc-bf11-a0ebe673adff",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ManagementDashboard\\ManagementDashboard.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Extensions.Logging.Debug, 8.0.0\n\nRecommendation:\n\nRemove Microsoft.Extensions.Logging.Debug, and replace with new package Microsoft.Extensions.Logging.Debug 10.0.5",
+              "protected": "Microsoft.Extensions.Logging.Debug, 8.0.0\n\nRecommendation:\n\nRemove Microsoft.Extensions.Logging.Debug, and replace with new package Microsoft.Extensions.Logging.Debug 10.0.5"
+            },
+            "kind": "File",
+            "path": "ManagementDashboard\\ManagementDashboard.csproj",
+            "snippet": "Microsoft.Extensions.Logging.Debug, 8.0.0\n\nRecommendation:\n\nRemove Microsoft.Extensions.Logging.Debug, and replace with new package Microsoft.Extensions.Logging.Debug 10.0.5",
+            "protectedSnippet": "Microsoft.Extensions.Logging.Debug, 8.0.0\n\nRecommendation:\n\nRemove Microsoft.Extensions.Logging.Debug, and replace with new package Microsoft.Extensions.Logging.Debug 10.0.5",
+            "label": "Microsoft.Extensions.Logging.Debug 8.0.0",
+            "properties": {
+              "PackageId": "Microsoft.Extensions.Logging.Debug",
+              "PackageVersion": "8.0.0",
+              "PackageNewVersion": "10.0.5",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "aea4b6cf-de90-4642-bc20-744e761e22b6",
+          "ruleId": "Project.0002",
+          "projectPath": "ManagementDashboard\\ManagementDashboard.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-windows10.0.19041.0\nRecommended target framework: net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-windows10.0.19041.0;net10.0-windows",
+              "protected": "Current target framework: net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-windows10.0.19041.0\nRecommended target framework: net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-windows10.0.19041.0;net10.0-windows"
+            },
+            "kind": "File",
+            "path": "ManagementDashboard\\ManagementDashboard.csproj",
+            "snippet": "Current target framework: net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-windows10.0.19041.0\nRecommended target framework: net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-windows10.0.19041.0;net10.0-windows",
+            "protectedSnippet": "Current target framework: net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-windows10.0.19041.0\nRecommended target framework: net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-windows10.0.19041.0;net10.0-windows",
+            "properties": {
+              "CurrentTargetFramework": "net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-windows10.0.19041.0",
+              "RecommendedTargetFramework": "net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-windows10.0.19041.0;net10.0-windows"
+            }
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "ManagementDashboard.Data\\ManagementDashboard.Data.csproj",
+      "startingProject": true,
+      "issues": 2,
+      "storyPoints": 2,
+      "properties": {
+        "appName": "ManagementDashboard.Data",
+        "projectKind": "ClassLibrary",
+        "frameworks": [
+          "net8.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 11,
+        "numberOfCodeFiles": 11,
+        "linesTotal": 499,
+        "linesOfCode": 499,
+        "totalApiScanned": 543,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "97fcd70e-8cd7-41f5-825c-c6522b3dc43d",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ManagementDashboard.Data\\ManagementDashboard.Data.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Data.Sqlite, 8.0.0\n\nRecommendation:\n\nRemove Microsoft.Data.Sqlite, and replace with new package Microsoft.Data.Sqlite 10.0.5",
+              "protected": "Microsoft.Data.Sqlite, 8.0.0\n\nRecommendation:\n\nRemove Microsoft.Data.Sqlite, and replace with new package Microsoft.Data.Sqlite 10.0.5"
+            },
+            "kind": "File",
+            "path": "ManagementDashboard.Data\\ManagementDashboard.Data.csproj",
+            "snippet": "Microsoft.Data.Sqlite, 8.0.0\n\nRecommendation:\n\nRemove Microsoft.Data.Sqlite, and replace with new package Microsoft.Data.Sqlite 10.0.5",
+            "protectedSnippet": "Microsoft.Data.Sqlite, 8.0.0\n\nRecommendation:\n\nRemove Microsoft.Data.Sqlite, and replace with new package Microsoft.Data.Sqlite 10.0.5",
+            "label": "Microsoft.Data.Sqlite 8.0.0",
+            "properties": {
+              "PackageId": "Microsoft.Data.Sqlite",
+              "PackageVersion": "8.0.0",
+              "PackageNewVersion": "10.0.5",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "221cb1ec-8beb-43b7-90bb-8b9a4a68e471",
+          "ruleId": "Project.0002",
+          "projectPath": "ManagementDashboard.Data\\ManagementDashboard.Data.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net8.0\nRecommended target framework: net10.0",
+              "protected": "Current target framework: net8.0\nRecommended target framework: net10.0"
+            },
+            "kind": "File",
+            "path": "ManagementDashboard.Data\\ManagementDashboard.Data.csproj",
+            "snippet": "Current target framework: net8.0\nRecommended target framework: net10.0",
+            "protectedSnippet": "Current target framework: net8.0\nRecommended target framework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": "net8.0",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "ManagementDashboard.Tests\\ManagementDashboard.Tests.csproj",
+      "startingProject": true,
+      "issues": 1,
+      "storyPoints": 1,
+      "properties": {
+        "appName": "ManagementDashboard.Tests",
+        "projectKind": "DotNetCoreApp",
+        "frameworks": [
+          "net8.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 9,
+        "numberOfCodeFiles": 7,
+        "linesTotal": 2416,
+        "linesOfCode": 633,
+        "totalApiScanned": 1096,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "9a96f6c4-022a-449c-8209-ebe05301055a",
+          "ruleId": "Project.0002",
+          "projectPath": "ManagementDashboard.Tests\\ManagementDashboard.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net8.0\nRecommended target framework: net10.0",
+              "protected": "Current target framework: net8.0\nRecommended target framework: net10.0"
+            },
+            "kind": "File",
+            "path": "ManagementDashboard.Tests\\ManagementDashboard.Tests.csproj",
+            "snippet": "Current target framework: net8.0\nRecommended target framework: net10.0",
+            "protectedSnippet": "Current target framework: net8.0\nRecommended target framework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": "net8.0",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        }
+      ],
+      "features": []
+    }
+  ],
+  "rules": {
+    "NuGet.0002": {
+      "id": "NuGet.0002",
+      "isFeature": false,
+      "description": "NuGet package upgrade is recommended for selected target framework.\n\nStandard .NET packages are recommended to have versions matching version of .NET that project targets.\n\nSome other packages also are known to work better for selected target frameworks.",
+      "label": "NuGet package upgrade is recommended",
+      "severity": "Potential",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262530",
+          "isCustom": false
+        }
+      ]
+    },
+    "Project.0002": {
+      "id": "Project.0002",
+      "isFeature": false,
+      "description": "Project\u0027s target framework(s) needs to be changed to the new target framework that you selected for this upgrade.\n\nDuring upgrade target framework will be adjusted to corresponding platform when applicable. In some cases project would result in multiple target frameworks after the upgrade if it was using features that now have their own platforms in modern .NET frameworks (windows, iOS, Android etc).",
+      "label": "Project\u0027s target framework(s) needs to be changed",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Overview of porting from .NET Framework to .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265227",
+          "isCustom": false
+        },
+        {
+          "title": ".NET project SDKs",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265226",
+          "isCustom": false
+        }
+      ]
+    }
+  }
+}
