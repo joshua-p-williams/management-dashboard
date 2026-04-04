@@ -15,11 +15,32 @@
                             <i class="bi bi-plus-circle me-1"></i> Add Task
                         </button>
                     </div>
-                    <div>
+                    <div class="mb-3">
                         <button class="btn btn-info text-white w-100" @onclick="OnAddWorkCaptureClicked">
                             <i class="bi bi-pencil-square me-1"></i> Add Work Capture
                         </button>
                     </div>
+                    @if (IsImageCaptureEnabled)
+                    {
+                        <div class="mb-3">
+                            <div class="btn-group w-100" role="group">
+                                <button class="btn btn-success" @onclick="OnCaptureFromCameraClicked" style="flex: 1;">
+                                    <i class="bi bi-camera me-1"></i> Camera
+                                </button>
+                                <button class="btn btn-outline-success" @onclick="OnSelectFromGalleryClicked" style="flex: 1;">
+                                    <i class="bi bi-image me-1"></i> Gallery
+                                </button>
+                            </div>
+                            <small class="text-muted d-block mt-1">Capture notes with OCR</small>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info small">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Configure Azure Vision in <a href="/settings">Settings</a> to enable image capture.
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -29,6 +50,7 @@
         </div>
     </div>
 </div>
+
 @if (showTaskEditor)
 {
     <TaskEditor
@@ -37,6 +59,7 @@
         OnCancel="CloseTaskEditor"
         OnSaved="OnTaskSaved" />
 }
+
 @if (showWorkCaptureModal)
 {
     <WorkCaptureNoteModal 
@@ -44,5 +67,40 @@
         IsEditMode="false"
         OnCancel="HandleWorkCaptureCancel"
         OnSave="HandleWorkCaptureSave" />
+}
+
+@if (showImagePreview)
+{
+    <ImagePreviewModal 
+        ImageData="capturedImageData"
+        OnCancel="HandleImagePreviewCancel"
+        OnProcess="HandleImageProcess" />
+}
+
+@if (showOcrResults)
+{
+    <OcrResultsModal 
+        ExtractedText="@extractedText"
+        OnCancel="HandleOcrResultsCancel"
+        OnCreateTask="HandleCreateTaskFromOcr"
+        OnCreateWorkNote="HandleCreateWorkNoteFromOcr" />
+}
+
+@if (isProcessingOcr)
+{
+    <div class="modal fade show" tabindex="-1" style="display: block;" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center p-4">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <h5>Processing Image</h5>
+                    <p class="mb-0">Extracting text using Azure Computer Vision...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
 }
 

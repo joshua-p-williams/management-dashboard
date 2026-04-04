@@ -1,0 +1,75 @@
+<div class="modal fade show" tabindex="-1" style="display: block;" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-eye"></i> Extracted Text
+                </h5>
+                <button type="button" class="btn-close" aria-label="Close" @onclick="HandleCancel"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="extractedText" class="form-label">
+                        <strong>Review and Edit Extracted Text:</strong>
+                    </label>
+                    <textarea id="extractedText" 
+                              class="form-control" 
+                              @bind="EditableText" 
+                              rows="8" 
+                              placeholder="Extracted text will appear here...">
+                    </textarea>
+                    <small class="text-muted">
+                        You can edit the text above before creating a task or work note.
+                    </small>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(EditableText))
+                {
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i>
+                        <strong>What would you like to do with this text?</strong>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <button type="button" 
+                                    class="btn btn-success w-100" 
+                                    @onclick="HandleCreateTask">
+                                <i class="bi bi-check-square"></i>
+                                <div class="mt-1">
+                                    <strong>Create Task</strong><br>
+                                    <small>Add to Eisenhower Matrix</small>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <button type="button" 
+                                    class="btn btn-primary w-100" 
+                                    @onclick="HandleCreateWorkNote">
+                                <i class="bi bi-journal-text"></i>
+                                <div class="mt-1">
+                                    <strong>Save as Work Note</strong><br>
+                                    <small>Add to Scrum Summary</small>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        No text was extracted from the image. Please try with a clearer image.
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="HandleCancel">
+                    <i class="bi bi-x-circle"></i> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdrop fade show"></div>

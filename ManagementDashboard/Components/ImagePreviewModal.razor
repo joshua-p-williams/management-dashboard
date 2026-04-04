@@ -1,0 +1,43 @@
+@using System.IO
+
+<div class="modal fade show" tabindex="-1" style="display: block;" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-camera"></i> Image Preview
+                </h5>
+                <button type="button" class="btn-close" aria-label="Close" @onclick="HandleCancel"></button>
+            </div>
+            <div class="modal-body text-center">
+                @if (!string.IsNullOrEmpty(ImageDataUrl))
+                {
+                    <img src="@ImageDataUrl" class="img-fluid mb-3" alt="Captured Image" style="max-height: 400px;" />
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        No image to preview
+                    </div>
+                }
+                
+                <div class="mb-3">
+                    <small class="text-muted">
+                        Review the image above. Click "Process with OCR" to extract text from this image.
+                    </small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="HandleCancel">
+                    <i class="bi bi-x-circle"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-primary" @onclick="HandleProcess" disabled="@(string.IsNullOrEmpty(ImageDataUrl))">
+                    <i class="bi bi-eye"></i> Process with OCR
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdrop fade show"></div>
