@@ -24,3 +24,113 @@
         </div>
     </div>
 </div>
+
+<!-- Azure Computer Vision Configuration Section -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="bi bi-camera me-2"></i>Azure Computer Vision
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="mb-3">
+            <label for="azureEndpoint" class="form-label">Endpoint URL</label>
+            <input type="url" 
+                   id="azureEndpoint"
+                   class="form-control @(IsEndpointValid ? "" : "is-invalid")" 
+                   placeholder="https://your-resource.cognitiveservices.azure.com/"
+                   @bind="AzureVisionEndpoint" 
+                   @bind:event="oninput"
+                   @onchange="@(() => ValidateEndpoint())" />
+            @if (!IsEndpointValid)
+            {
+                <div class="invalid-feedback">
+                    Please enter a valid HTTPS URL for your Azure Computer Vision endpoint.
+                </div>
+            }
+            <small class="form-text text-muted">
+                Enter your Azure Computer Vision endpoint URL (supports both old and new endpoint formats)
+            </small>
+        </div>
+        <div class="mb-3">
+            <label for="azureApiKey" class="form-label">API Key</label>
+            <input type="password" 
+                   id="azureApiKey"
+                   class="form-control @(IsApiKeyValid ? "" : "is-invalid")" 
+                   placeholder="Your Azure Vision API key"
+                   @bind="AzureVisionApiKey"
+                   @bind:event="oninput"
+                   @onchange="@(() => ValidateApiKey())" />
+            @if (!IsApiKeyValid)
+            {
+                <div class="invalid-feedback">
+                    API Key is required to enable image capture features.
+                </div>
+            }
+            <small class="form-text text-muted">
+                Enter your Azure Computer Vision API key (found in Azure portal under Keys and Endpoint)
+            </small>
+        </div>
+        <div class="mb-3">
+            <label for="maxImageSize" class="form-label">Max Image Size (MB)</label>
+            <input type="number" 
+                   id="maxImageSize"
+                   class="form-control" 
+                   placeholder="5" 
+                   min="1" 
+                   max="10"
+                   @bind="MaxImageSizeMB" />
+            <small class="form-text text-muted">
+                Maximum file size for image processing (1-10 MB)
+            </small>
+        </div>
+
+
+        @if (HasUnsavedChanges)
+        {
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                You have unsaved changes. Click "Save Settings" to apply your changes.
+            </div>
+        }
+
+        @if (IsAzureVisionConfigured && !HasUnsavedChanges)
+        {
+            <div class="alert alert-success">
+                <i class="bi bi-check-circle me-2"></i>
+                <strong>Image Capture Enabled</strong> - You can now capture and process images with OCR.
+            </div>
+        }
+        else if (!HasUnsavedChanges)
+        {
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle me-2"></i>
+                Configure Azure Vision credentials above to enable image capture features.
+            </div>
+        }
+
+        <div class="d-flex gap-2">
+            <button type="button" 
+                    class="btn btn-primary" 
+                    @onclick="SaveAzureSettings"
+                    disabled="@(!IsEndpointValid || !IsApiKeyValid)">
+                <i class="bi bi-check-lg me-1"></i> Save Settings
+            </button>
+
+            @if (IsAzureVisionConfigured && !HasUnsavedChanges)
+            {
+                <button type="button" class="btn btn-outline-primary" @onclick="TestAzureConnection">
+                    <i class="bi bi-wifi me-1"></i> Test Connection
+                </button>
+            }
+        </div>
+
+        @if (ShowConnectionResult)
+        {
+            <div class="alert @(ConnectionTestSuccessful ? "alert-success" : "alert-danger") mt-3">
+                <i class="bi @(ConnectionTestSuccessful ? "bi-check-circle" : "bi-x-circle") me-2"></i>
+                @ConnectionTestMessage
+            </div>
+        }
+    </div>
+</div>

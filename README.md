@@ -24,6 +24,14 @@ Answer the three core Scrum questions with one click and save your daily entries
 
 ---
 
+### 📸 Image Note Capture
+Leverage **Azure Computer Vision OCR** to extract text from photos of handwritten notes, whiteboards, and meeting content.  
+Automatically convert captured text into Eisenhower Matrix tasks or work capture notes.
+
+📄 See [docs/feature-image-note-capture.md](docs/feature-image-note-capture.md)
+
+---
+
 ## 🧱 Architecture
 
 The app is built using a clean layered architecture:

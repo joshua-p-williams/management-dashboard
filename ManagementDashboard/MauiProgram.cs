@@ -41,6 +41,12 @@ namespace ManagementDashboard
             // Register TaskService and ITaskService as scoped
             builder.Services.AddScoped<ITaskService, TaskService>();
 
+            // Register AzureVisionService as scoped
+            builder.Services.AddScoped<IAzureVisionService, AzureVisionService>();
+
+            // Register ImageCaptureService as scoped
+            builder.Services.AddScoped<IImageCaptureService, ImageCaptureService>();
+
             // Register configuration for SQLite connection string
             var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "management-dashboard.db");
             var configBuilder = new ConfigurationBuilder();
