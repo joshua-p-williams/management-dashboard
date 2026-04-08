@@ -84,13 +84,13 @@ Each task will be:
 
 ### [7.6] Settings Panel Integration
 
-* [ ] ⚙️ Add Azure AI Speech Services section to existing `Settings.razor` page
-* [ ] 🔐 Add form fields for Subscription Key, Region, and Language selection
-* [ ] 🌍 Implement region dropdown with common Azure regions
-* [ ] 🗣️ Add language selection dropdown for recognition languages
-* [ ] ✅ Add validation for required fields and subscription key format
-* [ ] 🔒 Implement feature gating - show/hide speech buttons based on config
-* [ ] 🧪 Test settings save/load and feature enable/disable logic
+* [x] ⚙️ Add Azure AI Speech Services section to existing `Settings.razor` page
+* [x] 🔐 Add form fields for Subscription Key, Region, and Language selection
+* [x] 🌍 Implement region dropdown with common Azure regions
+* [x] 🗣️ Add language selection dropdown for recognition languages
+* [x] ✅ Add validation for required fields and subscription key format
+* [x] 🔒 Implement feature gating - show/hide speech buttons based on config
+* [x] 🧪 Test settings save/load and feature enable/disable logic
 
 > ✅ **Checkpoint:** Settings panel working, Azure Speech credentials configurable, feature gating active.
 
@@ -111,9 +111,6 @@ Each task will be:
 
 ### [7.8] Work Capture Note Integration
 
-* [ ] 🗃️ Optionally extend `WorkCaptureNote` model to track speech source (add `CaptureSource` enum)
-* [ ] 🚀 Create database migration for capture source tracking (optional)
-* [ ] 🔄 Update `WorkCaptureNoteRepository` to handle speech-sourced notes
 * [ ] 🧱 Add "Record Note" button to existing Work Capture UI
 * [ ] 🧪 Test creating Work Capture Notes from speech text
 
@@ -124,8 +121,8 @@ Each task will be:
 ### [7.9] Task Creation from Speech
 
 * [ ] 🏗️ Extend task creation flow to handle speech-sourced content (reuse existing patterns)
-* [ ] 🧠 Add smart text parsing to suggest task title from spoken content
-* [ ] 🎯 Add quadrant suggestion logic based on speech keywords and context
+* [ ] 🧠 Add smart text parsing to suggest task title from spoken content (just trim it down like we did with OCR)
+* [ ] 🎯 Add quadrant suggestion logic based on speech keywords and context (this is optional, just do what we did with OCR for now)
 * [ ] 🔗 Wire speech results modal to existing task creation flow
 * [ ] 🧪 Test creating Eisenhower Tasks from speech text
 * [ ] 💡 Add speech-specific parsing (handle spoken punctuation, filler words)
@@ -139,7 +136,6 @@ Each task will be:
 * [ ] 🎤 Add "Record Note" button to main dashboard alongside image capture
 * [ ] 🔄 Wire complete flow: button → recording modal → speech processing → routing → save
 * [ ] 🎨 Style recording button with microphone icon, group with capture options
-* [ ] 📱 Add quick access recording controls to navigation/header
 * [ ] 🧪 Test complete user journey from main page
 * [ ] 🧪 Test both Task and Work Note creation paths from speech
 
@@ -147,20 +143,7 @@ Each task will be:
 
 ---
 
-### [7.11] Real-time Speech Recognition
-
-* [ ] 🔄 Implement continuous speech recognition for longer recording sessions
-* [ ] ⚡ Add real-time transcription display during recording
-* [ ] ⏸️ Add pause/resume functionality for long recordings
-* [ ] 🎛️ Add recording quality controls (sample rate, format options)
-* [ ] 📏 Implement maximum recording duration limits with warnings
-* [ ] 🧪 Test real-time recognition accuracy and performance
-
-> ✅ **Checkpoint:** Real-time speech recognition working, good user experience for longer sessions.
-
----
-
-### [7.12] Cross-Platform Audio Testing
+### [7.11] Cross-Platform Audio Testing
 
 * [ ] 📱 Test microphone recording on Windows desktop (default microphone)
 * [ ] 🎚️ Test audio level monitoring and visual feedback on Windows
@@ -173,7 +156,7 @@ Each task will be:
 
 ---
 
-### [7.13] Error Handling & Polish
+### [7.12] Error Handling & Polish
 
 * [ ] ❌ Add comprehensive error messages for common failures (network, microphone, invalid credentials)
 * [ ] ⏳ Improve loading states with better progress indicators during transcription
@@ -187,29 +170,9 @@ Each task will be:
 
 ---
 
-### [7.14] Advanced Features & Optimization
+### [7.13] Documentation & Testing
 
-* [ ] 🎯 Add confidence thresholds for transcription quality warnings
-* [ ] 🔄 Implement retry mechanism for failed transcriptions
-* [ ] 📊 Add audio preprocessing (noise reduction, volume normalization)
-* [ ] 🗣️ Add multiple language support with auto-detection
-* [ ] ⚡ Optimize audio compression for faster cloud processing
-* [ ] 💾 Add optional local audio caching for retry scenarios
-* [ ] 🧪 Performance testing with various audio conditions
-
-> ✅ **Checkpoint:** Advanced features implemented, performance optimized.
-
----
-
-### [7.15] Documentation & Testing
-
-* [ ] 📝 Update feature documentation with implementation details
-* [ ] 🧪 Add comprehensive integration tests for speech service
-* [ ] 🧪 Add UI tests for modal interactions and recording controls
-* [ ] 📖 Add inline help/tooltips for Azure Speech configuration
-* [ ] 🎤 Create user guide for optimal speech recognition results
-* [ ] 🔐 Document privacy and security considerations
-* [ ] 🏷️ Tag commit as feature completion (`feat/speech-note-capture`)
+* [ ] 📝 Update feature documentation and README with implementation details
 
 > ✅ **Checkpoint:** Feature complete, documented, tested, ready for production use.
 

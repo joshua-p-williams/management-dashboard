@@ -134,3 +134,132 @@
         }
     </div>
 </div>
+
+<!-- Azure AI Speech Services Configuration Section -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="bi bi-mic me-2"></i>Azure AI Speech Services
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="mb-3">
+            <label for="azureSpeechKey" class="form-label">Subscription Key</label>
+            <input type="password" 
+                   id="azureSpeechKey"
+                   class="form-control @(IsSpeechKeyValid ? "" : "is-invalid")" 
+                   placeholder="Your Azure Speech Services subscription key"
+                   @bind="AzureSpeechSubscriptionKey"
+                   @bind:event="oninput"
+                   @onchange="@(() => ValidateSpeechKey())" />
+            @if (!IsSpeechKeyValid)
+            {
+                <div class="invalid-feedback">
+                    Subscription Key is required to enable speech capture features.
+                </div>
+            }
+            <small class="form-text text-muted">
+                Enter your Azure Speech Services subscription key (found in Azure portal under Keys and Endpoint)
+            </small>
+        </div>
+
+        <div class="mb-3">
+            <label for="azureSpeechRegion" class="form-label">Region</label>
+            <select id="azureSpeechRegion" 
+                    class="form-select @(IsSpeechRegionValid ? "" : "is-invalid")"
+                    @bind="AzureSpeechRegion"
+                    @bind:after="@(() => ValidateSpeechRegion())">
+                <option value="">Select a region...</option>
+                @foreach (var region in AvailableRegions)
+                {
+                    <option value="@region.Key">@region.Value</option>
+                }
+            </select>
+            @if (!IsSpeechRegionValid)
+            {
+                <div class="invalid-feedback">
+                    Please select a valid Azure region.
+                </div>
+            }
+            <small class="form-text text-muted">
+                Select the Azure region where your Speech Services resource is deployed
+            </small>
+        </div>
+
+        <div class="mb-3">
+            <label for="azureSpeechLanguage" class="form-label">Recognition Language</label>
+            <select id="azureSpeechLanguage" 
+                    class="form-select"
+                    @bind="AzureSpeechLanguage">
+                @foreach (var language in AvailableLanguages)
+                {
+                    <option value="@language.Key">@language.Value</option>
+                }
+            </select>
+            <small class="form-text text-muted">
+                Choose the primary language for speech recognition
+            </small>
+        </div>
+
+        <div class="mb-3">
+            <label for="maxRecordingDuration" class="form-label">Max Recording Duration (minutes)</label>
+            <input type="number" 
+                   id="maxRecordingDuration"
+                   class="form-control" 
+                   placeholder="5" 
+                   min="1" 
+                   max="30"
+                   @bind="MaxRecordingDurationMinutes" />
+            <small class="form-text text-muted">
+                Maximum recording duration for voice notes (1-30 minutes)
+            </small>
+        </div>
+
+        @if (HasUnsavedSpeechChanges)
+        {
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                You have unsaved changes. Click "Save Settings" to apply your changes.
+            </div>
+        }
+
+        @if (IsAzureSpeechConfigured && !HasUnsavedSpeechChanges)
+        {
+            <div class="alert alert-success">
+                <i class="bi bi-check-circle me-2"></i>
+                <strong>Speech Capture Enabled</strong> - You can now record and transcribe voice notes.
+            </div>
+        }
+        else if (!HasUnsavedSpeechChanges)
+        {
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle me-2"></i>
+                Configure Azure Speech Services credentials above to enable voice capture features.
+            </div>
+        }
+
+        <div class="d-flex gap-2">
+            <button type="button" 
+                    class="btn btn-primary" 
+                    @onclick="SaveSpeechSettings"
+                    disabled="@(!IsSpeechKeyValid || !IsSpeechRegionValid)">
+                <i class="bi bi-check-lg me-1"></i> Save Settings
+            </button>
+
+            @if (IsAzureSpeechConfigured && !HasUnsavedSpeechChanges)
+            {
+                <button type="button" class="btn btn-outline-primary" @onclick="TestSpeechConnection">
+                    <i class="bi bi-wifi me-1"></i> Test Connection
+                </button>
+            }
+        </div>
+
+        @if (ShowSpeechConnectionResult)
+        {
+            <div class="alert @(SpeechConnectionTestSuccessful ? "alert-success" : "alert-danger") mt-3">
+                <i class="bi @(SpeechConnectionTestSuccessful ? "bi-check-circle" : "bi-x-circle") me-2"></i>
+                @SpeechConnectionTestMessage
+            </div>
+        }
+    </div>
+</div>

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using ManagementDashboard.Core.Services;
 using ManagementDashboard.Core.Contracts;
+using ManagementDashboard.Core.Constants;
 
 namespace ManagementDashboard.Components.Pages
 {
@@ -10,6 +11,7 @@ namespace ManagementDashboard.Components.Pages
         [Inject] public SettingsService SettingsService { get; set; } = default!;
         [Inject] public IJSRuntime JS { get; set; } = default!;
         [Inject] public IAzureVisionService AzureVisionService { get; set; } = default!;
+        [Inject] public IAzureSpeechService AzureSpeechService { get; set; } = default!;
 
         protected bool IsDarkMode
         {
@@ -90,6 +92,76 @@ namespace ManagementDashboard.Components.Pages
         protected string ConnectionTestMessage { get; set; } = string.Empty;
         protected bool HasUnsavedChanges { get; set; } = false;
 
+        // Azure Speech Services Settings - use local fields for editing
+        private string _azureSpeechSubscriptionKey = string.Empty;
+        private string _azureSpeechRegion = string.Empty;
+
+        protected string AzureSpeechSubscriptionKey
+        {
+            get => _azureSpeechSubscriptionKey;
+            set
+            {
+                if (_azureSpeechSubscriptionKey != value)
+                {
+                    _azureSpeechSubscriptionKey = value;
+                    ValidateSpeechKey();
+                    HasUnsavedSpeechChanges = true;
+                }
+            }
+        }
+
+        protected string AzureSpeechRegion
+        {
+            get => _azureSpeechRegion;
+            set
+            {
+                if (_azureSpeechRegion != value)
+                {
+                    _azureSpeechRegion = value;
+                    ValidateSpeechRegion();
+                    HasUnsavedSpeechChanges = true;
+                }
+            }
+        }
+
+        protected string AzureSpeechLanguage
+        {
+            get => SettingsService.AzureSpeechLanguage;
+            set
+            {
+                if (SettingsService.AzureSpeechLanguage != value)
+                {
+                    SettingsService.AzureSpeechLanguage = value;
+                    StateHasChanged();
+                }
+            }
+        }
+
+        protected int MaxRecordingDurationMinutes
+        {
+            get => SettingsService.MaxRecordingDurationMinutes;
+            set
+            {
+                if (SettingsService.MaxRecordingDurationMinutes != value)
+                {
+                    SettingsService.MaxRecordingDurationMinutes = value;
+                    StateHasChanged();
+                }
+            }
+        }
+
+        protected bool IsSpeechKeyValid { get; set; } = true;
+        protected bool IsSpeechRegionValid { get; set; } = true;
+        protected bool IsAzureSpeechConfigured { get; set; } = false;
+        protected bool ShowSpeechConnectionResult { get; set; } = false;
+        protected bool SpeechConnectionTestSuccessful { get; set; } = false;
+        protected string SpeechConnectionTestMessage { get; set; } = string.Empty;
+        protected bool HasUnsavedSpeechChanges { get; set; } = false;
+
+        // Available regions and languages for dropdowns
+        protected Dictionary<string, string> AvailableRegions => AzureSpeechConstants.Regions.RegionDisplayNames;
+        protected Dictionary<string, string> AvailableLanguages => AzureSpeechConstants.Languages.LanguageDisplayNames;
+
         protected override async Task OnInitializedAsync()
         {
             await ApplyThemeAsync();
@@ -98,12 +170,21 @@ namespace ManagementDashboard.Components.Pages
             _azureVisionEndpoint = SettingsService.AzureVisionEndpoint ?? string.Empty;
             _azureVisionApiKey = await SettingsService.GetAzureVisionApiKeyAsync() ?? string.Empty;
 
+            // Load Azure Speech Services values
+            _azureSpeechSubscriptionKey = await SettingsService.GetAzureSpeechSubscriptionKeyAsync() ?? string.Empty;
+            _azureSpeechRegion = SettingsService.AzureSpeechRegion ?? string.Empty;
+
             // Check if Azure Vision is configured
             IsAzureVisionConfigured = await SettingsService.IsAzureVisionConfiguredAsync();
+
+            // Check if Azure Speech is configured
+            IsAzureSpeechConfigured = await SettingsService.IsAzureSpeechConfiguredAsync();
 
             // Validate after loading values
             ValidateEndpoint();
             ValidateApiKey();
+            ValidateSpeechKey();
+            ValidateSpeechRegion();
             StateHasChanged();
         }
 
@@ -216,6 +297,96 @@ namespace ManagementDashboard.Components.Pages
             {
                 ConnectionTestSuccessful = false;
                 ConnectionTestMessage = $"Connection test failed: {ex.Message}";
+            }
+
+            StateHasChanged();
+        }
+
+        protected void ValidateSpeechKey()
+        {
+            IsSpeechKeyValid = !string.IsNullOrWhiteSpace(AzureSpeechSubscriptionKey?.Trim());
+            StateHasChanged();
+        }
+
+        protected void ValidateSpeechRegion()
+        {
+            IsSpeechRegionValid = !string.IsNullOrWhiteSpace(AzureSpeechRegion?.Trim()) && 
+                                  AvailableRegions.ContainsKey(AzureSpeechRegion.Trim());
+            StateHasChanged();
+        }
+
+        protected async Task SaveSpeechSettings()
+        {
+            try
+            {
+                // Save speech settings
+                SettingsService.AzureSpeechRegion = AzureSpeechRegion?.Trim();
+                await SettingsService.SetAzureSpeechSubscriptionKeyAsync(AzureSpeechSubscriptionKey?.Trim());
+
+                // Update configuration status
+                IsAzureSpeechConfigured = await SettingsService.IsAzureSpeechConfiguredAsync();
+                HasUnsavedSpeechChanges = false;
+
+                // Show success message
+                ShowSpeechConnectionResult = true;
+                SpeechConnectionTestSuccessful = true;
+                SpeechConnectionTestMessage = "Settings saved successfully!";
+
+                StateHasChanged();
+
+                // Hide success message after 3 seconds
+                _ = Task.Delay(3000).ContinueWith(_ =>
+                {
+                    ShowSpeechConnectionResult = false;
+                    InvokeAsync(StateHasChanged);
+                });
+            }
+            catch (Exception ex)
+            {
+                ShowSpeechConnectionResult = true;
+                SpeechConnectionTestSuccessful = false;
+                SpeechConnectionTestMessage = $"Failed to save settings: {ex.Message}";
+                StateHasChanged();
+            }
+        }
+
+        protected async Task TestSpeechConnection()
+        {
+            // Save first, then test
+            await SaveSpeechSettings();
+
+            if (!IsAzureSpeechConfigured)
+            {
+                ShowSpeechConnectionResult = true;
+                SpeechConnectionTestSuccessful = false;
+                SpeechConnectionTestMessage = "Please save valid credentials before testing connection.";
+                StateHasChanged();
+                return;
+            }
+
+            ShowSpeechConnectionResult = true;
+            SpeechConnectionTestSuccessful = false;
+            SpeechConnectionTestMessage = "Testing connection...";
+            StateHasChanged();
+
+            try
+            {
+                var isConfigured = await AzureSpeechService.IsConfiguredAsync();
+                if (isConfigured)
+                {
+                    SpeechConnectionTestSuccessful = true;
+                    SpeechConnectionTestMessage = "Connection test successful! Azure Speech Services is properly configured.";
+                }
+                else
+                {
+                    SpeechConnectionTestSuccessful = false;
+                    SpeechConnectionTestMessage = "Configuration incomplete. Please check your subscription key and region.";
+                }
+            }
+            catch (Exception ex)
+            {
+                SpeechConnectionTestSuccessful = false;
+                SpeechConnectionTestMessage = $"Connection test failed: {ex.Message}";
             }
 
             StateHasChanged();
