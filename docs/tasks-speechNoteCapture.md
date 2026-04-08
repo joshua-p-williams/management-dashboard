@@ -71,12 +71,12 @@ Each task will be:
 
 ### [7.5] Speech Results Modal Component
 
-* [ ] 🧱 Create `SpeechResultsModal.razor` for transcribed text editing (similar to OcrResultsModal)
-* [ ] 🎨 Add textarea for speech text with edit capability
-* [ ] 🔘 Add routing buttons: "Create Task" vs "Save as Work Note"
-* [ ] 🔄 Wire EventCallbacks for routing decisions
-* [ ] ✨ Add confidence indicators for transcription quality (optional)
-* [ ] 🧪 Test modal with sample transcribed text
+* [x] 🧱 Create `SpeechResultsModal.razor` for transcribed text editing (similar to OcrResultsModal)
+* [x] 🎨 Add textarea for speech text with edit capability
+* [x] 🔘 Add routing buttons: "Create Task" vs "Save as Work Note"
+* [x] 🔄 Wire EventCallbacks for routing decisions
+* [x] ✨ Add confidence indicators for transcription quality (optional)
+* [x] 🧪 Test modal with sample transcribed text
 
 > ✅ **Checkpoint:** Speech results modal displays text and routing options work.
 
