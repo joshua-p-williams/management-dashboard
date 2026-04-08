@@ -1,0 +1,160 @@
+@using ManagementDashboard.Core.Contracts
+@inject IAudioCaptureService AudioCaptureService
+
+<div class="modal fade show" tabindex="-1" style="display: block;" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-mic"></i> Audio Recording
+                </h5>
+                <button type="button" class="btn-close" aria-label="Close" @onclick="HandleCancel"></button>
+            </div>
+            <div class="modal-body text-center">
+                
+                <!-- Recording Status Display -->
+                <div class="mb-4">
+                    @if (AudioCaptureService.IsRecording && !AudioCaptureService.IsPaused)
+                    {
+                        <div class="alert alert-success">
+                            <i class="bi bi-mic-fill text-danger blink"></i>
+                            <strong>Recording...</strong>
+                        </div>
+                    }
+                    else if (AudioCaptureService.IsPaused)
+                    {
+                        <div class="alert alert-warning">
+                            <i class="bi bi-pause-circle"></i>
+                            <strong>Recording Paused</strong>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <i class="bi bi-mic"></i>
+                            <strong>Ready to Record</strong>
+                        </div>
+                    }
+                </div>
+
+                <!-- Recording Timer -->
+                <div class="mb-4">
+                    <h3 class="text-primary mb-3">
+                        @FormatDuration(AudioCaptureService.RecordingDuration)
+                    </h3>
+                    
+                    <!-- Audio Level Meter -->
+                    <div class="mb-3">
+                        <label class="form-label small text-muted">Audio Level</label>
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar @GetAudioLevelColor()" 
+                                 role="progressbar" 
+                                 style="width: @((AudioCaptureService.AudioLevel * 100).ToString("0"))%"
+                                 aria-valuenow="@((AudioCaptureService.AudioLevel * 100).ToString("0"))" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recording Controls -->
+                <div class="mb-4">
+                    <div class="btn-group" role="group">
+                        @if (!AudioCaptureService.IsRecording)
+                        {
+                            <!-- Start Recording Button -->
+                            <button type="button" 
+                                    class="btn btn-success btn-lg" 
+                                    @onclick="StartRecording"
+                                    disabled="@isProcessing">
+                                <i class="bi bi-play-circle"></i> Start Recording
+                            </button>
+                        }
+                        else if (AudioCaptureService.IsPaused)
+                        {
+                            <!-- Resume Button -->
+                            <button type="button" 
+                                    class="btn btn-warning btn-lg" 
+                                    @onclick="ResumeRecording"
+                                    disabled="@isProcessing">
+                                <i class="bi bi-play-circle"></i> Resume
+                            </button>
+                            
+                            <!-- Stop Button -->
+                            <button type="button" 
+                                    class="btn btn-danger btn-lg" 
+                                    @onclick="StopRecording"
+                                    disabled="@isProcessing">
+                                <i class="bi bi-stop-circle"></i> Stop
+                            </button>
+                        }
+                        else
+                        {
+                            <!-- Pause Button -->
+                            <button type="button" 
+                                    class="btn btn-warning btn-lg" 
+                                    @onclick="PauseRecording"
+                                    disabled="@isProcessing">
+                                <i class="bi bi-pause-circle"></i> Pause
+                            </button>
+                            
+                            <!-- Stop Button -->
+                            <button type="button" 
+                                    class="btn btn-danger btn-lg" 
+                                    @onclick="StopRecording"
+                                    disabled="@isProcessing">
+                                <i class="bi bi-stop-circle"></i> Stop
+                            </button>
+                        }
+                    </div>
+                </div>
+
+                <!-- Recording Instructions -->
+                <div class="mb-3">
+                    <small class="text-muted">
+                        @if (!AudioCaptureService.IsRecording)
+                        {
+                            <span>Click "Start Recording" to begin capturing audio. Speak clearly for best results.</span>
+                        }
+                        else if (AudioCaptureService.IsPaused)
+                        {
+                            <span>Recording is paused. Click "Resume" to continue or "Stop" to finish.</span>
+                        }
+                        else
+                        {
+                            <span>Recording in progress. Speak clearly into your microphone.</span>
+                        }
+                    </small>
+                </div>
+
+                @if (errorMessage != null)
+                {
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        @errorMessage
+                    </div>
+                }
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="HandleCancel" disabled="@isProcessing">
+                    <i class="bi bi-x-circle"></i> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdrop fade show"></div>
+
+<style>
+    .blink {
+        animation: blink 1s infinite;
+    }
+    
+    @@keyframes blink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0.3; }
+    }
+</style>

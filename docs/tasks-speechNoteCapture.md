@@ -57,13 +57,13 @@ Each task will be:
 
 ### [7.4] Audio Recording Modal Component
 
-* [ ] 🧱 Create `AudioRecordingModal.razor` component in `/Components/`
-* [ ] 🎨 Build Bootstrap modal with record/stop buttons and audio visualization
-* [ ] ⏱️ Add recording timer and progress indicators
-* [ ] 📊 Add visual audio level meters during recording
-* [ ] 🔄 Add EventCallback parameters for OnRecordingComplete/OnCancel
-* [ ] 🧪 Create test page to display modal with sample recording controls
-* [ ] 🧪 Test modal open/close and recording button interactions
+* [x] 🧱 Create `AudioRecordingModal.razor` component in `/Components/`
+* [x] 🎨 Build Bootstrap modal with record/stop buttons and audio visualization
+* [x] ⏱️ Add recording timer and progress indicators
+* [x] 📊 Add visual audio level meters during recording
+* [x] 🔄 Add EventCallback parameters for OnRecordingComplete/OnCancel
+* [x] 🧪 Create test page to display modal with sample recording controls
+* [x] 🧪 Test modal open/close and recording button interactions
 
 > ✅ **Checkpoint:** Audio recording modal renders and behaves correctly with recording controls.
 

@@ -1,0 +1,56 @@
+@page "/audio-test"
+@using ManagementDashboard.Components
+
+<h3>Audio Recording Modal Test</h3>
+
+<div class="container py-4">
+    <div class="card">
+        <div class="card-header">
+            <h5>Audio Recording Test</h5>
+        </div>
+        <div class="card-body">
+            <p>Use this page to test the Audio Recording Modal component.</p>
+            
+            <button class="btn btn-primary" @onclick="ShowModal">
+                <i class="bi bi-mic"></i> Test Audio Recording Modal
+            </button>
+            
+            @if (recordedData != null)
+            {
+                <div class="alert alert-success mt-3">
+                    <i class="bi bi-check-circle"></i>
+                    Recording completed! Captured @recordedData.Length bytes of audio data.
+                </div>
+            }
+            
+            @if (showModal)
+            {
+                <AudioRecordingModal 
+                    OnCancel="HandleCancel"
+                    OnRecordingComplete="HandleRecordingComplete" />
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool showModal = false;
+    private byte[]? recordedData = null;
+
+    private void ShowModal()
+    {
+        showModal = true;
+        recordedData = null; // Clear previous data
+    }
+
+    private void HandleCancel()
+    {
+        showModal = false;
+    }
+
+    private void HandleRecordingComplete(byte[] audioData)
+    {
+        recordedData = audioData;
+        showModal = false;
+    }
+}
