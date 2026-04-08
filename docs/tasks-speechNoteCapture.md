@@ -43,13 +43,13 @@ Each task will be:
 
 ### [7.3] Basic Audio Capture Service
 
-* [ ] 🏗️ Create `IAudioCaptureService` contract for microphone operations
-* [ ] 📱 Implement `AudioCaptureService` using MAUI platform-specific audio recording
-* [ ] 🔐 Add microphone permission handling for MAUI platforms
-* [ ] ⏯️ Implement start/stop/pause recording controls
-* [ ] 📊 Add recording duration tracking and audio level monitoring
-* [ ] 🔌 Register `AudioCaptureService` in DI container
-* [ ] 🧪 Test microphone permission requests on Windows (mock for now)
+* [x] 🏗️ Create `IAudioCaptureService` contract for microphone operations
+* [x] 📱 Implement `AudioCaptureService` using MAUI platform-specific audio recording
+* [x] 🔐 Add microphone permission handling for MAUI platforms
+* [x] ⏯️ Implement start/stop/pause recording controls
+* [x] 📊 Add recording duration tracking and audio level monitoring
+* [x] 🔌 Register `AudioCaptureService` in DI container
+* [x] 🧪 Test microphone permission requests on Windows (mock for now)
 
 > ✅ **Checkpoint:** Audio capture service ready, permissions handled, microphone access working.
 

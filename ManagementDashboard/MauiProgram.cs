@@ -50,6 +50,9 @@ namespace ManagementDashboard
             // Register ImageCaptureService as scoped
             builder.Services.AddScoped<IImageCaptureService, ImageCaptureService>();
 
+            // Register AudioCaptureService as scoped
+            builder.Services.AddScoped<IAudioCaptureService, AudioCaptureService>();
+
             // Register configuration for SQLite connection string
             var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "management-dashboard.db");
             var configBuilder = new ConfigurationBuilder();

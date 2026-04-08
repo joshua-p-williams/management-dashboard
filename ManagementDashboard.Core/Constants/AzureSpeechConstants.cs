@@ -123,5 +123,14 @@ namespace ManagementDashboard.Core.Constants
         public const int DefaultMaxRecordingDurationMinutes = 5;
         public const int MinRecordingDurationMinutes = 1;
         public const int MaxRecordingDurationMinutes = 30;
+
+        // Audio Recording Constants
+        public const int DefaultSampleRate = 16000; // 16kHz recommended for speech recognition
+        public const int DefaultBitDepth = 16; // 16-bit recommended
+        public const int DefaultChannels = 1; // Mono recommended for speech
+        public const int AudioLevelUpdateIntervalMs = 100; // Update audio levels every 100ms
+        public const float SilenceThreshold = 0.01f; // Threshold for detecting silence
+        public const int MinRecordingDurationSeconds = 1; // Minimum recording duration
+        public const int MaxRecordingDurationSeconds = 30 * 60; // Maximum recording duration (30 minutes)
     }
 }

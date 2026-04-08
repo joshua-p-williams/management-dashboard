@@ -16,4 +16,8 @@
     <ProjectReference Include="..\ManagementDashboard.Data\ManagementDashboard.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Test\" />
+  </ItemGroup>
+
 </Project>
