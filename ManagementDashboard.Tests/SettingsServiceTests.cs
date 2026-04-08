@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Xunit;
 using ManagementDashboard.Core.Services;
 using ManagementDashboard.Core.Contracts;
+using ManagementDashboard.Core.Constants;
 
 namespace ManagementDashboard.Tests
 {
@@ -64,5 +65,78 @@ namespace ManagementDashboard.Tests
             var service2 = new SettingsService(prefs);
             Assert.Equal(5, service2.DueDateReminderThresholdDays);
         }
+
+        // Azure Speech Settings Tests
+        [Fact]
+        public void AzureSpeechRegion_DefaultsToEastUs()
+        {
+            var service = new SettingsService(new InMemoryPreferences());
+            Assert.Equal(AzureSpeechConstants.DefaultRegion, service.AzureSpeechRegion);
+        }
+
+        [Fact]
+        public void CanSetAzureSpeechRegion()
+        {
+            var prefs = new InMemoryPreferences();
+            var service = new SettingsService(prefs);
+            service.AzureSpeechRegion = AzureSpeechConstants.Regions.WestUs2;
+            Assert.Equal(AzureSpeechConstants.Regions.WestUs2, service.AzureSpeechRegion);
+
+            // Check persistence
+            var service2 = new SettingsService(prefs);
+            Assert.Equal(AzureSpeechConstants.Regions.WestUs2, service2.AzureSpeechRegion);
+        }
+
+        [Fact]
+        public void AzureSpeechLanguage_DefaultsToEnglishUs()
+        {
+            var service = new SettingsService(new InMemoryPreferences());
+            Assert.Equal(AzureSpeechConstants.DefaultLanguage, service.AzureSpeechLanguage);
+        }
+
+        [Fact]
+        public void CanSetAzureSpeechLanguage()
+        {
+            var prefs = new InMemoryPreferences();
+            var service = new SettingsService(prefs);
+            service.AzureSpeechLanguage = AzureSpeechConstants.Languages.SpanishSpain;
+            Assert.Equal(AzureSpeechConstants.Languages.SpanishSpain, service.AzureSpeechLanguage);
+
+            // Check persistence
+            var service2 = new SettingsService(prefs);
+            Assert.Equal(AzureSpeechConstants.Languages.SpanishSpain, service2.AzureSpeechLanguage);
+        }
+
+        [Fact]
+        public void MaxRecordingDurationMinutes_DefaultsToFive()
+        {
+            var service = new SettingsService(new InMemoryPreferences());
+            Assert.Equal(AzureSpeechConstants.DefaultMaxRecordingDurationMinutes, service.MaxRecordingDurationMinutes);
+        }
+
+        [Fact]
+        public void CanSetMaxRecordingDurationMinutes()
+        {
+            var prefs = new InMemoryPreferences();
+            var service = new SettingsService(prefs);
+            service.MaxRecordingDurationMinutes = 10;
+            Assert.Equal(10, service.MaxRecordingDurationMinutes);
+
+            // Check persistence
+            var service2 = new SettingsService(prefs);
+            Assert.Equal(10, service2.MaxRecordingDurationMinutes);
+        }
+
+        [Fact]
+        public async void IsAzureSpeechConfiguredAsync_ReturnsFalseWithoutCredentials()
+        {
+            var service = new SettingsService(new InMemoryPreferences());
+            var isConfigured = await service.IsAzureSpeechConfiguredAsync();
+            Assert.False(isConfigured);
+        }
+
+        // Note: We can't easily test the secure storage methods in unit tests 
+        // since they depend on platform-specific implementations
+        // These would be tested in integration tests or manual testing
     }
 }

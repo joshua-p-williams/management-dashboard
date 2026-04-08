@@ -1,5 +1,6 @@
 using System;
 using ManagementDashboard.Core.Contracts;
+using ManagementDashboard.Core.Constants;
 
 namespace ManagementDashboard.Core.Services
 {
@@ -10,6 +11,12 @@ namespace ManagementDashboard.Core.Services
         private const string AzureVisionEndpointKey = "AzureVisionEndpoint";
         private const string AzureVisionApiKeySecureKey = "AzureVisionApiKey";
         private const string MaxImageSizeMBKey = "MaxImageSizeMB";
+
+        // Azure Speech Settings Keys
+        private const string AzureSpeechRegionKey = "AzureSpeechRegion";
+        private const string AzureSpeechSubscriptionKeySecureKey = "AzureSpeechSubscriptionKey";
+        private const string AzureSpeechLanguageKey = "AzureSpeechLanguage";
+        private const string MaxRecordingDurationMinutesKey = "MaxRecordingDurationMinutes";
 
         private readonly IAppPreferences _preferences;
         public event Action? OnThemeChanged;
@@ -88,6 +95,65 @@ namespace ManagementDashboard.Core.Services
 
             return !string.IsNullOrWhiteSpace(endpoint) && 
                    !string.IsNullOrWhiteSpace(apiKey);
+        }
+
+        // Azure AI Speech Services Settings
+        public string? AzureSpeechRegion
+        {
+            get => _preferences.Get(AzureSpeechRegionKey, AzureSpeechConstants.DefaultRegion);
+            set => _preferences.Set(AzureSpeechRegionKey, value ?? AzureSpeechConstants.DefaultRegion);
+        }
+
+        public async Task<string?> GetAzureSpeechSubscriptionKeyAsync()
+        {
+            try
+            {
+                return await Microsoft.Maui.Storage.SecureStorage.GetAsync(AzureSpeechSubscriptionKeySecureKey);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public async Task SetAzureSpeechSubscriptionKeyAsync(string? subscriptionKey)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(subscriptionKey))
+                {
+                    Microsoft.Maui.Storage.SecureStorage.Remove(AzureSpeechSubscriptionKeySecureKey);
+                }
+                else
+                {
+                    await Microsoft.Maui.Storage.SecureStorage.SetAsync(AzureSpeechSubscriptionKeySecureKey, subscriptionKey);
+                }
+            }
+            catch (Exception)
+            {
+                // Handle SecureStorage failures gracefully
+            }
+        }
+
+        public string AzureSpeechLanguage
+        {
+            get => _preferences.Get(AzureSpeechLanguageKey, AzureSpeechConstants.DefaultLanguage);
+            set => _preferences.Set(AzureSpeechLanguageKey, value);
+        }
+
+        public int MaxRecordingDurationMinutes
+        {
+            get => _preferences.GetInt(MaxRecordingDurationMinutesKey, AzureSpeechConstants.DefaultMaxRecordingDurationMinutes);
+            set => _preferences.SetInt(MaxRecordingDurationMinutesKey, value);
+        }
+
+        public async Task<bool> IsAzureSpeechConfiguredAsync()
+        {
+            var region = AzureSpeechRegion;
+            var subscriptionKey = await GetAzureSpeechSubscriptionKeyAsync();
+
+            return !string.IsNullOrWhiteSpace(region) && 
+                   !string.IsNullOrWhiteSpace(subscriptionKey);
         }
     }
 }

@@ -17,12 +17,12 @@ Each task will be:
 
 ### [7.1] Dependencies & Settings Infrastructure
 
-* [ ] 📦 Install `Microsoft.CognitiveServices.Speech` NuGet package to Core project
-* [ ] 📦 Verify `Microsoft.Maui.Essentials` is available for microphone permissions
-* [ ] 🔧 Add Azure Speech settings properties to `ISettingsService` (SubscriptionKey, Region, Language)
-* [ ] 🔐 Implement secure storage for Azure Speech Subscription Key using MAUI SecureStorage
-* [ ] 🌍 Add region selection enum/constants for Azure Speech regions
-* [ ] 🧪 Build & test settings read/write with dummy values
+* [x] 📦 Install `Microsoft.CognitiveServices.Speech` NuGet package to Core project
+* [x] 📦 Verify `Microsoft.Maui.Essentials` is available for microphone permissions
+* [x] 🔧 Add Azure Speech settings properties to `ISettingsService` (SubscriptionKey, Region, Language)
+* [x] 🔐 Implement secure storage for Azure Speech Subscription Key using MAUI SecureStorage
+* [x] 🌍 Add region selection enum/constants for Azure Speech regions
+* [x] 🧪 Build & test settings read/write with dummy values
 
 > ✅ **Checkpoint:** Azure Speech NuGet installed, settings infrastructure ready, SecureStorage working for speech credentials.
 

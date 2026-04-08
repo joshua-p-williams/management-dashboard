@@ -15,5 +15,13 @@ namespace ManagementDashboard.Core.Contracts
         Task SetAzureVisionApiKeyAsync(string? apiKey);
         int MaxImageSizeMB { get; set; }
         Task<bool> IsAzureVisionConfiguredAsync(); // Make this async
+
+        // Azure AI Speech Services Settings
+        string? AzureSpeechRegion { get; set; }
+        Task<string?> GetAzureSpeechSubscriptionKeyAsync();
+        Task SetAzureSpeechSubscriptionKeyAsync(string? subscriptionKey);
+        string AzureSpeechLanguage { get; set; }
+        int MaxRecordingDurationMinutes { get; set; }
+        Task<bool> IsAzureSpeechConfiguredAsync();
     }
 }
