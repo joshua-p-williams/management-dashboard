@@ -44,6 +44,9 @@ namespace ManagementDashboard
             // Register AzureVisionService as scoped
             builder.Services.AddScoped<IAzureVisionService, AzureVisionService>();
 
+            // Register AzureSpeechService as scoped
+            builder.Services.AddScoped<IAzureSpeechService, AzureSpeechService>();
+
             // Register ImageCaptureService as scoped
             builder.Services.AddScoped<IImageCaptureService, ImageCaptureService>();
 

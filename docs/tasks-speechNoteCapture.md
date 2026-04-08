@@ -30,12 +30,12 @@ Each task will be:
 
 ### [7.2] Core Speech Service Implementation
 
-* [ ] 🏗️ Create `IAzureSpeechService` contract in `ManagementDashboard.Core/Contracts/`
-* [ ] 🛠️ Implement `AzureSpeechService` in `ManagementDashboard.Core/Services/`
-* [ ] 🔌 Register `AzureSpeechService` in `MauiProgram.cs` DI container
-* [ ] 🎯 Add configuration validation and connection testing methods
-* [ ] 🧪 Add unit test with mock speech recognition response
-* [ ] 🧪 Build & test service instantiation (no Azure calls yet)
+* [x] 🏗️ Create `IAzureSpeechService` contract in `ManagementDashboard.Core/Contracts/`
+* [x] 🛠️ Implement `AzureSpeechService` in `ManagementDashboard.Core/Services/`
+* [x] 🔌 Register `AzureSpeechService` in `MauiProgram.cs` DI container
+* [x] 🎯 Add configuration validation and connection testing methods
+* [x] 🧪 Add unit test with mock speech recognition response
+* [x] 🧪 Build & test service instantiation (no Azure calls yet)
 
 > ✅ **Checkpoint:** Speech service skeleton ready, DI wired, basic tests pass.
 
