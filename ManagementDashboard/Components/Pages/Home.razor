@@ -59,6 +59,15 @@
                     }
                 </div>
             </div>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    @errorMessage
+                    <button type="button" class="btn-close" aria-label="Close" @onclick="() => errorMessage = null"></button>
+                </div>
+            }
         </div>
         <div class="col-md-6">
             <!-- Show prioritized tasks -->
@@ -131,6 +140,7 @@
 {
     <SpeechResultsModal 
         TranscribedText="@transcribedText"
+        TranscriptionConfidence="@transcriptionConfidence"
         OnCreateTask="HandleCreateTaskFromSpeech"
         OnCreateWorkNote="HandleCreateWorkNoteFromSpeech"
         OnCancel="HandleSpeechResultsCancel" />

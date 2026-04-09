@@ -17,18 +17,6 @@ namespace ManagementDashboard.Core.Contracts
         Task<byte[]?> StopRecordingAsync();
 
         /// <summary>
-        /// Pauses the current audio recording
-        /// </summary>
-        /// <returns>True if successfully paused</returns>
-        Task<bool> PauseRecordingAsync();
-
-        /// <summary>
-        /// Resumes a paused audio recording
-        /// </summary>
-        /// <returns>True if successfully resumed</returns>
-        Task<bool> ResumeRecordingAsync();
-
-        /// <summary>
         /// Cancels the current recording and discards audio data
         /// </summary>
         Task CancelRecordingAsync();
@@ -47,11 +35,6 @@ namespace ManagementDashboard.Core.Contracts
         /// Indicates if currently recording
         /// </summary>
         bool IsRecording { get; }
-
-        /// <summary>
-        /// Indicates if recording is paused
-        /// </summary>
-        bool IsPaused { get; }
 
         /// <summary>
         /// Checks if microphone permissions are granted

@@ -44,12 +44,16 @@ namespace ManagementDashboard.Components
                 var success = await AudioCaptureService.StartRecordingAsync();
                 if (!success)
                 {
-                    errorMessage = "Failed to start recording. Please check microphone permissions.";
+                    errorMessage = "Failed to start recording. Please try again.";
                 }
+            }
+            catch (InvalidOperationException ex)
+            {
+                errorMessage = ex.Message;
             }
             catch (Exception ex)
             {
-                errorMessage = $"Error starting recording: {ex.Message}";
+                errorMessage = $"Unexpected error starting recording: {ex.Message}";
             }
             finally
             {
@@ -67,69 +71,23 @@ namespace ManagementDashboard.Components
                 StateHasChanged();
 
                 var audioData = await AudioCaptureService.StopRecordingAsync();
-                
+
                 if (audioData != null && audioData.Length > 0 && OnRecordingComplete.HasDelegate)
                 {
                     await OnRecordingComplete.InvokeAsync(audioData);
                 }
                 else if (audioData == null || audioData.Length == 0)
                 {
-                    errorMessage = "No audio data captured. Please try recording again.";
+                    errorMessage = "No audio data captured. Please try recording again and speak clearly into your microphone.";
                 }
+            }
+            catch (InvalidOperationException ex)
+            {
+                errorMessage = ex.Message;
             }
             catch (Exception ex)
             {
-                errorMessage = $"Error stopping recording: {ex.Message}";
-            }
-            finally
-            {
-                isProcessing = false;
-                StateHasChanged();
-            }
-        }
-
-        protected async Task PauseRecording()
-        {
-            try
-            {
-                isProcessing = true;
-                errorMessage = null;
-                StateHasChanged();
-
-                var success = await AudioCaptureService.PauseRecordingAsync();
-                if (!success)
-                {
-                    errorMessage = "Failed to pause recording.";
-                }
-            }
-            catch (Exception ex)
-            {
-                errorMessage = $"Error pausing recording: {ex.Message}";
-            }
-            finally
-            {
-                isProcessing = false;
-                StateHasChanged();
-            }
-        }
-
-        protected async Task ResumeRecording()
-        {
-            try
-            {
-                isProcessing = true;
-                errorMessage = null;
-                StateHasChanged();
-
-                var success = await AudioCaptureService.ResumeRecordingAsync();
-                if (!success)
-                {
-                    errorMessage = "Failed to resume recording.";
-                }
-            }
-            catch (Exception ex)
-            {
-                errorMessage = $"Error resuming recording: {ex.Message}";
+                errorMessage = $"Unexpected error stopping recording: {ex.Message}";
             }
             finally
             {

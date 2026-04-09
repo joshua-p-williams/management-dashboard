@@ -24,6 +24,7 @@ namespace ManagementDashboard.Components.Pages
         private bool showAudioRecording = false;
         private bool showSpeechResults = false;
         private bool isProcessingSpeech = false;
+        private string? errorMessage = null;
 
         protected WorkCaptureNote NewWorkCaptureNote { get; set; } = new();
         private int nextTasksListKey = 0;
@@ -32,6 +33,7 @@ namespace ManagementDashboard.Components.Pages
         private string extractedText = string.Empty;
         private byte[]? capturedAudioData;
         private string transcribedText = string.Empty;
+        private float? transcriptionConfidence = null;
 
         protected bool IsImageCaptureEnabled { get; set; } = false;
         protected bool IsSpeechCaptureEnabled { get; set; } = false;
@@ -247,12 +249,14 @@ namespace ManagementDashboard.Components.Pages
         {
             try
             {
+                errorMessage = null;
                 showAudioRecording = true;
                 StateHasChanged();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // Handle error - in production, show user-friendly error message
+                errorMessage = $"Failed to open recording dialog: {ex.Message}";
+                StateHasChanged();
             }
         }
 
@@ -268,20 +272,69 @@ namespace ManagementDashboard.Components.Pages
             showAudioRecording = false;
             isProcessingSpeech = true;
             capturedAudioData = audioData;
+            errorMessage = null;
+            transcriptionConfidence = null;
             StateHasChanged();
 
             try
             {
-                transcribedText = await SpeechService.TranscribeSpeechAsync(audioData);
+                if (audioData == null || audioData.Length == 0)
+                {
+                    throw new ArgumentException("No audio data received. Please try recording again.");
+                }
+
+                var speechResult = await SpeechService.TranscribeSpeechWithConfidenceAsync(audioData);
+
+                if (!speechResult.IsSuccess)
+                {
+                    throw new InvalidOperationException(speechResult.ErrorMessage ?? "Unknown speech recognition error occurred.");
+                }
+
+                if (string.IsNullOrWhiteSpace(speechResult.Text))
+                {
+                    throw new InvalidOperationException("No speech was recognized in the audio. Please speak more clearly and try again.");
+                }
+
+                transcribedText = speechResult.Text;
+                transcriptionConfidence = speechResult.Confidence;
                 isProcessingSpeech = false;
                 showSpeechResults = true;
                 StateHasChanged();
             }
-            catch (Exception)
+            catch (UnauthorizedAccessException ex)
             {
                 isProcessingSpeech = false;
-                transcribedText = string.Empty;
-                // Handle error - show user message
+                errorMessage = $"Authentication Error: {ex.Message}";
+                StateHasChanged();
+            }
+            catch (System.Net.Http.HttpRequestException ex)
+            {
+                isProcessingSpeech = false;
+                errorMessage = $"Network Error: {ex.Message}";
+                StateHasChanged();
+            }
+            catch (TimeoutException ex)
+            {
+                isProcessingSpeech = false;
+                errorMessage = $"Timeout Error: {ex.Message}";
+                StateHasChanged();
+            }
+            catch (ArgumentException ex)
+            {
+                isProcessingSpeech = false;
+                errorMessage = ex.Message;
+                StateHasChanged();
+            }
+            catch (InvalidOperationException ex)
+            {
+                isProcessingSpeech = false;
+                errorMessage = ex.Message;
+                StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                isProcessingSpeech = false;
+                errorMessage = $"Unexpected error during speech processing: {ex.Message}";
                 StateHasChanged();
             }
         }
@@ -290,7 +343,9 @@ namespace ManagementDashboard.Components.Pages
         {
             showSpeechResults = false;
             transcribedText = string.Empty;
+            transcriptionConfidence = null;
             capturedAudioData = null;
+            errorMessage = null;
             StateHasChanged();
         }
 

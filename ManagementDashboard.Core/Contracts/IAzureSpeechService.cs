@@ -1,4 +1,5 @@
 using System;
+using ManagementDashboard.Core.Models;
 
 namespace ManagementDashboard.Core.Contracts
 {
@@ -22,6 +23,13 @@ namespace ManagementDashboard.Core.Contracts
         /// <param name="audioData">The audio data as byte array</param>
         /// <returns>Transcribed text or empty string if transcription fails</returns>
         Task<string> TranscribeSpeechAsync(byte[] audioData);
+
+        /// <summary>
+        /// Transcribes speech from audio byte array using Azure Speech Services with confidence scoring
+        /// </summary>
+        /// <param name="audioData">The audio data as byte array</param>
+        /// <returns>SpeechRecognitionResult containing transcribed text and confidence score</returns>
+        Task<Models.SpeechRecognitionResult> TranscribeSpeechWithConfidenceAsync(byte[] audioData);
 
         /// <summary>
         /// Tests the Azure Speech Services connection with current configuration

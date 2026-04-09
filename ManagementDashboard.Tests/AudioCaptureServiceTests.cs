@@ -58,7 +58,6 @@ namespace ManagementDashboard.Tests
 
             // Setup mock behavior
             mockAudioService.Setup(s => s.IsRecording).Returns(false);
-            mockAudioService.Setup(s => s.IsPaused).Returns(false);
             mockAudioService.Setup(s => s.RecordingDuration).Returns(TimeSpan.Zero);
             mockAudioService.Setup(s => s.AudioLevel).Returns(0.0f);
             mockAudioService.Setup(s => s.IsMicrophoneAvailableAsync()).ReturnsAsync(true);

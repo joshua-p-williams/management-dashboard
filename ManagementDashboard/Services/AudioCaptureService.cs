@@ -15,7 +15,6 @@ namespace ManagementDashboard.Services
         private readonly Stopwatch _recordingStopwatch;
         private readonly Timer? _audioLevelTimer;
         private bool _isRecording;
-        private bool _isPaused;
         private byte[]? _currentRecordingData;
 
 #if WINDOWS
@@ -36,8 +35,6 @@ namespace ManagementDashboard.Services
 
         public bool IsRecording => _isRecording;
 
-        public bool IsPaused => _isPaused;
-
         public event EventHandler<bool>? RecordingStateChanged;
         public event EventHandler<float>? AudioLevelChanged;
 
@@ -46,25 +43,41 @@ namespace ManagementDashboard.Services
             try
             {
                 if (!await IsMicrophoneAvailableAsync())
-                    return false;
+                {
+                    throw new InvalidOperationException("Microphone is not available. Please check device permissions and ensure no other applications are using the microphone.");
+                }
 
                 if (_isRecording)
                     return false;
 
                 _isRecording = true;
-                _isPaused = false;
                 _recordingStopwatch.Start();
-                
+
                 // Start mock recording - in a real implementation, this would start platform-specific audio capture
                 await StartPlatformRecordingAsync();
-                
+
                 RecordingStateChanged?.Invoke(this, true);
                 return true;
             }
-            catch (Exception)
+            catch (UnauthorizedAccessException)
             {
                 _isRecording = false;
-                return false;
+                throw new InvalidOperationException("Microphone access denied. Please grant microphone permissions in your device settings.");
+            }
+            catch (System.IO.IOException ex)
+            {
+                _isRecording = false;
+                throw new InvalidOperationException($"Microphone device error: {ex.Message}. Please check that your microphone is connected and not in use by another application.");
+            }
+            catch (InvalidOperationException)
+            {
+                _isRecording = false;
+                throw; // Re-throw our custom messages
+            }
+            catch (Exception ex)
+            {
+                _isRecording = false;
+                throw new InvalidOperationException($"Failed to start audio recording: {ex.Message}");
             }
         }
 
@@ -76,63 +89,25 @@ namespace ManagementDashboard.Services
                     return null;
 
                 _isRecording = false;
-                _isPaused = false;
                 _recordingStopwatch.Stop();
 
                 // Stop platform-specific recording and get the audio data
                 var audioData = await StopPlatformRecordingAsync();
-                
+
                 RecordingStateChanged?.Invoke(this, false);
                 _recordingStopwatch.Reset();
-                
+
+                if (audioData == null || audioData.Length == 0)
+                {
+                    throw new InvalidOperationException("No audio data was captured. Please ensure your microphone is working and you spoke during the recording.");
+                }
+
                 return audioData;
             }
-            catch (Exception)
+            catch (Exception ex) when (!(ex is InvalidOperationException))
             {
                 await CancelRecordingAsync();
-                return null;
-            }
-        }
-
-        public async Task<bool> PauseRecordingAsync()
-        {
-            try
-            {
-                if (!_isRecording || _isPaused)
-                    return false;
-
-                _isPaused = true;
-                _recordingStopwatch.Stop();
-                
-                // Pause platform-specific recording
-                await PausePlatformRecordingAsync();
-                
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        public async Task<bool> ResumeRecordingAsync()
-        {
-            try
-            {
-                if (!_isRecording || !_isPaused)
-                    return false;
-
-                _isPaused = false;
-                _recordingStopwatch.Start();
-                
-                // Resume platform-specific recording
-                await ResumePlatformRecordingAsync();
-                
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
+                throw new InvalidOperationException($"Failed to stop audio recording: {ex.Message}");
             }
         }
 
@@ -143,7 +118,6 @@ namespace ManagementDashboard.Services
                 if (_isRecording)
                 {
                     _isRecording = false;
-                    _isPaused = false;
                     _recordingStopwatch.Stop();
                     _recordingStopwatch.Reset();
                     
@@ -247,28 +221,6 @@ namespace ManagementDashboard.Services
 #endif
         }
 
-        private async Task PausePlatformRecordingAsync()
-        {
-#if WINDOWS
-            await PauseWindowsRecordingAsync();
-#else
-            // Mock implementation
-            StopAudioLevelMonitoring();
-            await Task.Delay(50);
-#endif
-        }
-
-        private async Task ResumePlatformRecordingAsync()
-        {
-#if WINDOWS
-            await ResumeWindowsRecordingAsync();
-#else
-            // Mock implementation
-            StartAudioLevelMonitoring();
-            await Task.Delay(50);
-#endif
-        }
-
         private async Task CancelPlatformRecordingAsync()
         {
 #if WINDOWS
@@ -368,26 +320,6 @@ namespace ManagementDashboard.Services
             {
                 throw new InvalidOperationException($"Failed to stop Windows audio recording: {ex.Message}", ex);
             }
-        }
-
-        private async Task PauseWindowsRecordingAsync()
-        {
-            if (_waveIn != null)
-            {
-                _waveIn.StopRecording();
-                StopWindowsAudioLevelMonitoring();
-            }
-            await Task.CompletedTask;
-        }
-
-        private async Task ResumeWindowsRecordingAsync()
-        {
-            if (_waveIn != null)
-            {
-                _waveIn.StartRecording();
-                StartWindowsAudioLevelMonitoring();
-            }
-            await Task.CompletedTask;
         }
 
         private async Task CancelWindowsRecordingAsync()
@@ -514,7 +446,7 @@ namespace ManagementDashboard.Services
 
         private void UpdateAudioLevel(object? state)
         {
-            if (!_isRecording || _isPaused)
+            if (!_isRecording)
                 return;
 
             // Mock audio level simulation - in reality, this would read actual microphone levels

@@ -32,6 +32,14 @@ Automatically convert captured text into Eisenhower Matrix tasks or work capture
 
 ---
 
+### 🎤 Speech Note Capture
+Capture spoken notes using **Azure AI Speech Services** with real-time microphone recording.  
+Convert voice memos, meeting discussions, and verbal ideas into structured tasks or work notes with confidence scoring.
+
+📄 See [docs/feature-speech-note-capture.md](docs/feature-speech-note-capture.md)
+
+---
+
 ## 🧱 Architecture
 
 The app is built using a clean layered architecture:

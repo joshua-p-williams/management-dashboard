@@ -14,18 +14,11 @@
                 
                 <!-- Recording Status Display -->
                 <div class="mb-4">
-                    @if (AudioCaptureService.IsRecording && !AudioCaptureService.IsPaused)
+                    @if (AudioCaptureService.IsRecording)
                     {
                         <div class="alert alert-success">
                             <i class="bi bi-mic-fill text-danger blink"></i>
                             <strong>Recording...</strong>
-                        </div>
-                    }
-                    else if (AudioCaptureService.IsPaused)
-                    {
-                        <div class="alert alert-warning">
-                            <i class="bi bi-pause-circle"></i>
-                            <strong>Recording Paused</strong>
                         </div>
                     }
                     else
@@ -71,40 +64,14 @@
                                 <i class="bi bi-play-circle"></i> Start Recording
                             </button>
                         }
-                        else if (AudioCaptureService.IsPaused)
-                        {
-                            <!-- Resume Button -->
-                            <button type="button" 
-                                    class="btn btn-warning btn-lg" 
-                                    @onclick="ResumeRecording"
-                                    disabled="@isProcessing">
-                                <i class="bi bi-play-circle"></i> Resume
-                            </button>
-                            
-                            <!-- Stop Button -->
-                            <button type="button" 
-                                    class="btn btn-danger btn-lg" 
-                                    @onclick="StopRecording"
-                                    disabled="@isProcessing">
-                                <i class="bi bi-stop-circle"></i> Stop
-                            </button>
-                        }
                         else
                         {
-                            <!-- Pause Button -->
-                            <button type="button" 
-                                    class="btn btn-warning btn-lg" 
-                                    @onclick="PauseRecording"
-                                    disabled="@isProcessing">
-                                <i class="bi bi-pause-circle"></i> Pause
-                            </button>
-                            
                             <!-- Stop Button -->
                             <button type="button" 
                                     class="btn btn-danger btn-lg" 
                                     @onclick="StopRecording"
                                     disabled="@isProcessing">
-                                <i class="bi bi-stop-circle"></i> Stop
+                                <i class="bi bi-stop-circle"></i> Stop Recording
                             </button>
                         }
                     </div>
@@ -115,15 +82,22 @@
                     <small class="text-muted">
                         @if (!AudioCaptureService.IsRecording)
                         {
-                            <span>Click "Start Recording" to begin capturing audio. Speak clearly for best results.</span>
-                        }
-                        else if (AudioCaptureService.IsPaused)
-                        {
-                            <span>Recording is paused. Click "Resume" to continue or "Stop" to finish.</span>
+                            <div class="alert alert-light border text-start">
+                                <small class="text-muted">
+                                    <i class="bi bi-lightbulb"></i>
+                                    <strong>Recording Tips:</strong>
+                                    <ul class="mb-0 mt-2">
+                                        <li>Speak clearly and at normal volume</li>
+                                        <li>Keep background noise to a minimum</li>
+                                        <li>Hold the device 6-12 inches from your mouth</li>
+                                        <li>Speak for at least 3-5 seconds for best results</li>
+                                    </ul>
+                                </small>
+                            </div>
                         }
                         else
                         {
-                            <span>Recording in progress. Speak clearly into your microphone.</span>
+                            <span><i class="bi bi-mic-fill me-1"></i>Recording in progress. Speak clearly into your microphone. Watch the audio level meter to ensure your voice is being captured.</span>
                         }
                     </small>
                 </div>
