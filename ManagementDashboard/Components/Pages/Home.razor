@@ -41,6 +41,22 @@
                             Configure Azure Vision in <a href="/settings">Settings</a> to enable image capture.
                         </div>
                     }
+                    @if (IsSpeechCaptureEnabled)
+                    {
+                        <div class="mb-3">
+                            <button class="btn btn-warning text-white w-100" @onclick="OnRecordNoteClicked">
+                                <i class="bi bi-mic me-1"></i> Record Note
+                            </button>
+                            <small class="text-muted d-block mt-1">Capture notes with speech recognition</small>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info small">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Configure Azure Speech Services in <a href="/settings">Settings</a> to enable speech capture.
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -97,6 +113,40 @@
                     </div>
                     <h5>Processing Image</h5>
                     <p class="mb-0">Extracting text using Azure Computer Vision...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@if (showAudioRecording)
+{
+    <AudioRecordingModal 
+        OnRecordingComplete="HandleAudioRecordingComplete" 
+        OnCancel="HandleAudioRecordingCancel" />
+}
+
+@if (showSpeechResults)
+{
+    <SpeechResultsModal 
+        TranscribedText="@transcribedText"
+        OnCreateTask="HandleCreateTaskFromSpeech"
+        OnCreateWorkNote="HandleCreateWorkNoteFromSpeech"
+        OnCancel="HandleSpeechResultsCancel" />
+}
+
+@if (isProcessingSpeech)
+{
+    <div class="modal fade show" tabindex="-1" style="display: block;" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center p-4">
+                    <div class="spinner-border text-warning mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <h5>Processing Speech</h5>
+                    <p class="mb-0">Transcribing audio using Azure Speech Services...</p>
                 </div>
             </div>
         </div>

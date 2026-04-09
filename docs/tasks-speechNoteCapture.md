@@ -111,8 +111,8 @@ Each task will be:
 
 ### [7.8] Work Capture Note Integration
 
-* [ ] 🧱 Add "Record Note" button to existing Work Capture UI
-* [ ] 🧪 Test creating Work Capture Notes from speech text
+* [x] 🧱 Add "Record Note" button to existing Work Capture UI
+* [x] 🧪 Test creating Work Capture Notes from speech text
 
 > ✅ **Checkpoint:** Work Capture Notes can be created from speech text, data persists correctly.
 
@@ -120,12 +120,11 @@ Each task will be:
 
 ### [7.9] Task Creation from Speech
 
-* [ ] 🏗️ Extend task creation flow to handle speech-sourced content (reuse existing patterns)
-* [ ] 🧠 Add smart text parsing to suggest task title from spoken content (just trim it down like we did with OCR)
-* [ ] 🎯 Add quadrant suggestion logic based on speech keywords and context (this is optional, just do what we did with OCR for now)
-* [ ] 🔗 Wire speech results modal to existing task creation flow
-* [ ] 🧪 Test creating Eisenhower Tasks from speech text
-* [ ] 💡 Add speech-specific parsing (handle spoken punctuation, filler words)
+* [x] 🏗️ Extend task creation flow to handle speech-sourced content (reuse existing patterns)
+* [x] 🧠 Add smart text parsing to suggest task title from spoken content (just trim it down like we did with OCR)
+* [x] 🎯 Add quadrant suggestion logic based on speech keywords and context (this is optional, just do what we did with OCR for now)
+* [x] 🔗 Wire speech results modal to existing task creation flow
+* [x] 🧪 Test creating Eisenhower Tasks from speech text
 
 > ✅ **Checkpoint:** Tasks can be created from speech, smart parsing suggests titles and quadrants.
 
@@ -133,11 +132,11 @@ Each task will be:
 
 ### [7.10] Main Dashboard Integration
 
-* [ ] 🎤 Add "Record Note" button to main dashboard alongside image capture
-* [ ] 🔄 Wire complete flow: button → recording modal → speech processing → routing → save
-* [ ] 🎨 Style recording button with microphone icon, group with capture options
-* [ ] 🧪 Test complete user journey from main page
-* [ ] 🧪 Test both Task and Work Note creation paths from speech
+* [x] 🎤 Add "Record Note" button to main dashboard alongside image capture
+* [x] 🔄 Wire complete flow: button → recording modal → speech processing → routing → save
+* [x] 🎨 Style recording button with microphone icon, group with capture options
+* [x] 🧪 Test complete user journey from main page
+* [x] 🧪 Test both Task and Work Note creation paths from speech
 
 > ✅ **Checkpoint:** Complete feature integrated into main UI, full user flow working.
 

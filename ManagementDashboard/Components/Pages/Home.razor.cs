@@ -11,6 +11,8 @@ namespace ManagementDashboard.Components.Pages
         [Inject] public ISettingsService SettingsService { get; set; } = default!;
         [Inject] public IAzureVisionService AzureVisionService { get; set; } = default!;
         [Inject] public IImageCaptureService ImageCaptureService { get; set; } = default!;
+        [Inject] public IAzureSpeechService SpeechService { get; set; } = default!;
+        [Inject] public IAudioCaptureService AudioCaptureService { get; set; } = default!;
         [Inject] public IWorkCaptureNoteRepository WorkCaptureRepository { get; set; } = default!;
         [Inject] public IEisenhowerTaskRepository TaskRepository { get; set; } = default!;
 
@@ -19,18 +21,25 @@ namespace ManagementDashboard.Components.Pages
         private bool showImagePreview = false;
         private bool showOcrResults = false;
         private bool isProcessingOcr = false;
+        private bool showAudioRecording = false;
+        private bool showSpeechResults = false;
+        private bool isProcessingSpeech = false;
 
         protected WorkCaptureNote NewWorkCaptureNote { get; set; } = new();
         private int nextTasksListKey = 0;
 
         private byte[]? capturedImageData;
         private string extractedText = string.Empty;
+        private byte[]? capturedAudioData;
+        private string transcribedText = string.Empty;
 
         protected bool IsImageCaptureEnabled { get; set; } = false;
+        protected bool IsSpeechCaptureEnabled { get; set; } = false;
 
         protected override async Task OnInitializedAsync()
         {
             IsImageCaptureEnabled = await SettingsService.IsAzureVisionConfiguredAsync();
+            IsSpeechCaptureEnabled = await SettingsService.IsAzureSpeechConfiguredAsync();
             StateHasChanged();
         }
 
@@ -231,6 +240,97 @@ namespace ManagementDashboard.Components.Pages
 
             // Default to "Schedule" for captured tasks
             return ManagementDashboard.Core.EisenhowerQuadrant.Schedule;
+        }
+
+        // Speech Capture Methods (following same pattern as image capture)
+        private async Task OnRecordNoteClicked()
+        {
+            try
+            {
+                showAudioRecording = true;
+                StateHasChanged();
+            }
+            catch (Exception)
+            {
+                // Handle error - in production, show user-friendly error message
+            }
+        }
+
+        private void HandleAudioRecordingCancel()
+        {
+            showAudioRecording = false;
+            capturedAudioData = null;
+            StateHasChanged();
+        }
+
+        private async Task HandleAudioRecordingComplete(byte[] audioData)
+        {
+            showAudioRecording = false;
+            isProcessingSpeech = true;
+            capturedAudioData = audioData;
+            StateHasChanged();
+
+            try
+            {
+                transcribedText = await SpeechService.TranscribeSpeechAsync(audioData);
+                isProcessingSpeech = false;
+                showSpeechResults = true;
+                StateHasChanged();
+            }
+            catch (Exception)
+            {
+                isProcessingSpeech = false;
+                transcribedText = string.Empty;
+                // Handle error - show user message
+                StateHasChanged();
+            }
+        }
+
+        private void HandleSpeechResultsCancel()
+        {
+            showSpeechResults = false;
+            transcribedText = string.Empty;
+            capturedAudioData = null;
+            StateHasChanged();
+        }
+
+        private async Task HandleCreateTaskFromSpeech(string text)
+        {
+            showSpeechResults = false;
+
+            // Create a new task with the speech text (same logic as OCR)
+            var newTask = new EisenhowerTask
+            {
+                Title = ExtractTaskTitle(text),
+                Description = text,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
+                Quadrant = null, // SuggestQuadrant(text).ToString(),
+                Priority = PriorityLevel.Medium // Default priority
+            };
+
+            await TaskRepository.InsertAsync(newTask);
+
+            // Refresh the UI
+            nextTasksListKey++;
+            StateHasChanged();
+        }
+
+        private async Task HandleCreateWorkNoteFromSpeech(string text)
+        {
+            showSpeechResults = false;
+
+            // Create a new work capture note with the speech text (same logic as OCR)
+            var note = new WorkCaptureNote
+            {
+                Notes = text,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
+            };
+
+            await WorkCaptureRepository.InsertAsync(note);
+
+            StateHasChanged();
         }
     }
 }
