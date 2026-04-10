@@ -26,8 +26,10 @@ namespace ManagementDashboard.Services
 
                 return await photo.OpenReadAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                // Log the actual error for debugging
+                System.Diagnostics.Debug.WriteLine($"CaptureFromCameraAsync error: {ex.Message}");
                 return null;
             }
         }
@@ -87,8 +89,9 @@ namespace ManagementDashboard.Services
 
                 return status == PermissionStatus.Granted && MediaPicker.IsCaptureSupported;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"IsCameraAvailableAsync error: {ex.Message}");
                 return false;
             }
         }

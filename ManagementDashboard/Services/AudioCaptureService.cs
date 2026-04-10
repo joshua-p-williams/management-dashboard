@@ -5,6 +5,8 @@ using System.Diagnostics;
 
 #if WINDOWS
 using NAudio.Wave;
+#elif ANDROID
+using ManagementDashboard.Platforms.Android;
 #endif
 
 namespace ManagementDashboard.Services
@@ -21,12 +23,17 @@ namespace ManagementDashboard.Services
         private WaveInEvent? _waveIn;
         private MemoryStream? _recordingStream;
         private WaveFileWriter? _waveFileWriter;
+#elif ANDROID
+        private AndroidAudioCaptureService? _androidAudioService;
 #endif
 
         public AudioCaptureService(ISettingsService settingsService)
         {
             _settingsService = settingsService;
             _recordingStopwatch = new Stopwatch();
+#if ANDROID
+            _androidAudioService = new AndroidAudioCaptureService();
+#endif
         }
 
         public TimeSpan RecordingDuration => _recordingStopwatch.Elapsed;
@@ -202,6 +209,14 @@ namespace ManagementDashboard.Services
         {
 #if WINDOWS
             await StartWindowsRecordingAsync();
+#elif ANDROID
+            if (_androidAudioService != null)
+            {
+                var started = await _androidAudioService.StartRecordingAsync();
+                if (!started)
+                    throw new InvalidOperationException("Failed to start Android audio recording");
+            }
+            StartAudioLevelMonitoring();
 #else
             // Mock implementation for other platforms
             await Task.Delay(100); // Simulate initialization delay
@@ -213,6 +228,9 @@ namespace ManagementDashboard.Services
         {
 #if WINDOWS
             return await StopWindowsRecordingAsync();
+#elif ANDROID
+            StopAudioLevelMonitoring();
+            return _androidAudioService != null ? await _androidAudioService.StopRecordingAsync() : null;
 #else
             // Mock implementation for other platforms
             StopAudioLevelMonitoring();
@@ -225,6 +243,10 @@ namespace ManagementDashboard.Services
         {
 #if WINDOWS
             await CancelWindowsRecordingAsync();
+#elif ANDROID
+            if (_androidAudioService != null)
+                await _androidAudioService.CancelRecordingAsync();
+            StopAudioLevelMonitoring();
 #else
             // Mock implementation
             StopAudioLevelMonitoring();
@@ -483,6 +505,8 @@ namespace ManagementDashboard.Services
             _waveIn?.Dispose();
             _waveFileWriter?.Dispose();
             _recordingStream?.Dispose();
+#elif ANDROID
+            _androidAudioService?.CancelRecordingAsync().Wait();
 #endif
         }
     }

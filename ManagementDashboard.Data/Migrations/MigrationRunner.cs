@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Data.Sqlite;
 
 namespace ManagementDashboard.Data.Migrations
@@ -19,22 +21,60 @@ namespace ManagementDashboard.Data.Migrations
 
         public void RunMigrations()
         {
-            var migrationFiles = Directory.GetFiles(_migrationsPath, "*.sql").OrderBy(f => f);
+            var migrationFiles = GetMigrationFiles();
+
             using var conn = _connectionFactory();
             conn.Open();
             EnsureMigrationsTable(conn);
-            foreach (var file in migrationFiles)
+
+            foreach (var (fileName, content) in migrationFiles)
             {
-                var migrationName = Path.GetFileName(file);
-                if (!IsMigrationApplied(conn, migrationName))
+                if (!IsMigrationApplied(conn, fileName))
                 {
-                    var sql = File.ReadAllText(file);
                     using var cmd = conn.CreateCommand();
-                    cmd.CommandText = sql;
+                    cmd.CommandText = content;
                     cmd.ExecuteNonQuery();
-                    MarkMigrationApplied(conn, migrationName);
+                    MarkMigrationApplied(conn, fileName);
                 }
             }
+        }
+
+        private (string fileName, string content)[] GetMigrationFiles()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceNames = assembly.GetManifestResourceNames()
+                .Where(x => x.Contains("Migrations") && x.EndsWith(".sql"))
+                .OrderBy(x => x)
+                .ToArray();
+
+            var migrations = new List<(string, string)>();
+
+            foreach (var resourceName in resourceNames)
+            {
+                using var stream = assembly.GetManifestResourceStream(resourceName);
+                if (stream != null)
+                {
+                    using var reader = new StreamReader(stream);
+                    var content = reader.ReadToEnd();
+                    // Extract just the filename from the resource name
+                    var fileName = resourceName.Split('.').TakeLast(2).First() + ".sql";
+                    migrations.Add((fileName, content));
+                }
+            }
+
+            // Fallback to file system for backward compatibility
+            if (migrations.Count == 0 && Directory.Exists(_migrationsPath))
+            {
+                var fileNames = Directory.GetFiles(_migrationsPath, "*.sql").OrderBy(f => f);
+                foreach (var file in fileNames)
+                {
+                    var fileName = Path.GetFileName(file);
+                    var content = File.ReadAllText(file);
+                    migrations.Add((fileName, content));
+                }
+            }
+
+            return migrations.ToArray();
         }
 
         private void EnsureMigrationsTable(IDbConnection conn)

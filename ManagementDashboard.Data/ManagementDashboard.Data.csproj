@@ -7,9 +7,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Migrations\**\*.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Migrations\*.sql" />
   </ItemGroup>
 
   <PropertyGroup>
