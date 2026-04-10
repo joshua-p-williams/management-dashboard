@@ -2,7 +2,10 @@
 
 The **Management Dashboard Platform** is a modular, cross-platform app built with **.NET MAUI + Blazor Hybrid**, designed for software architects, engineering managers, and team leads to stay organized and focused.
 
-It features a set of lightweight utilities designed to streamline task management, daily planning, and technical leadership workflows — all running locally with no external dependencies.
+It features a set of lightweight utilities designed to streamline task management, daily planning, and technical leadership workflows.
+Basic feature set can be run offline with no external dependencies, while advanced features leverage Azure AI services for enhanced productivity.
+
+The AI features (Image Note Capture and Speech Note Capture) are optional and can be enabled or disabled based on user settings pointing to Azure AI service endpoints (suggest free tiers for testing).
 
 ---
 
@@ -101,15 +104,30 @@ dotnet run --project ManagementDashboard
 
 ---
 
-## 📦 Publishing a Self-Contained Windows Executable
+## 📦 Publishing a Windows Executable
 
-To publish a self-contained, single-file executable for Windows:
+### Framework-Dependent (Requires .NET 10 on target machine)
 
-dotnet publish ManagementDashboard/ManagementDashboard.csproj -c Release -f net8.0-windows10.0.19041.0 -r win-x64 /p:PublishSingleFile=true /p:SelfContained=true
+```bash
+dotnet publish ManagementDashboard/ManagementDashboard.csproj -c Release -f net10.0-windows10.0.19041.0 /p:PublishSingleFile=true /p:SelfContained=false
+```
 
-The published `.exe` will be located in:
-bin/Release/net8.0-windows10.0.19041.0/win-x64/publish/
-You can share this file with others; they do not need to install .NET separately.
+### Self-Contained (Standalone - Currently Not Available)
+
+```bash
+# Note: Self-contained publishing for .NET 10 is not yet supported
+# The Microsoft.NETCore.App.Runtime.Mono.win-x64 v10.0.5 package is not available on NuGet
+# This will work once .NET 10 moves from preview to stable release
+
+dotnet publish ManagementDashboard/ManagementDashboard.csproj -c Release -f net10.0-windows10.0.19041.0 -r win-x64 /p:PublishSingleFile=true /p:SelfContained=true /p:PublishTrimmed=true /p:PublishReadyToRun=true
+```
+
+**Current Output:**
+- Published executable: `ManagementDashboard\bin\Release\net10.0-windows10.0.19041.0\win-x64\publish\ManagementDashboard.exe`
+- File size: ~210 MB (framework-dependent)
+- **Requirements**: Target machine must have .NET 10 installed
+
+**For distribution**: Consider targeting .NET 8 for better compatibility and self-contained publishing support.
 
 ---
 
